@@ -2,7 +2,7 @@ LOA
 ===
 #Informations générales
 
-Le but est de réaliser une application en C++ permettant de jouer à différents jeux. Certains jeux vous sont imposés les autres sont à prendre dans l’ensemble des jeux de combinatoire abstraite dont une liste (non-exhaustive) est disponible sur la page Wikipédia correspondante. Le nombre de jeux auxquels on doit pouvoir avoir accès à travers votre application doit être au minimum de 4, on ne compte pas les variantes imposées (vous sont donc imposés 3 jeux et vous êtes libres d’en implémenter au moins 1 autre à choisir vous-même).
+Le but est de réaliser une application en C++ permettant de jouer à différents jeux. Certains jeux vous sont imposés les autres sont à prendre dans l’ensemble des jeux de combinatoire abstraite dont une liste (non-exhaustive) est disponible sur la page [Wikipédia](http://fr.wikipedia.org/wiki/Cat%C3%A9gorie:Jeu_de_strat%C3%A9gie_combinatoire_abstrait) correspondante. Le nombre de jeux auxquels on doit pouvoir avoir accès à travers votre application doit être au minimum de 4, on ne compte pas les variantes imposées (vous sont donc imposés 3 jeux et vous êtes libres d’en implémenter au moins 1 autre à choisir vous-même).
 
 Il est donc demandé de trouver les diverses abstractions utiles permettant de décrire l’essence commune à ses différents jeux. La réalisation concrète de ces abstractions pourra utiliser toute construction C++ adéquate : classes, héritage, généricité, etc. Ce qui est important et à privilégier est :
 
