@@ -1,6 +1,7 @@
 #ifndef GUI_COMPONENT_HPP
 #define GUI_COMPONENT_HPP
 
+#include "Event.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -15,6 +16,9 @@
 namespace GUI{
 
   class Component : public sf::Drawable, public sf::Transformable{
+
+    friend class Container;
+
   public:
     Component();
     virtual~Component();
@@ -25,12 +29,14 @@ namespace GUI{
     virtual void onDesactivation();
     virtual bool checkMouse(const unsigned int&, 
 			    const unsigned int&) const;
-    virtual void handle(const sf::Event&);
+    virtual void handle(const Event&);
     virtual void draw(sf::RenderTarget&, sf::RenderStates ) const = 0;
+    sf::Vector2f getAbsolutePosition() const;
 
   protected:
     bool selected;
     bool active;
+    Component * parent;
   };
 
 

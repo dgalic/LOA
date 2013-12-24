@@ -1,5 +1,6 @@
 #include "GUI_Component.hpp"
 
+#include "Event.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -11,6 +12,18 @@ namespace GUI{
   }
 
   Component::~Component(){
+  }
+
+  sf::Vector2f Component::getAbsolutePosition() const{
+    if(parent != nullptr){
+      sf::Vector2f res = parent->getAbsolutePosition();
+      res.x += getPosition().x;
+      res.y += getPosition().y;
+      return res;
+    }else{
+      return getPosition();
+    }
+
   }
 
   /** 
@@ -63,7 +76,7 @@ namespace GUI{
     return false;
   }
 
-  void Component::handle(const sf::Event& e){
+  void Component::handle(const Event& e){
     
   }
 

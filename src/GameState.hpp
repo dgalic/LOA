@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Event.hpp"
+
 namespace StateID{
 
   typedef enum{
@@ -41,7 +43,7 @@ public:
   virtual ~GameState(){};
 
   /** calcule la prochaine configuration, selon la logique de jeu */
-  virtual void update() = 0;
+  virtual void update(const Event& e) = 0;
   /** dit à la GUI comment représenter la configuration courante */
   virtual void render() = 0;
   /** mise en place de choses qui ont besoin d'initialisation */

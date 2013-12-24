@@ -1,8 +1,11 @@
 #include "GUI_Component.hpp"
 #include "GUI_Container.hpp"
 
+#include "Event.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+
+#include <iostream>
 
 namespace GUI{
 
@@ -30,6 +33,7 @@ namespace GUI{
   */
   void Container::add(Component * c){
     subcomponents.push_back(c);
+    c->parent = this;
   }
 
   /**
@@ -46,7 +50,7 @@ namespace GUI{
   }
 
   bool Container::hasSelection() const{
-    return ( (selectedChild) == (nullptr) );
+    return ( (selectedChild) != (nullptr) );
   } 
 
   /**
@@ -55,36 +59,49 @@ namespace GUI{
      Lors d'un déplacement de souris, on regarde la nouvelle position : 
      il se peut que le curseur soit sur un autre élément fils.
   */
-  void Container::handle(const sf::Event& e){
- 
+  void Container::handle(const Event& e){
+    std::cerr<<"container"<<this<<" handles an event : "<<selectedChild<<std::endl;
+    std::cerr<<"mouse moved : "<<e.mouseMove.x<<","<<e.mouseMove.y<<std::endl;
+
+      
     if(e.type == sf::Event::MouseMoved){
-      for(unsigned int i = 0; i < subcomponents.size(); i++){
-	if(subcomponents.at(i)->isSelectable()
-	   &&
-	   subcomponents.at(i)->checkMouse(e.mouseMove.x, 
-					   e.mouseMove.y ) 
-	   ){
-	  subcomponents.at(i)->onSelection();
-	  selectedChild = subcomponents.at(i);
-	  return;
-	}
-      }
       selectedChild = nullptr;
-    }else{
-      if( selectedChild != nullptr)
+      for (auto it = subcomponents.begin(); it != subcomponents.end(); ++it){
+	  
+	if( (*it)->isSelectable() 
+	    && (*it)->checkMouse(e.mouseMove.x, e.mouseMove.y ) 
+	    ){
+	  std::cerr<< "selecting child "<<(*it)<<std::endl;
+	  (*it)->onSelection();
+	  selectedChild = (*it);
+	  break;
+	}
+	
+      }
+      std::cerr<< "selected child is now "<<selectedChild<<std::endl;
+
+    }else
+      if(selectedChild != nullptr){
 	selectedChild->handle(e);
-    }
+      }
+    
+    
+    for (auto it = subcomponents.begin(); it != subcomponents.end(); ++it)
+      (*it)->handle(e);
+
   }
   
+
+  
   /**
-     dessine les components contenus
+     dessine les components contenus dans le component courant
   */
   void Container::draw(sf::RenderTarget& t, sf::RenderStates s) const{
     s.transform *= getTransform();
-    for(unsigned int i = 0; i < subcomponents.size(); i++){
-      subcomponents.at(i)->draw(t, s);
+    for (auto it = subcomponents.begin(); it != subcomponents.end(); ++it){
+      (*it)->draw(t, s);
     }
-
+    
   } 
 
 }
