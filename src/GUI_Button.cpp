@@ -28,7 +28,14 @@ namespace GUI{
 
   void Button::centerText(){
     sf::FloatRect t = text.getGlobalBounds();
-    text.setPosition(sf::Vector2f(t.left+t.width/2, t.top+t.height/2) ) ;
+    //    text.setOrigin(t.width/2, t.height/2);
+    //    text.setPosition(sf::Vector2f(t.left+t.width/2, t.top+t.height/2) ) ;
+  }
+
+  void Button::setPosition(const float& x, const float& y){
+    Transformable::setPosition(x, y);
+    text.setPosition( x+5, y+5 );
+    //        centerText();
   }
 
   bool Button::isSelectable() const{
@@ -55,12 +62,13 @@ namespace GUI{
 
   bool Button::checkMouse(const unsigned int& x, const unsigned int& y) const{
     sf::FloatRect r = text.getGlobalBounds();
-    return(
-	   x > r.left &&
-	   y > r.top &&
-	   x < r.left+r.width &&
-	   y < r.top+r.height
+    bool res = (
+	   x >= r.left-5 &&
+	   y >= r.top-5 &&
+	   x <= r.left+r.width+5 &&
+	   y <= r.top+r.height+5
 	   );
+    return res;
   }
 
   void Button::setAction(const std::function<void()>& f){
@@ -97,8 +105,8 @@ namespace GUI{
     s.transform *= getTransform();
     sf::RectangleShape r;
     sf::FloatRect fr = text.getGlobalBounds();
-    r.setSize(sf::Vector2f(fr.width, fr.height) );
-    r.setPosition(fr.left, fr.top);
+    r.setSize(sf::Vector2f(fr.width+10, fr.height+10) );
+    r.setPosition(getPosition().x, getPosition().y);
     r.setFillColor(color);
     r.setOutlineColor(Color(10, 10, 10) );
     r.setOutlineThickness(2);

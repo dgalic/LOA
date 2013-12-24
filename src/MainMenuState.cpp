@@ -22,19 +22,22 @@ void MainMenuState::render(){
 
 bool MainMenuState::init(){
   container_main = new GUI::Container();
+  container_main->setPosition(0, 0);
   container_buttons = new GUI::Container();
-  container_buttons->setPosition(sf::Vector2f(400, 300) );;
+  container_buttons->setPosition(400, 400);
   label_title = new GUI::Label("PIXOGAMES");
   label_title->setCharacterSize(64);
-  label_title->setPosition(sf::Vector2f(100, 60) );
+  label_title->setPosition(sf::Vector2f(100, 300) );
   button_play = new GUI::Button("PLAY", Color(20,20,200), 
 				[this]() ->void{
 				  std::cout<<" to PLAY state "<<std::endl;
 				} );
+  button_play->setPosition(10, 20);
   button_quit = new GUI::Button("QUIT", Color(200,20,20), 
 				[this]() ->void{
 				  GUI::Window::getInstance()->exit();
 				} );
+  button_quit->setPosition(10, 100);
   container_buttons->add(button_play);
   container_buttons->add(button_quit);
   container_main->add(label_title);
