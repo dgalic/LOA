@@ -6,10 +6,17 @@
 class Color:public sf::Color{
 
 public:
+ 
   Color(const unsigned int& r,
 	const unsigned int& g,
-	const unsigned int& b):sf::Color(r,g,b){};
-
+	const unsigned int& b) : sf::Color(r,g,b){};
+  Color(const unsigned int& r,
+	const unsigned int& g,
+	const unsigned int& b,
+	const unsigned int& a) : sf::Color(r,g,b,a){};
+  //  Color(const Color& c):sf::Color(c){};
+  //  Color brighter() const;
+  //Color darker() const;
 };
 
 #endif

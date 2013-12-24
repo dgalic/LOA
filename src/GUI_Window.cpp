@@ -54,8 +54,8 @@ namespace GUI{
   
   void Window::render(){
     window->clear(sf::Color::Black);
-    sf::Texture t = texture->getTexture();
-    sf::Sprite s(t);
+    texture->display();
+    sf::Sprite s(texture->getTexture() );
     window->draw(s);
     window->display();
   }

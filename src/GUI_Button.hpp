@@ -31,6 +31,7 @@ namespace GUI{
     virtual bool checkMouse(const unsigned int&, const unsigned int&) const;
     virtual void handle(const sf::Event& e);
     virtual void draw(sf::RenderTarget&, sf::RenderStates ) const;
+    virtual void setPosition(const float&, const float&);
 
   protected:
     sf::Text text;
