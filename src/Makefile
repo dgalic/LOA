@@ -11,7 +11,6 @@ all: $(PROGRAM)
 $(PROGRAM):$(OBJECTS)
 	@echo "building "$@;
 	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
-	cp $(PROGRAM) ../$(PROGRAM)
 
 %.o:%.d
 	$(CXX) -c $(CXXFLAGS) $< -o $@
