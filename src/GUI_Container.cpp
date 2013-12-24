@@ -63,9 +63,7 @@ namespace GUI{
     std::cerr<<"container"<<this<<" handles an event : "<<selectedChild<<std::endl;
     std::cerr<<"mouse moved : "<<e.mouseMove.x<<","<<e.mouseMove.y<<std::endl;
 
-      
     if(e.type == sf::Event::MouseMoved){
-      selectedChild = nullptr;
       for (auto it = subcomponents.begin(); it != subcomponents.end(); ++it){
 	  
 	if( (*it)->isSelectable() 
@@ -74,10 +72,13 @@ namespace GUI{
 	  std::cerr<< "selecting child "<<(*it)<<std::endl;
 	  (*it)->onSelection();
 	  selectedChild = (*it);
-	  break;
+	  return;
 	}
 	
       }
+      
+      selectedChild = nullptr;
+
       std::cerr<< "selected child is now "<<selectedChild<<std::endl;
 
     }else
