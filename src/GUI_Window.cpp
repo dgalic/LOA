@@ -26,8 +26,9 @@ namespace GUI{
 		   Window::programName,
 		   sf::Style::Close|sf::Style::Titlebar
 		   );
-    texture->create(window->getSize().x, window->getSize().y);
-    window->display();
+    //texture->create(window->getSize().x, window->getSize().y);
+    texture->create(windowWidth, windowHeight);
+    texture->setSmooth(false);
     return true;
   }
 
@@ -53,6 +54,9 @@ namespace GUI{
   
   void Window::render(){
     window->clear(sf::Color::Black);
+    sf::Texture t = texture->getTexture();
+    sf::Sprite s(t);
+    window->draw(s);
     window->display();
   }
 
