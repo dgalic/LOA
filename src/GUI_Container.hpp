@@ -18,7 +18,7 @@ namespace GUI{
   public:
     Container();
     ~Container();
-    virtual void handle(const sf::Event&);
+    virtual void handle(const Event&);
     virtual void add(Component *);
     virtual void select(const unsigned int&);
     virtual bool hasSelection() const;
