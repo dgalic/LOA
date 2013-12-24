@@ -11,10 +11,12 @@ namespace GUI{
 
   public:
     Label(const std::string& = "");
-    ~Label();
+    virtual ~Label();
     virtual void setFont(const sf::Font&);
     virtual void setCharacterSize(const unsigned int&);
     virtual void setString(const std::string& );
+    virtual bool checkMouse(const unsigned int& x, const unsigned int& y) const;
+    virtual void draw(sf::RenderTarget& t, sf::RenderStates s) const;
 
   protected:
     sf::Text text;
