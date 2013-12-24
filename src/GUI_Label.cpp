@@ -1,6 +1,7 @@
 #include "GUI_Label.hpp"
 #include "GUI_Component.hpp"
 
+#include "Event.hpp"
 #include "ResourceManager.hpp"
 #include "Singleton.hpp"
 

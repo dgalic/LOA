@@ -32,14 +32,25 @@ void Game::exit(){
 
 void Game::loop(){
   std::cerr<<"Starting Game Loop"<<std::endl;
+  Event e;
   while(running && GUI::Window::getInstance()->getWindow()->isOpen() ){
-    std::cerr<<"One more loop"<<std::endl;
-    GameStateHandler::getInstance()->update();
-    GUI::Window::getInstance()->update();
-    std::cerr<<"Updated"<<std::endl;
+    //std::cerr<<"One more loop"<<std::endl;
+    while( GUI::Window::getInstance()->getWindow()->pollEvent(e) ){
+      std::cerr<<"An event occured"<<std::endl;
+      if(e.type == sf::Event::Closed){
+	std::cerr<<"Window closed"<<std::endl;
+	Game::getInstance()->exit();
+	break;
+      }
+      else{
+	GameStateHandler::getInstance()->update(e);
+      }
+    }
+    
+    //std::cerr<<"Updated"<<std::endl;
     GameStateHandler::getInstance()->render();
     GUI::Window::getInstance()->render();
-    std::cerr<<"Rendered"<<std::endl;
+    //std::cerr<<"Rendered"<<std::endl;
   }
 }
 

@@ -2,6 +2,7 @@
 
 #include "Singleton.hpp"
 
+#include <iostream>
 
 void GameStateHandler::push(GameState * gs){
   if( gs->init() )
@@ -33,9 +34,10 @@ void GameStateHandler::clear(){
     pop();
 }
 
-void GameStateHandler::update(){
+void GameStateHandler::update(const Event& e){
+  std::cerr<<"GameStateHandler captured an event"<<std::endl;
   if( not states.empty() )
-    states.top()->update();
+    states.top()->update(e);
 }
 
 void GameStateHandler::render(){

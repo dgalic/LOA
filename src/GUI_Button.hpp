@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Color.hpp"
+#include "Event.hpp"
 #include "GUI_Component.hpp"
 
 
@@ -17,6 +18,7 @@ namespace GUI{
   public:
     Button(const std::string&, const Color&, const std::function<void()>&);
     ~Button();
+    sf::Text getText() const;
     void centerText();
     void setAction(const std::function<void()>&);  
     void setColor(const Color&);
@@ -29,7 +31,7 @@ namespace GUI{
     virtual void onActivation();
     virtual void onDesactivation();
     virtual bool checkMouse(const unsigned int&, const unsigned int&) const;
-    virtual void handle(const sf::Event& e);
+    virtual void handle(const Event& e);
     virtual void draw(sf::RenderTarget&, sf::RenderStates ) const;
     virtual void setPosition(const float&, const float&);
 

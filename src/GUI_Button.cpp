@@ -5,7 +5,9 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <iostream>
 #include "Color.hpp"
+#include "Event.hpp"
 
 #include "ResourceManager.hpp"
 
@@ -16,7 +18,7 @@ namespace GUI{
 		 const std::function<void()>& f)
     : Component(), color(c), action(f){
     text.setString(s);
-    text.setCharacterSize(30);
+    text.setCharacterSize(48);
     text.setFont( * FontManager::getInstance()->get("fonts/ArialPixel.ttf") );
     centerText();
   
@@ -24,6 +26,10 @@ namespace GUI{
 
   Button::~Button(){
 
+  }
+
+  sf::Text Button::getText() const{
+    return text;
   }
 
   void Button::centerText(){
@@ -44,16 +50,21 @@ namespace GUI{
 
   void Button::onSelection(){
     Component::onSelection();
+    selected = true;
+    color = Color(color.r+50, color.g+50, color.b+50);
   }
 
   void Button::onDeselection(){
     Component::onDeselection();
+    color = Color(color.r-50, color.g-50, color.b-50);
+    selected = false;
   }
 
   void Button::onActivation(){
     Component::onActivation();
-    if(action)
-      action();
+    std::cerr<<"actionning..." <<std::endl;
+    action();
+    std::cerr<<"actionned" <<std::endl;
   }
 
   void Button::onDesactivation(){
@@ -62,12 +73,14 @@ namespace GUI{
 
   bool Button::checkMouse(const unsigned int& x, const unsigned int& y) const{
     sf::FloatRect r = text.getGlobalBounds();
+    sf::Vector2f p = getAbsolutePosition();
     bool res = (
-	   x >= r.left-5 &&
-	   y >= r.top-5 &&
-	   x <= r.left+r.width+5 &&
-	   y <= r.top+r.height+5
+	   x >= p.x+r.left-5 &&
+	   y >= p.y+r.top-5 &&
+	   x <= p.x+r.left+r.width+5 &&
+	   y <= p.y+r.top+r.height+5
 	   );
+    std::cerr<< "mouse is in button ("<< p.x+r.left-5<<","<<p.y+r.top-5<<"),("<<p.x+r.left+r.width+5<<","<<p.y+r.top+r.height+5<<") ?"<<res <<std::endl;
     return res;
   }
 
@@ -93,14 +106,25 @@ namespace GUI{
     centerText();
   }
 
-  void Button::handle(const sf::Event& e){   
-    if(e.type == sf::Event::MouseButtonPressed){
-      if(e.mouseButton.button == sf::Mouse::Left){
-	onActivation();
-      }
+  void Button::handle(const Event& e){   
+    switch(e.type){
+    case sf::Event::MouseButtonPressed:
+      if(selected && e.mouseButton.button == sf::Mouse::Left)
+	  onActivation();
+      break;
+
+    case sf::Event::MouseMoved:
+      if(!selected && checkMouse(e.mouseMove.x, e.mouseMove.y) )
+	onSelection();
+      else
+	if(selected)
+	  onDeselection();
+	break;
+    default:
+      break;
     }
   }
-
+  
   void Button::draw(sf::RenderTarget& t, sf::RenderStates s) const{
     s.transform *= getTransform();
     sf::RectangleShape r;
@@ -110,8 +134,17 @@ namespace GUI{
     r.setFillColor(color);
     r.setOutlineColor(Color(10, 10, 10) );
     r.setOutlineThickness(2);
-    t.draw(r);
-    t.draw(text);
+    t.draw(r, s);
+    t.draw(text, s);
+    std::cerr<<"drawing button "<<text.getString().toAnsiString()<<" at "<<getAbsolutePosition().x<<","<<getAbsolutePosition().y<<" | "<<fr.width<<"x"<<fr.height<<std::endl;
+    /*
+    std::cerr<< "position bouton play : "<<	\
+    this->getPosition().x << ","<<	\
+    this->getPosition().y << \
+    "global bounds bouton play : "<< \
+    this->getText().getGlobalBounds().left <<"," <<	\
+      this->getText().getGlobalBounds().top << std::endl;
+    */
   }
   
 }

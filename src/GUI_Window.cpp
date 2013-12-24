@@ -1,11 +1,14 @@
 
 #include "GUI_Window.hpp"
+#include "Color.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-namespace GUI{
+#include "Game.hpp"
+#include "Event.hpp"
 
+namespace GUI{
 
   const std::string Window::programName = "App";
 
@@ -49,14 +52,13 @@ namespace GUI{
   }
 
   void Window::update(){
-
+    
   }
   
   void Window::render(){
-    window->clear(sf::Color::Black);
+    window->clear(Color(128,128,128) );
     texture->display();
-    sf::Sprite s(texture->getTexture() );
-    window->draw(s);
+    window->draw(sf::Sprite(texture->getTexture()) );
     window->display();
   }
 
