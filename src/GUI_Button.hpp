@@ -22,6 +22,7 @@ namespace GUI{
     void centerText();
     void setAction(const std::function<void()>&);  
     void setColor(const Color&);
+    void setHoverColor(const Color&);
     void setFont(const sf::Font&);
     void setCharacterSize(const unsigned int&);
     void setString(const std::string& );
@@ -37,7 +38,8 @@ namespace GUI{
 
   protected:
     sf::Text text;
-    Color color;
+    Color normal_color;
+    Color hover_color;
     std::function<void()> action;
   };
 
