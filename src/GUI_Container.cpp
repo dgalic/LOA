@@ -1,3 +1,4 @@
+#include "GUI_Component.hpp"
 #include "GUI_Container.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -6,20 +7,20 @@
 namespace GUI{
 
   Container::Container()
-    :Component(){
+    : Component(){
     selected = false;
     active = true;
-    selectedChild = std::null_ptr;
+    selectedChild = nullptr;
   }
 
   /**
      Quand on détruit un conteneur, on détruit aussi tout ce qu'il contient :
-     est-ce que c'est bon ??
+     est-ce que c'est vrai ??
   */
   Container::~Container(){
-    for(unsigned int i =0; i < subcomponents.size(); i++){
-      delete subcomponents[i];
-      subcomponents[i] = std::null_ptr;
+    for(unsigned int i = 0; i < subcomponents.size(); i++){
+      delete subcomponents.at(i);
+      subcomponents.at(i) = nullptr;
     }
     subcomponents.clear();
   }
@@ -36,13 +37,17 @@ namespace GUI{
      peu servir pour l'extensibilité (navigation avec le clavier).
   */
   void Container::select(const unsigned int& index){
-    if(subcomponents[index]->isSelectable() ){
-      if(hasSelection() )
-	subcomponents[selectChild]->deselect();
-      subcomponents[index]->select();
-      selectChild = index;
+    if(subcomponents.at(index)->isSelectable() ){
+      if( hasSelection() )
+	selectedChild->onDeselection();
+      subcomponents.at(index)->onSelection();
+      selectedChild = subcomponents.at(index);
     }
   }
+
+  bool Container::hasSelection() const{
+    return ( (selectedChild) == (nullptr) );
+  } 
 
   /**
      Lors d'un clic gauche, on déclenche l'action relative à l'élément
@@ -51,34 +56,33 @@ namespace GUI{
      il se peut que le curseur soit sur un autre élément fils.
   */
   void Container::handle(const sf::Event& e){
-    if(e.type == sf::Event::MouseButtonPressed){
-      if(e.mouseButton.button == sf::Mouse::Left){
-	if(selectedChild != std::null_ptr){
-	  selectedChild->handle();
-	}
-      }
-    }else if(e.type == sf::Event::MouseMoved){
-      for(unsigned int i =0; i < subcomponents.size(); i++){
-	if(subcomponents[i]->isSelectable
+ 
+    if(e.type == sf::Event::MouseMoved){
+      for(unsigned int i = 0; i < subcomponents.size(); i++){
+	if(subcomponents.at(i)->isSelectable()
 	   &&
-	   subcomponents[i]->checkMouse(event.mouseMove.x, 
-					event.mouseMove.y) 
+	   subcomponents.at(i)->checkMouse(e.mouseMove.x, 
+					   e.mouseMove.y ) 
 	   ){
-	  subcomponents[i]->onSelection();
-	  selectedChild = subcomponents[i];
-	  break;
+	  subcomponents.at(i)->onSelection();
+	  selectedChild = subcomponents.at(i);
+	  return;
 	}
       }
+      selectedChild = nullptr;
+    }else{
+      if( selectedChild != nullptr)
+	selectedChild->handle(e);
     }
   }
   
   /**
      dessine les components contenus
   */
-  void Container::draw(sf::RenderTarget& t,sf::RenderStates s){
-    s.transform *= transform;
+  void Container::draw(sf::RenderTarget& t, sf::RenderStates s) const{
+    s.transform *= getTransform();
     for(unsigned int i = 0; i < subcomponents.size(); i++){
-      subcomponents[i]->draw(t, s);
+      subcomponents.at(i)->draw(t, s);
     }
 
   } 

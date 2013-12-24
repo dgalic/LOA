@@ -1,9 +1,9 @@
 
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef GAMESTATE_HPP
+#define GAMESTATE_HPP
 
 #include <string>
-#include vector
+#include <vector>
 
 namespace StateID{
 
@@ -38,22 +38,18 @@ namespace StateID{
 class GameState {
 
 public:
-  // ctors/dtors
-  GameState ( );
-  virtual ~GameState ( );
-
-  //methodes
+  virtual ~GameState(){};
 
   /** calcule la prochaine configuration, selon la logique de jeu */
-  virtual void compute ( ) = 0;
+  virtual void update() = 0;
   /** dit à la GUI comment représenter la configuration courante */
-  virtual void render ( ) = 0;
+  virtual void render() = 0;
   /** mise en place de choses qui ont besoin d'initialisation */
-  virtual bool init ( ) = 0;
+  virtual bool init() = 0;
   /** libération des éventuelles allocations dynamiques, remise à zéro de l'état */
-  virtual bool exit ( ) = 0;
+  virtual bool exit() = 0;
 
 
 };
 
-#endif // GAMESTATE_H
+#endif

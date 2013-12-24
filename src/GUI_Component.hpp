@@ -17,17 +17,16 @@ namespace GUI{
   class Component : public sf::Drawable, public sf::Transformable{
   public:
     Component();
-    Component(const unsigned int& = 0,
-	      const unsigned int& = 0);
     virtual~Component();
-    virtual bool isSelectable() const = 0;
+    virtual bool isSelectable();
     virtual void onSelection();
     virtual void onDeselection();
     virtual void onActivation();
     virtual void onDesactivation();
     virtual bool checkMouse(const unsigned int&, 
 			    const unsigned int&) const;
-    virtual void handle(const sf::Event& e) = 0;
+    virtual void handle(const sf::Event&);
+    virtual void draw(sf::RenderTarget&, sf::RenderStates ) const = 0;
 
   protected:
     bool selected;

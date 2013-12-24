@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <string>
 
 namespace GUI{
 
@@ -16,11 +17,11 @@ namespace GUI{
   private:
     Window();
     ~Window();
-    sf::RenderTexture * m_render;
-    sf::RenderWindow * m_window;
-    unsigned int m_windowWidth;
-    unsigned int m_windowHeight;
-    static const std::string m_programName = "";
+    sf::RenderTexture * texture;
+    sf::RenderWindow * window;
+    unsigned int windowWidth;
+    unsigned int windowHeight;
+    const static std::string programName;
   
   public:
     sf::RenderWindow * getWindow() const;
