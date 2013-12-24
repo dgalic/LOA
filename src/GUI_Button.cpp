@@ -114,12 +114,16 @@ namespace GUI{
       break;
 
     case sf::Event::MouseMoved:
-      if(!selected && checkMouse(e.mouseMove.x, e.mouseMove.y) )
-	onSelection();
-      else
+      if(checkMouse(e.mouseMove.x, e.mouseMove.y) ){
+	if(not selected)
+	  onSelection();
+      }
+      else{
 	if(selected)
 	  onDeselection();
-	break;
+      }
+      break;
+      
     default:
       break;
     }
