@@ -23,6 +23,7 @@ namespace GUI{
     text.setCharacterSize(48);
     text.setFont( * FontManager::getInstance()->get("fonts/ArialPixel.ttf") );
     centerText();
+    normal_color = Color(c.r, c.g, c.b, c.a);
     if(c.r+c.g+c.b >= 3*160){
       //couleur claire : hover par défaut plus sombre
       hover_color = Color(max(c.r-50, 0), max(c.g-50, 0), max(c.b-50,0), c.a );
@@ -30,7 +31,7 @@ namespace GUI{
       //couleur sombre : hover par défaut plus clair
       hover_color = Color(min(c.r+50, 255), min(c.g+50, 255), min(c.b+50, 255), c.a );
     }
-    
+
   }
 
   Button::~Button(){

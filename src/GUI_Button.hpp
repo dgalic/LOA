@@ -40,6 +40,7 @@ namespace GUI{
     sf::Text text;
     Color normal_color;
     Color hover_color;
+    // Color color;
     std::function<void()> action;
   };
 
