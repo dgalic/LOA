@@ -25,7 +25,7 @@ void MainMenuState::update(const Event& e){
 }
 
 void MainMenuState::render(){
-  GUI::Window::getInstance()->getTexture()->clear(Color(0,0,0) );
+  GUI::Window::getInstance()->getTexture()->clear( Color(128,128,128) );
   GUI::Window::getInstance()->getTexture()->draw(*container_main);
 }
 
@@ -42,7 +42,7 @@ bool MainMenuState::init(){
 				  std::cout<<" to PLAY state "<<std::endl;
 				} );
   button_play->setHoverColor(Color(120,80,230) );
-  button_play->setPosition(10, 20);
+  button_play->setPosition(10, 20); 
   button_quit = new GUI::Button("QUIT", Color(200,20,20), 
 				[this]() ->void{
 				  GUI::Window::getInstance()->exit();

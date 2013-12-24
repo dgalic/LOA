@@ -14,7 +14,7 @@ public:
 	const unsigned int& g,
 	const unsigned int& b,
 	const unsigned int& a) : sf::Color(r,g,b,a){};
-  //  Color(const Color& c):sf::Color(c){};
+  Color(const Color& c);
   //  Color brighter() const;
   //Color darker() const;
 };
