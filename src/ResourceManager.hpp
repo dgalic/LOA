@@ -14,9 +14,9 @@ class ResourceManager:public Singleton<ResourceManager<T> >{
   friend class Singleton<ResourceManager<T> >;
 
 public:
-  void load(const std::string&);
+  T * load(const std::string&);
   T * get(const std::string&);
-  const T * get(const std::string&) const;
+  void remove(const std::string&);
 
 private:
   std::map<std::string, T *> map;
