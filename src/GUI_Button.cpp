@@ -11,17 +11,26 @@
 
 #include "ResourceManager.hpp"
 
+#include "Helpers.hpp"
+
 namespace GUI{
   
   Button::Button(const std::string& s,
 		 const Color& c,
 		 const std::function<void()>& f)
-    : Component(), color(c), action(f){
+    : Component(), normal_color(c), action(f){
     text.setString(s);
     text.setCharacterSize(48);
     text.setFont( * FontManager::getInstance()->get("fonts/ArialPixel.ttf") );
     centerText();
-  
+    if(c.r+c.g+c.b >= 3*160){
+      //couleur claire : hover par défaut plus sombre
+      hover_color = Color(max(c.r-50, 0), max(c.g-50, 0), max(c.b-50,0), c.a );
+    }else{
+      //couleur sombre : hover par défaut plus clair
+      hover_color = Color(min(c.r+50, 255), min(c.g+50, 255), min(c.b+50, 255), c.a );
+    }
+    
   }
 
   Button::~Button(){
@@ -50,21 +59,18 @@ namespace GUI{
 
   void Button::onSelection(){
     Component::onSelection();
+    normal_color = hover_color;
     selected = true;
-    color = Color(color.r+50, color.g+50, color.b+50);
   }
 
   void Button::onDeselection(){
     Component::onDeselection();
-    color = Color(color.r-50, color.g-50, color.b-50);
     selected = false;
   }
 
   void Button::onActivation(){
     Component::onActivation();
-    std::cerr<<"actionning..." <<std::endl;
     action();
-    std::cerr<<"actionned" <<std::endl;
   }
 
   void Button::onDesactivation(){
@@ -80,7 +86,6 @@ namespace GUI{
 	   x <= p.x+r.left+r.width+5 &&
 	   y <= p.y+r.top+r.height+5
 	   );
-    std::cerr<< "mouse is in button ("<< p.x+r.left-5<<","<<p.y+r.top-5<<"),("<<p.x+r.left+r.width+5<<","<<p.y+r.top+r.height+5<<") ?"<<res <<std::endl;
     return res;
   }
 
@@ -89,8 +94,13 @@ namespace GUI{
   }  
 
   void Button::setColor(const Color& c){
-    color = c;
+    normal_color = Color(c.r, c.g, c.b, c.a);
   }
+
+  void Button::setHoverColor(const Color& c){
+    hover_color = Color(c.r, c.g, c.b, c.a);
+  }
+
 
   void Button::setFont(const sf::Font& f){
     text.setFont(f);
@@ -123,7 +133,7 @@ namespace GUI{
 	  onDeselection();
       }
       break;
-      
+	
     default:
       break;
     }
@@ -135,20 +145,12 @@ namespace GUI{
     sf::FloatRect fr = text.getGlobalBounds();
     r.setSize(sf::Vector2f(fr.width+10, fr.height+10) );
     r.setPosition(getPosition().x, getPosition().y);
-    r.setFillColor(color);
+    r.setFillColor(normal_color);
     r.setOutlineColor(Color(10, 10, 10) );
     r.setOutlineThickness(2);
     t.draw(r, s);
     t.draw(text, s);
-    std::cerr<<"drawing button "<<text.getString().toAnsiString()<<" at "<<getAbsolutePosition().x<<","<<getAbsolutePosition().y<<" | "<<fr.width<<"x"<<fr.height<<std::endl;
-    /*
-    std::cerr<< "position bouton play : "<<	\
-    this->getPosition().x << ","<<	\
-    this->getPosition().y << \
-    "global bounds bouton play : "<< \
-    this->getText().getGlobalBounds().left <<"," <<	\
-      this->getText().getGlobalBounds().top << std::endl;
-    */
+
   }
   
 }

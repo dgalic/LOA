@@ -6,7 +6,7 @@
 class Color:public sf::Color{
 
 public:
- 
+  Color():sf::Color(0,0,0){};
   Color(const unsigned int& r,
 	const unsigned int& g,
 	const unsigned int& b) : sf::Color(r,g,b){};

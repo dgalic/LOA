@@ -37,10 +37,11 @@ bool MainMenuState::init(){
   label_title = new GUI::Label("PIXOGAMES");
   label_title->setCharacterSize(64);
   label_title->setPosition(sf::Vector2f(100, 50) );
-  button_play = new GUI::Button("PLAY", Color(20,20,200), 
+  button_play = new GUI::Button("PLAY", Color(200,201,200), 
 				[this]() ->void{
 				  std::cout<<" to PLAY state "<<std::endl;
 				} );
+  button_play->setHoverColor(Color(120,80,230) );
   button_play->setPosition(10, 20);
   button_quit = new GUI::Button("QUIT", Color(200,20,20), 
 				[this]() ->void{
