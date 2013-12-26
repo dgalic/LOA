@@ -27,13 +27,13 @@ show:
 
 $(DEPS):$(SOURCES) $(HEADERS)
 	echo "building $@ with $^";
-	$(CXX) -M -I$(INC) -L$../(LIB) $(LIBS) $^ > $(DEPS)
+	$(CXX) -M -I$(INC) -L$(LIB) $(LIBS) $^ > $(DEPS)
 
-include $(DEPS)
+#include $(DEPS)
 
 $(PROGRAM):$(OBJECTS)
 	@echo "building "$@;
-	$(CXX) $(CXXFLAGS) $^ -L../$(LIB) $(LIBS) -o $@ 
+	$(CXX) $(CXXFLAGS) $^ -L$(LIB) $(LIBS) -o $@ 
 
 %.o:%.cpp
 	@echo "building $@ with .cpp";
