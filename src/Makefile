@@ -24,12 +24,13 @@ show:
 	@echo "-path : $(PATH)"
 	@echo "-librairies : $(LIBS)"
 
+ %.d: %.cpp
+	@set -e; rm -f $@; \
+	$(CXX) -M $(CXXFLAGS) -I$(INC) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
 
-$(DEPS):$(SOURCES) $(HEADERS)
-	echo "building $@ with $^";
-	$(CXX) -M -I$(INC) -L$(LIB) $(LIBS) $^ > $(DEPS)
-
-#include $(DEPS)
+include $(SOURCES:.cpp=.d)
 
 $(PROGRAM):$(OBJECTS)
 	@echo "building "$@;
