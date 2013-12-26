@@ -5,6 +5,8 @@
 #include "ResourceManager.hpp"
 #include "Singleton.hpp"
 
+#include "Font.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -23,7 +25,7 @@ namespace GUI{
     
   }
 
-  void Label::setFont(const sf::Font& f){
+  void Label::setFont(const Font& f){
     text.setFont(f);
   }
 

@@ -1,7 +1,7 @@
 #ifndef GUI_LABEL_HPP
 #define GUI_LABEL_HPP
 
-#include "Event.hpp"
+#include "Font.hpp"
 #include "GUI_Component.hpp"
 
 #include <string>
@@ -13,7 +13,7 @@ namespace GUI{
   public:
     Label(const std::string&);
     ~Label();
-    virtual void setFont(const sf::Font&);
+    virtual void setFont(const Font&);
     virtual void setCharacterSize(const unsigned int&);
     virtual void setString(const std::string& );
     virtual bool checkMouse(const unsigned int& x, const unsigned int& y) const;
