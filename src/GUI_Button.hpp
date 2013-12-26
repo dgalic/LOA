@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 #include "Color.hpp"
 #include "Event.hpp"
+#include "Font.hpp"
 #include "GUI_Component.hpp"
 
 
@@ -23,7 +24,7 @@ namespace GUI{
     void setAction(const std::function<void()>&);  
     void setColor(const Color&);
     void setHoverColor(const Color&);
-    void setFont(const sf::Font&);
+    void setFont(const Font&);
     void setCharacterSize(const unsigned int&);
     void setString(const std::string& );
     virtual bool isSelectable() const;

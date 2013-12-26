@@ -9,6 +9,7 @@
 #include "Color.hpp"
 #include "Event.hpp"
 
+#include "Font.hpp"
 #include "ResourceManager.hpp"
 
 #include "Helpers.hpp"
@@ -103,7 +104,7 @@ namespace GUI{
   }
 
 
-  void Button::setFont(const sf::Font& f){
+  void Button::setFont(const Font& f){
     text.setFont(f);
   }
 
