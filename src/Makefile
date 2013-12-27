@@ -41,7 +41,10 @@ $(PROGRAM):$(OBJECTS)
 	$(CXX) -c $(CXXFLAGS) -I$(INC) $<
 
 clean:
-	rm -f $(PROGRAM) $(OBJECTS) *.d *~ *# *.gch
+	rm -f $(OBJECTS) *.d *~ *# *.gch
+
+proper:clean
+	rm -f $(PROGRAM)
 
 start:
 	export LD_LIBRARY_PATH=$(LIB) && ./$(PROGRAM)
