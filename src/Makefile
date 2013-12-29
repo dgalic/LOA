@@ -5,13 +5,13 @@ HEADERS=$(wildcard *.hpp)
 OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
 CXX=g++
 CXXFLAGS := -std=c++0x -Wall -Wextra -pedantic-errors -g
-LIB=./lib64
+#LIB=./lib64
 INC=./include
-WRAPFLAG := -Wl,--version-script memcpy_wrap.map
-LIBS := -Wl,-rpath,$(LIB) -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
+#WRAPFLAG := -Wl,--version-script memcpy_wrap.map
+#LIBS := -Wl,-rpath,$(LIB) -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 
-all: config wrapper $(PROGRAM)
+all: $(PROGRAM)
 
 
 show:
@@ -26,8 +26,8 @@ show:
 	@echo "-path : $(PATH)"
 	@echo "-librairies : $(LIBS)"
 
-config:
-	cd lib64; make links;
+#config:
+#	cd lib64; make links;
 
  %.d: %.cpp
 	@set -e; rm -f $@; \
@@ -37,22 +37,22 @@ config:
 
 include $(SOURCES:.cpp=.d)
 
-wrapper: memcpy_wrap.c memcpy_wrap.map
-	gcc -c memcpy_wrap.c -o memcpy_wrap.o
+#wrapper: memcpy_wrap.c memcpy_wrap.map
+#	gcc -c memcpy_wrap.c -o memcpy_wrap.o
 
 $(PROGRAM):$(OBJECTS)
 	@echo "building "$@;
-	$(CXX) $(CXXFLAGS) $(WRAPFLAG) $^ memcpy_wrap.o -L$(LIB) $(LIBS) -o $@ 
+	$(CXX) $(CXXFLAGS) $^ -o $@ 
 
 %.o:%.cpp
 	@echo "building $@ with .cpp";
 	$(CXX) -c $(CXXFLAGS) -I$(INC) $<
 
 clean:
-	rm -f $(OBJECTS) *.d *~ *# *.gch
+	rm -f $(OBJECTS) *.d* *~ *# *.gch
 
 proper:clean
 	rm -f $(PROGRAM)
 
 start:
-	export LD_LIBRARY_PATH=$(LIB) && ./$(PROGRAM)
+	./$(PROGRAM) 2> Errlog
