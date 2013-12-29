@@ -3,7 +3,7 @@
 
 #include "GameState.hpp"
 
-
+#include <string>
 
 class MainMenuState: public GameState{
 
@@ -14,6 +14,9 @@ public :
   virtual bool exit();
 
 private:
+  std::vector<std::string> gameDescs; //descriptions des jeux disponibles
+  unsigned short entry;
+  unsigned short nbgames;
   
 
 };

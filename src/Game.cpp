@@ -24,6 +24,7 @@ void Game::resume(){
 void Game::exit(){
   GameStateHandler::getInstance()->clear();
   GameStateHandler::getInstance()->destroy();
+  Console::exit();
   std::cerr<<"Game destroyed properly"<<std::endl;
 }
 

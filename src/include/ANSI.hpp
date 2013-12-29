@@ -5,8 +5,8 @@ namespace ANSI{
 
     typedef enum{
       BLACK = 16,
-      RED = 9,
-      GREEN = 10,
+      RED = 1,
+      GREEN = 2,
       BLUE = 12,
       DARKGRAY = 0,
       DARKRED = 1,

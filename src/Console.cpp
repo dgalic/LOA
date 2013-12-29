@@ -117,22 +117,67 @@ double Console::getFramerate() const{
   return this->framerate;
 }
 
-void Console::draw(const char& c = ' ') {
-  if( this->cursorX > 0 
-      and this->cursorY > 0
-      and this->cursorX <= this->width
-      and this->cursorY <= this->height){
+
+void Console::draw(const unsigned short& x, const unsigned short& y, const char& c = ' ') {
+  if( x > 0 
+      and y > 0
+      and x <= this->width
+      and y <= this->height){
+    unsigned short previousX = Console::getInstance()->getCursorX();
+    unsigned short previousY = Console::getInstance()->getCursorY();
+    Console::getInstance()->setCursor(x, y);
     std::cout<<c;
+    Console::getInstance()->setCursor(previousX, previousY);
   }
 }
 
-void Console::draw(const std::string& s){
-  if( this->cursorX > 0 
-      and this->cursorY > 0
-      and this->cursorX <= this->width
-      and this->cursorY <= this->height){
+void Console::draw(const char& c = ' ') {
+  draw(this->cursorX ,this->cursorY, c);  
+}
+
+void Console::draw(const unsigned short& x, const unsigned short& y, const std::string& s){
+  if( x > 0 
+      and y > 0
+      and x <= this->width
+      and y <= this->height){
+    unsigned short previousX = Console::getInstance()->getCursorX();
+    unsigned short previousY = Console::getInstance()->getCursorY();
+    Console::getInstance()->setCursor(x, y);
     std::cout<<s.substr(0, this->width - this->cursorX+1 );
+    Console::getInstance()->setCursor(previousX, previousY);
   }
+  
+}
+
+void Console::drawString(const unsigned short& x, const unsigned short& y, const std::string& s){
+  if( x > 0 
+      and y > 0
+      and x <= this->width
+      and y <= this->height){
+    unsigned short previousX = Console::getInstance()->getCursorX();
+    unsigned short previousY = Console::getInstance()->getCursorY();
+    unsigned short cx = x, cy = y;
+    for(unsigned int i = 0; i < s.size(); i++){
+      std::cerr<<"string : "<<s.at(i)<<" : "<<cx<<","<<cy <<std::endl;
+      draw(cx, cy, s.at(i) );
+      cx++;
+      if(cx > 80){
+	cx = 1;
+	cy += 1;
+      }
+      
+    }
+    Console::getInstance()->setCursor(previousX, previousY);
+  }
+  
+}
+
+void Console::draw(const std::string& s){
+  draw(cursorX, cursorY, s);
+}
+
+void Console::drawString(const std::string& s){
+  drawString(cursorX, cursorY, s);
 }
 
 void Console::drawRectangle(const unsigned short& originX, const unsigned short& originY, 
