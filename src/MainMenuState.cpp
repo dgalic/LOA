@@ -4,63 +4,33 @@
 #include <iostream>
 
 #include "GameState.hpp"
-
-#include "Event.hpp"
-#include "GUI_Button.hpp"
-#include "GUI_Container.hpp"
-#include "GUI_Label.hpp"
-#include "GUI_Window.hpp"
+#include "Console.hpp"
+#include "ANSI.hpp"
 
 
-void MainMenuState::update(const Event& e){
-  container_main->handle(e);
-  std::cerr<< \
-    "position bouton play : "<< \
-    button_play->getPosition().x << ","<<	\
-    button_play->getPosition().y << \
-    "global bounds bouton play : "<< \
-    button_play->getText().getGlobalBounds().left <<"," <<	\
-    button_play->getText().getGlobalBounds().top << 	\
-    std::endl;
+void MainMenuState::update(){
+  Console::getInstance()->getInput();
 }
 
 void MainMenuState::render(){
-  GUI::Window::getInstance()->getTexture()->clear( Color(128,128,128) );
-  GUI::Window::getInstance()->getTexture()->draw(*container_main);
+  Console::getInstance()->clear();
+  Console::getInstance()->setCursor(4, 1);
+  Console::getInstance()->draw("MAIN MENU");
+  Console::getInstance()->setCursor(1, 4);
+  Console::getInstance()->setBackground(ANSI::Color::BROWN);
+  Console::getInstance()->setForeground(ANSI::Color::GREEN);
+  Console::getInstance()->drawRectangle(82, 3, '#');
+  Console::getInstance()->setBackground(ANSI::Color::DARKRED);
+  Console::getInstance()->setCursor(1, 3);
 }
 
 bool MainMenuState::init(){
-  container_main = new GUI::Container();
-  container_main->setPosition(0, 0);
-  container_buttons = new GUI::Container();
-  container_buttons->setPosition(500, 200);
-  label_title = new GUI::Label("PIXOGAMES");
-  label_title->setCharacterSize(64);
-  label_title->setPosition(sf::Vector2f(100, 50) );
-  button_play = new GUI::Button("PLAY", Color(200,201,200), 
-				[this]() ->void{
-				  std::cout<<" to PLAY state "<<std::endl;
-				} );
-  button_play->setHoverColor(Color(120,80,230) );
-  button_play->setPosition(10, 20); 
-  button_quit = new GUI::Button("QUIT", Color(200,20,20), 
-				[this]() ->void{
-				  GUI::Window::getInstance()->exit();
-				} );
-  button_quit->setPosition(10, 70);
-  container_buttons->add(button_play);
-  container_buttons->add(button_quit);
-  container_main->add(label_title);
-  container_main->add(container_buttons);
+
   return true;
 }
 
 bool MainMenuState::exit(){
-  delete label_title;
-  delete button_play;
-  delete button_quit;
-  delete container_buttons;
-  delete container_main;
+
   return true;
 }
 

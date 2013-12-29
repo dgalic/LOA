@@ -34,10 +34,9 @@ void GameStateHandler::clear(){
     pop();
 }
 
-void GameStateHandler::update(const Event& e){
-  std::cerr<<"GameStateHandler captured an event"<<std::endl;
+void GameStateHandler::update(){
   if( not states.empty() )
-    states.top()->update(e);
+    states.top()->update();
 }
 
 void GameStateHandler::render(){
