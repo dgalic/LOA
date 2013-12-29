@@ -52,9 +52,12 @@ public:
   void setFramerate(const double&);
   double getFramerate() const;
   /* displaying events */
-
+  void draw(const unsigned short&, const unsigned short&, const char& c);
+  void draw(const unsigned short&, const unsigned short&, const std::string& c);
+  void drawString(const unsigned short&, const unsigned short&, const std::string& c);
   void draw(const char& c);
   void draw(const std::string& c);
+  void drawString(const std::string& c);
   void drawRectangle(const unsigned short&, const unsigned short&, const unsigned short&, const unsigned short&, const char&);
   void drawRectangle(const unsigned short&, const unsigned short&, const char&);
   /** Allows showing/hiding the cursor */
