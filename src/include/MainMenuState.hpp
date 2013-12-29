@@ -1,11 +1,11 @@
 #ifndef MAINMENU_HPP
 #define MAINMENU_HPP
 
-#include "GameState.hpp"
+#include "State.hpp"
 
 #include <string>
 
-class MainMenuState: public GameState{
+class MainMenuState: public State{
 
 public :
   virtual void update();

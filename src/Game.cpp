@@ -2,14 +2,14 @@
 
 #include <iostream>
 
-#include "GameStateHandler.hpp"
+#include "StateHandler.hpp"
 #include "Console.hpp"
 #include "MainMenuState.hpp"
 #include "ResourceManager.hpp"
 #include "Singleton.hpp"
 
 void Game::init(){
-  GameStateHandler::getInstance()->push(new MainMenuState() );
+  StateHandler::getInstance()->push(new MainMenuState() );
   running = true;
   std::cerr<<"Game initialized"<<std::endl;
 }
@@ -24,8 +24,8 @@ void Game::resume(){
 
 void Game::exit(){
   stop();
-  GameStateHandler::getInstance()->clear();
-  GameStateHandler::getInstance()->destroy();
+  StateHandler::getInstance()->clear();
+  StateHandler::getInstance()->destroy();
   Console::getInstance()->exit();
   std::cerr<<"Game destroyed properly"<<std::endl;
 }
@@ -33,8 +33,8 @@ void Game::exit(){
 void Game::loop(){
   std::cerr<<"Starting Game Loop"<<std::endl;
   while(running){
-    GameStateHandler::getInstance()->update();
-    GameStateHandler::getInstance()->render();
+    StateHandler::getInstance()->update();
+    StateHandler::getInstance()->render();
   }
 }
 
