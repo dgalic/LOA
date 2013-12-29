@@ -2,7 +2,6 @@
 #define GAME_HPP
 
 #include "Singleton.hpp"
-#include "GUI_Window.hpp"
 
 class Game: public Singleton<Game>{
 

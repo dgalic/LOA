@@ -19,7 +19,7 @@ public:
   bool isEmpty();
   GameState * change(GameState * gs );
   void clear();
-  void update(const Event&);
+  void update();
   void render();
   
 private:
