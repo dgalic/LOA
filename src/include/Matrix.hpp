@@ -1,8 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <iostream>
 #include <vector>
-
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 ///// This class is a wrapper to easily work /////
@@ -11,86 +11,97 @@
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
-template <typename T>
-class Matrix<T>{
+template <class T>
+class Matrix{
 
  protected:
-  T[][] data;
+  std::vector< std::vector<T> > data;
   unsigned int width;
   unsigned int height;
 
- public:
-  Matrix(const unsigned int&, const unsigned int&, const T&);
-  Matrix recreate(const unsigned int&, const unsigned int&);
-  T get(const unsigned int&, const unsigned int&) const;
-  unsigned int getHeight() const;
-  unsigned int getWidth() const;
-  void insert(const T[]&, const unsigned int&);
-  void insert(const T&, const unsigned int&, const unsigned int&);
+public:
+  Matrix(const unsigned int&, const unsigned int&);
+  virtual ~Matrix();
+  virtual T& at(const unsigned int&, const unsigned int&);
+  virtual unsigned int getHeight() const;
+  virtual unsigned int getWidth() const;
+  virtual void set(const unsigned int&, const unsigned int&, const T&);
+  virtual std::ostream& operator<<(std::ostream&);
+  template <class X> friend std::ostream &operator<<(std::ostream&, const Matrix<X> &);
 
 
 };
 
 
-
-template <typename T>
-Matrix<T>::Matrix(const unsigned int& w, 
-	       const unsigned int& h, 
-	       const T& defvalue){
-  /*
-    for(int i = 0; i < h; i++){
-    std::vector<T> tmp;
-    for(int j = 0, j < w; j++){
-    tmp.push_back(defvalue);
-    }
-    data.push_back(tmp);
-    }*/
-  this->width = w;
-  this->height = h;
-  data = new T[w][h];
+template <class T>
+Matrix<T>::Matrix(const unsigned int& w,
+	       const unsigned int& h ){
+  width = w;
+  height = h;
+  data.reserve(w);
+  for(unsigned int i = 0; i < h; i++)
+    data.at(i).reserve(h);
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::recreate(const unsigned int& w, 
-		 const unsigned int& h
-		 ){
-  delete[] data;
-  this->width = w;
-  this->height = h;
-  data = new T[w][h];
-  
+template <class T>
+Matrix<T>::~Matrix(){
+  for(unsigned int i = 0; i < width; i++)
+    data.at(i).clear();
+  data.clear();
 }
 
-template <typename T>
-T Matrix<T>::get(const unsigned int& x,
-      const unsigned int& y){
-  if(x < this->width && y < this->height)
-    return data[x][y];
-  else
-    return T(); // raise exception instead
+template <class T>
+T& Matrix<T>::at(const unsigned int& x, const unsigned int& y){
+  return data.at(x).at(y);
 }
 
-template <typename T>
-unsigned int Matrix<T>::getHeight() const{
-  return this->height;
-}
-
-template <typename T>
+template <class T>
 unsigned int Matrix<T>::getWidth() const{
-  return this->width;
+  return width;
 }
 
-template <typename T>
-void Matrix<T>::insert(const T[]& tab, 
-	    const unsigned int& x){
-  data[x] = tab;
+template <class T>
+unsigned int Matrix<T>::getHeight() const{
+  return height;
 }
 
-template <typename T>
-void Matrix<T>::insert(const T& elmt, 
-	    const unsigned int& x, 
-	    const unsigned int& y){
-  data[x][y] = elmt;
+template <class T>
+void Matrix<T>::set(const unsigned int& x, const unsigned int& y, const T& t){
+  data.at(x).at(y) = t;
+}
+
+template <class T>
+std::ostream& Matrix<T>::operator<<(std::ostream & s){
+  for(unsigned int j = 0; j < width; j++)
+    s << "-";
+  for(unsigned int i = 0; i < height; i++){
+    for(unsigned int j = 0; j < width; j++){
+      s << "|" << data[i][j];
+    }
+    s << "|"<<std::endl;
+  }
+  
+  for(unsigned int j = 0; j < width; j++)
+    s << "-";
+  return s;
+}
+
+template <class T>
+std::ostream& operator<<(std::ostream & s, const Matrix<T>& m){
+  for(unsigned int j = 0; j < m.getWidth(); j++)
+    s << "-";
+  s << std::endl;
+  for(unsigned int i = 0; i < m.getHeight(); i++){
+    
+    for(unsigned int j = 0; j < m.getWidth(); j++){
+      s << "|" << m.at[i][j];
+    }
+    s << "|"<<std::endl;
+  }
+
+  for(unsigned int j = 0; j < m.getWidth(); j++)
+    s << "-";
+  return s;
 }
 
 
