@@ -8,7 +8,7 @@
 #include "GameStateHandler.hpp"
 #include "Console.hpp"
 #include "ANSI.hpp"
-#include "Othello.hpp"
+#include "OthelloConfig.hpp"
 
 
 void MainMenuState::update(){
@@ -30,7 +30,7 @@ void MainMenuState::update(){
   case 'p':
     switch(entry){
     case 0:
-      GameStateHandler::getInstance()->change(new Othello() );
+      GameStateHandler::getInstance()->change(new OthelloConfig() );
       break;
     
     default:
