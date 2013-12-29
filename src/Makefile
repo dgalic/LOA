@@ -5,10 +5,9 @@ HEADERS=$(wildcard *.hpp)
 OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
 CXX=g++
 CXXFLAGS := -std=c++0x -Wall -Wextra -pedantic-errors -g
-DEPS=make.dep
-LIB=./lib64
+LIB=../lib64
 INC=./include
-LIBS := -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
+LIBS := -Wl,-rpath,$(LIB) -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 all: show $(PROGRAM)
 

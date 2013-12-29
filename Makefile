@@ -8,8 +8,10 @@ sub:
 	cp src/$(PROGRAM) $(PROGRAM)
 
 clean:
-	rm LOA
-	cd src;	clean;
+	cd src;	make clean;
+
+proper:clean
+	cd src; make proper;
 
 start:
 	export LD_LIBRARY_PATH=$(LIB) && ./$(PROGRAM)
