@@ -23,6 +23,7 @@ void Game::resume(){
 }
 
 void Game::exit(){
+  stop();
   GameStateHandler::getInstance()->clear();
   GameStateHandler::getInstance()->destroy();
   Console::getInstance()->exit();
