@@ -5,8 +5,10 @@
 
 #include "Game.hpp"
 #include "GameState.hpp"
+#include "GameStateHandler.hpp"
 #include "Console.hpp"
 #include "ANSI.hpp"
+#include "Othello.hpp"
 
 
 void MainMenuState::update(){
@@ -24,7 +26,18 @@ void MainMenuState::update(){
     Game::getInstance()->stop();
     Game::getInstance()->exit();
     break;
+
+  case 'p':
+    switch(entry){
+    case 0:
+      GameStateHandler::getInstance()->change(new Othello() );
+      break;
     
+    default:
+      break;
+    }
+    break;
+  
   default:
     break;
   }
@@ -34,7 +47,7 @@ void MainMenuState::render(){
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(4, 1);
-  Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit");
+  Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  p:ok");
   Console::getInstance()->setForeground(ANSI::Color::GREEN);
   Console::getInstance()->drawRectangle(1, 2, 82, 1, '#');
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
