@@ -21,6 +21,7 @@ void MainMenuState::update(){
     break;
   
   case 'x':
+    Game::getInstance()->stop();
     Game::getInstance()->exit();
     break;
     
