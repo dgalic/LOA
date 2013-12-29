@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "GameStateHandler.hpp"
+#include "Console.hpp"
 #include "MainMenuState.hpp"
 #include "ResourceManager.hpp"
 #include "Singleton.hpp"
@@ -24,13 +25,13 @@ void Game::resume(){
 void Game::exit(){
   GameStateHandler::getInstance()->clear();
   GameStateHandler::getInstance()->destroy();
-  Console::exit();
+  Console::getInstance()->exit();
   std::cerr<<"Game destroyed properly"<<std::endl;
 }
 
 void Game::loop(){
   std::cerr<<"Starting Game Loop"<<std::endl;
-  while(1){
+  while(running){
     GameStateHandler::getInstance()->update();
     GameStateHandler::getInstance()->render();
   }

@@ -203,9 +203,9 @@ void Console::drawRectangle(const unsigned short& w, const unsigned short& h, co
 
 void Console::showCursor(const bool& b) const{
   if(b)
-    std::cout<<CSI<<"?25l";
+    std::cout<<CSI<<"?25h";
   else
-    std::cout<<CSI<<"?25h";  
+    std::cout<<CSI<<"?25l";  
 }
 
 
