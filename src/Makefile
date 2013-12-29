@@ -5,11 +5,14 @@ HEADERS=$(wildcard *.hpp)
 OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
 CXX=g++
 CXXFLAGS := -std=c++0x -Wall -Wextra -pedantic-errors -g
-LIB=../lib64
+LIB=./lib64
 INC=./include
+WRAPFLAG := -Wl,--version-script memcpy_wrap.map
 LIBS := -Wl,-rpath,$(LIB) -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
-all: show $(PROGRAM)
+
+all: config wrapper $(PROGRAM)
+
 
 show:
 	@echo "-Program : $(PROGRAM)"
@@ -23,6 +26,9 @@ show:
 	@echo "-path : $(PATH)"
 	@echo "-librairies : $(LIBS)"
 
+config:
+	cd lib64; make links;
+
  %.d: %.cpp
 	@set -e; rm -f $@; \
 	$(CXX) -M $(CXXFLAGS) -I$(INC) $< > $@.$$$$; \
@@ -31,9 +37,12 @@ show:
 
 include $(SOURCES:.cpp=.d)
 
+wrapper: memcpy_wrap.c memcpy_wrap.map
+	gcc -c memcpy_wrap.c -o memcpy_wrap.o
+
 $(PROGRAM):$(OBJECTS)
 	@echo "building "$@;
-	$(CXX) $(CXXFLAGS) $^ -L$(LIB) $(LIBS) -o $@ 
+	$(CXX) $(CXXFLAGS) $(WRAPFLAG) $^ memcpy_wrap.o -L$(LIB) $(LIBS) -o $@ 
 
 %.o:%.cpp
 	@echo "building $@ with .cpp";
