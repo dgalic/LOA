@@ -29,6 +29,7 @@ namespace ANSI{
       PINK = 13,
       LIGHTCYAN = 14,
       WHITE = 15,
+      COUNT = 17
     } Color;
 
 }
