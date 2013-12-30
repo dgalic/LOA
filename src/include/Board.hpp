@@ -16,6 +16,7 @@ private:
   
 public:
   Board(const unsigned int&, const unsigned int&);
+  //  Board(const Board&);
   virtual ~Board();
 };
 

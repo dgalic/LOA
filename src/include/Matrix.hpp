@@ -26,6 +26,8 @@ public:
   virtual unsigned int getHeight() const;
   virtual unsigned int getWidth() const;
   virtual void set(const unsigned int&, const unsigned int&, const T&);
+  virtual std::vector< std::vector<T> > getData() const;
+  virtual std::vector<T> getData(const unsigned int&) const;
   virtual std::ostream& operator<<(std::ostream&);
   template <class X> friend std::ostream &operator<<(std::ostream&, const Matrix<X> &);
 
@@ -68,6 +70,17 @@ unsigned int Matrix<T>::getHeight() const{
 template <class T>
 void Matrix<T>::set(const unsigned int& x, const unsigned int& y, const T& t){
   data.at(x).at(y) = t;
+}
+
+
+template <class T>
+std::vector< std::vector<T> > Matrix<T>::getData() const{
+  return data;
+}
+
+template <class T>
+std::vector<T> Matrix<T>::getData(const unsigned int& i) const{
+  return data.at(i);
 }
 
 template <class T>
