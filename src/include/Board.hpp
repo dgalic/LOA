@@ -18,6 +18,8 @@ public:
   Board(const unsigned int&, const unsigned int&);
   //  Board(const Board&);
   virtual ~Board();
+  virtual void draw(const unsigned int&, const unsigned int&);
+
 };
 
 
