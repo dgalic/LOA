@@ -6,7 +6,7 @@
 
 #include <string>
 
-#define ESC "\033"
+#define ESC '\033'
 #define CSI "\033["
 
 class Console : public Singleton<Console>{
@@ -85,4 +85,8 @@ public:
 };
 
 
+bool isUp(char &);
+bool isDown(char &);
+bool isLeft(char &);
+bool isRight(char &);
 #endif

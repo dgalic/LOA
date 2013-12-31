@@ -158,7 +158,7 @@ void Console::drawString(const unsigned short& x, const unsigned short& y, const
     unsigned short previousY = Console::getInstance()->getCursorY();
     unsigned short cx = x, cy = y;
     for(unsigned int i = 0; i < s.size(); i++){
-      std::cerr<<"string : "<<s.at(i)<<" : "<<cx<<","<<cy <<std::endl;
+      //      std::cerr<<"string : "<<s.at(i)<<" : "<<cx<<","<<cy <<std::endl;
       draw(cx, cy, s.at(i) );
       cx++;
       if(cx > 80){
@@ -233,4 +233,48 @@ void Console::moveCursorY(const int& vy){
 /** plays a little sound */
 void Console::beep() const{
   std::cout<<ESC<<"G";
+}
+
+
+
+
+
+bool isUp( char & c){
+  if(c != ESC)
+    return false;
+  std::cin >> c;
+  if(c != '[')
+    return false;
+  std::cin >> c;
+  return (c == 'A' );
+}
+
+bool isDown( char & c){
+  if(c != ESC)
+    return false;
+  std::cin >> c;
+  if(c != '[')
+    return false;
+  std::cin >> c;
+  return (c == 'B' );
+}
+
+bool isLeft( char & c){
+  if(c != ESC)
+    return false;
+  std::cin >> c;
+  if(c != '[')
+    return false;
+  std::cin >> c;
+  return (c == 'D' );
+}
+
+bool isRight( char & c){
+  if(c != ESC)
+    return false;
+  std::cin >> c;
+  if(c != '[')
+    return false;
+  std::cin >> c;
+  return (c == 'C' );
 }
