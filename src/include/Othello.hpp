@@ -16,7 +16,7 @@ public:
   Othello(ANSI::Color = ANSI::Color::BLUE, 
 	  ANSI::Color = ANSI::Color::RED );
   virtual ~Othello();
-  virtual bool handle(const char& = ' ');
+  virtual void handle(const char& = ' ');
   virtual void update();
   virtual void render();
   virtual bool init();

@@ -15,7 +15,7 @@ private:
 
 public:
   virtual ~OthelloConfig();
-  virtual bool handle(const char& = ' ');
+  virtual void handle(const char& = ' ');
   virtual void update();
   virtual void render();
   virtual bool init();

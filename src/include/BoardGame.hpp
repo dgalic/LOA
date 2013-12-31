@@ -13,7 +13,7 @@ protected:
 public:
   BoardGame(const unsigned int&, const unsigned int&);
   virtual ~BoardGame();
-  virtual bool handle(const char& c = ' ');
+  virtual void handle(const char& c = ' ');
   virtual void update() = 0;
   virtual void render() = 0;
   virtual bool init() = 0;
