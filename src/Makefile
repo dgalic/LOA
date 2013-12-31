@@ -55,4 +55,4 @@ proper:clean
 	rm -f $(PROGRAM)
 
 start:
-	./$(PROGRAM) 2> Errlog
+	./$(PROGRAM) 2> Errlog; reset
