@@ -20,34 +20,46 @@ Othello::~Othello(){
 }
 
 void Othello::handle(const char& c){
-  ANSI::Arrow arr=checkArrow(c);
+  ANSI::Arrow arr;
+  arr = checkArrow(c);
   if(arr == ANSI::UP 
-     || c == 'z')
+     || c == 'z'){
     if(pointerY > 0)
       pointerY--;
+    return;
+  }
     
   if(arr == ANSI::LEFT 
-     || c == 'q')
+     || c == 'q'){
     if(pointerX > 0)
       pointerX--;
+    return;
+  }
 
   if(arr == ANSI::DOWN 
-     || c == 's')
+     || c == 's'){
     if(pointerY < board.getHeight()-1 )
       pointerY++;
+    return;
+  }
 
   if(arr == ANSI::RIGHT 
-     || c == 'd')
+     || c == 'd'){
     if(pointerX < board.getWidth()-1 )
       pointerX++;
+    return;
+  }
   
-  if(c == 'x')
+  if(c == 'x'){
     StateHandler::getInstance()->change(new MainMenuState() );
+    return;
+  }
 }
 
 void Othello::update(){
   BoardGame::update();
   char c;
+  std::cin>>c;
   handle(c);
 }
 
