@@ -8,7 +8,6 @@ namespace ANSI{
       RED = 1,
       GREEN = 2,
       BLUE = 12,
-      DARKGRAY = 0,
       DARKRED = 1,
       DARKGREEN = 2,
       BROWN = 3,
