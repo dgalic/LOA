@@ -19,60 +19,35 @@ Othello::~Othello(){
 
 }
 
-bool Othello::handle(const char& c){
-  switch(c){
-  case 'z':
+void Othello::handle(const char& c){
+  ANSI::Arrow arr=checkArrow(c);
+  if(arr == ANSI::UP 
+     || c == 'z')
     if(pointerY > 0)
       pointerY--;
-    break;
     
-  case 'q':
+  if(arr == ANSI::LEFT 
+     || c == 'q')
     if(pointerX > 0)
       pointerX--;
-    break;
-  
-  case 's':
+
+  if(arr == ANSI::DOWN 
+     || c == 's')
     if(pointerY < board.getHeight()-1 )
       pointerY++;
-    break;
-  
-  case 'd':
+
+  if(arr == ANSI::RIGHT 
+     || c == 'd')
     if(pointerX < board.getWidth()-1 )
       pointerX++;
-    break;
   
-  case 'x':
+  if(c == 'x')
     StateHandler::getInstance()->change(new MainMenuState() );
-    break;
-    
-  default:
-    return false;
-    break;
-  }
-return true;
- 
 }
 
 void Othello::update(){
   BoardGame::update();
   char c;
-  std::cin >> c;
-  std::cerr<<"caractère "<<c<<" - "<<(int)c<<std::endl;
-  if(c == ESC){
-    std::cin >> c;
-    if(c == '['){
-      std::cerr<<"char2 "<<c<<std::endl;
-      std::cin >> c;
-      if(c =='A' )
-	std::cerr<<"flèche haut!"<<std::endl;
-      if(c =='B' )
-	std::cerr<<"flèche bas!"<<std::endl;
-      if(c =='C' )
-	std::cerr<<"flèche droite!"<<std::endl;
-      if(c =='D' )
-	std::cerr<<"flèche gauche!"<<std::endl;
-    }
-  }
   handle(c);
 }
 
