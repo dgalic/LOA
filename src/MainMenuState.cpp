@@ -10,9 +10,11 @@
 #include "ANSI.hpp"
 #include "OthelloConfig.hpp"
 
+MainMenuState::~MainMenuState(){
 
-void MainMenuState::update(){
-  char c = Console::getInstance()->getInput();
+}
+
+bool MainMenuState::handle(const char& c){
   switch(c){
   case 'z':
     entry = (entry == 0)? nbgames-1:entry-1;
@@ -39,28 +41,35 @@ void MainMenuState::update(){
     break;
   
   default:
+    return false;
     break;
   }
+  return true;
+}
+
+void MainMenuState::update(){
+  char c = Console::getInstance()->getInput();
+  handle(c);
 }
 
 void MainMenuState::render(){
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  Console::getInstance()->setCursor(4, 1);
+  Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  p:ok");
   Console::getInstance()->setForeground(ANSI::Color::GREEN);
-  Console::getInstance()->drawRectangle(1, 2, 82, 1, '#');
+  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->draw(4, 4, "Othello");
   Console::getInstance()->draw(4, 5, "Puissance 4");
   Console::getInstance()->draw(4, 6, "5 or more");
   Console::getInstance()->setForeground(ANSI::Color::GREEN);
-  Console::getInstance()->drawRectangle(1, 12, 82, 1, '#');
+  Console::getInstance()->drawRectangle(1, 12, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->drawString(gameDescs.at(entry) );
   Console::getInstance()->draw(2, 4+entry, '~');
-  Console::getInstance()->setCursor(0, 0);
+  Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
 
 bool MainMenuState::init(){
