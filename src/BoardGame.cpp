@@ -13,7 +13,7 @@ BoardGame::~BoardGame(){
 
 }
 
-bool BoardGame::handle(const char& c){
+void BoardGame::handle(const char& c){
 
 }
 

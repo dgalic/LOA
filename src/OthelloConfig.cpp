@@ -11,7 +11,7 @@ OthelloConfig::~OthelloConfig(){
 
 }
 
-bool OthelloConfig::handle(const char& c){
+void OthelloConfig::handle(const char& c){
   switch(c){
   case 'z':
 
@@ -35,10 +35,9 @@ bool OthelloConfig::handle(const char& c){
     break;
     
   default:
-    return false;
     break;
   }
-  return true;
+
 }
 
 void OthelloConfig::update(){
