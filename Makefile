@@ -11,6 +11,7 @@ clean:
 	cd src;	make clean;
 
 proper:clean
+	rm $(PROGRAM)
 	cd src; make proper;
 
 start:

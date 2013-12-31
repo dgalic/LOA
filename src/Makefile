@@ -49,10 +49,12 @@ $(PROGRAM):$(OBJECTS)
 	$(CXX) -c $(CXXFLAGS) -I$(INC) $<
 
 clean:
-	rm -f $(OBJECTS) *.d* *~ *# *.gch
+	rm -f *.d* *~ *# *.gch $(OBJECTS)
+	cd $(INC); rm -f *~ *#;
 
 proper:clean
 	rm -f $(PROGRAM)
 
 start:
-	./$(PROGRAM) 2> Errlog; reset
+	@echo "'s' - start"
+	@./$(PROGRAM) 2> Errlog; reset

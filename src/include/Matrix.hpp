@@ -40,7 +40,6 @@ public:
   virtual std::ostream& operator<<(std::ostream&);
   template <class X> friend std::ostream &operator<<(std::ostream&, const Matrix<X> &);
 
-
 };
 
 
