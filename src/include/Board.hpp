@@ -5,14 +5,10 @@
 
 #include <iostream>
 
-typedef enum{
-  PIECE_NONE,
-  PIECE_PLAYER1,
-  PIECE_PLAYER2
-} Piece;
-
 class Board :public Matrix<int>{
 private:
+  unsigned int pointerX;
+  unsigned int pointerY;
   
 public:
   Board(const unsigned int&, const unsigned int&);
