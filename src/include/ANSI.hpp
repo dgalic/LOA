@@ -26,6 +26,16 @@ namespace ANSI{
       COUNT = 17
     } Color;
 
+  
+  typedef enum {
+    NOARROW,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+  } Arrow;
+
+
 }
 
 #endif
