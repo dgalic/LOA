@@ -15,6 +15,16 @@ MainMenuState::~MainMenuState(){
 }
 
 bool MainMenuState::handle(const char& c){
+  char d = c;
+  if(isUp(d) ){
+    entry = (entry == 0)? nbgames-1:entry-1;
+    true;
+  }
+  if(isDown(d) ){
+    entry = (entry+1)%nbgames;
+    return true;
+  }
+
   switch(c){
   case 'z':
     entry = (entry == 0)? nbgames-1:entry-1;
