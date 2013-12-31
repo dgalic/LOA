@@ -236,45 +236,22 @@ void Console::beep() const{
 }
 
 
-
-
-
-bool isUp( char & c){
+ANSI::Arrow checkArrow(const char & c){
   if(c != ESC)
-    return false;
-  std::cin >> c;
-  if(c != '[')
-    return false;
-  std::cin >> c;
-  return (c == 'A' );
-}
-
-bool isDown( char & c){
-  if(c != ESC)
-    return false;
-  std::cin >> c;
-  if(c != '[')
-    return false;
-  std::cin >> c;
-  return (c == 'B' );
-}
-
-bool isLeft( char & c){
-  if(c != ESC)
-    return false;
-  std::cin >> c;
-  if(c != '[')
-    return false;
-  std::cin >> c;
-  return (c == 'D' );
-}
-
-bool isRight( char & c){
-  if(c != ESC)
-    return false;
-  std::cin >> c;
-  if(c != '[')
-    return false;
-  std::cin >> c;
-  return (c == 'C' );
+    return ANSI::NOARROW;
+  char d;
+  std::cin >> d;
+  if(d != '[')
+    return ANSI::NOARROW;
+  std::cin >> d;
+  if(d == 'A' )
+    return ANSI::UP;
+  if(d == 'B' )
+    return ANSI::DOWN;
+  if(d == 'C' )
+    return ANSI::RIGHT;
+  if(d == 'D' )
+    return ANSI::LEFT;
+  return ANSI::NOARROW;
+  
 }

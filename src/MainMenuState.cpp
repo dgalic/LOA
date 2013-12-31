@@ -15,15 +15,27 @@ MainMenuState::~MainMenuState(){
 }
 
 bool MainMenuState::handle(const char& c){
-  char d = c;
-  if(isUp(d) ){
+  std::cerr<<"input "<<(int)c<<std::endl;
+
+
+  ANSI::Arrow arr = checkArrow(c);
+  std::cerr<<"arrow = "<<(int)arr<<std::endl;
+  switch(arr){
+
+  case ANSI::UP:
     entry = (entry == 0)? nbgames-1:entry-1;
-    true;
-  }
-  if(isDown(d) ){
+    return true;
+    break;
+
+  case ANSI::DOWN:
     entry = (entry+1)%nbgames;
     return true;
+    break;
+
+  default:
+    break;
   }
+
 
   switch(c){
   case 'z':
@@ -51,10 +63,10 @@ bool MainMenuState::handle(const char& c){
     break;
   
   default:
-    return false;
     break;
   }
-  return true;
+
+  return false;
 }
 
 void MainMenuState::update(){
