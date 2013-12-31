@@ -15,53 +15,35 @@ MainMenuState::~MainMenuState(){
 }
 
 void MainMenuState::handle(const char& c){
-  std::cerr<<"input "<<(int)c<<std::endl;
-
-
-  ANSI::Arrow arr = checkArrow(c);
-  std::cerr<<"arrow = "<<(int)arr<<std::endl;
-  switch(arr){
-
-  case ANSI::UP:
+  ANSI::Arrow arr;
+  arr = checkArrow(c);
+  if( arr == ANSI::UP
+      || c == 'z'){
     entry = (entry == 0)? nbgames-1:entry-1;
-    break;
-
-  case ANSI::DOWN:
-    entry = (entry+1)%nbgames;
-    break;
-
-  default:
-    break;
+    return;
   }
 
-
-  switch(c){
-  case 'z':
-    entry = (entry == 0)? nbgames-1:entry-1;
-    break;
-    
-  case 's':
+  if( arr == ANSI::DOWN 
+      || c == 's'){
     entry = (entry+1)%nbgames;
-    break;
-  
-  case 'x':
+    return;
+  }
+
+  if( c == 'x'){
     Game::getInstance()->stop();
     Game::getInstance()->exit();
-    break;
+    return;
+  }
 
-  case 'p':
+  if(c == 'p'){
     switch(entry){
     case 0:
       StateHandler::getInstance()->change(new OthelloConfig() );
       break;
-    
+      
     default:
       break;
     }
-    break;
-  
-  default:
-    break;
   }
 
 }
