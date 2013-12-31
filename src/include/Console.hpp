@@ -84,9 +84,8 @@ public:
 
 };
 
+ANSI::Arrow checkArrow(const char & c);
+  
 
-bool isUp(char &);
-bool isDown(char &);
-bool isLeft(char &);
-bool isRight(char &);
+
 #endif
