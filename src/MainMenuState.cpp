@@ -58,14 +58,13 @@ void MainMenuState::render(){
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  !/p:ok");
-  Console::getInstance()->setForeground(ANSI::Color::GREEN);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
+  Console::getInstance()->setForeground(ANSI::Color::GRAY);
+  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');  
+  Console::getInstance()->drawRectangle(1, 12, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->draw(4, 4, "Othello");
   Console::getInstance()->draw(4, 5, "Puissance 4");
   Console::getInstance()->draw(4, 6, "5 or more");
-  Console::getInstance()->setForeground(ANSI::Color::GREEN);
-  Console::getInstance()->drawRectangle(1, 12, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->drawString(gameDescs.at(entry) );
@@ -77,7 +76,8 @@ bool MainMenuState::init(){
   entry = 0;
   nbgames = 3;
   gameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
-pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de pions de sa couleur à la fin de la partie.");
+pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
+pions de sa couleur à la fin de la partie.");
   gameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions.");
   gameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 couleurs.");
   

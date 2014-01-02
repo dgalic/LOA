@@ -11,8 +11,9 @@
 #include <utility> // pour std::pair
 
 Othello::Othello(ANSI::Color c1,
-		 ANSI::Color c2)
-  : BoardGame(8, 8), player1(c1), player2(c2), currentPlayer(c1){
+		 ANSI::Color c2,
+		 const unsigned short& t)
+  : BoardGame(8, 8), player1(c1), player2(c2), currentPlayer(c1), typeIA(t){
   
 }
 
@@ -230,7 +231,7 @@ void Othello::render(){
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("OTHELLO  -  z:up  s:down  q:left  d:right  !/p:place  x:quit");
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(ANSI::Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 3);
