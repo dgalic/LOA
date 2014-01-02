@@ -36,7 +36,7 @@ void Board::draw(const unsigned int& x = 12,
     for(col = 0; col < 2*width; col += 2){
       Console::getInstance()->setForeground( ANSI::Color::WHITE);
       Console::getInstance()->draw(x+col, y+row+1, '|');
-      int content = at(row, col/2);
+      int content = at(col/2, row);
       //      std::cerr<<"Board ("<<row<<","<<col/2<<") -> "<< content <<std::endl;
       if(content != -1){
 	Console::getInstance()->setForeground( (ANSI::Color)content);
