@@ -10,6 +10,7 @@ class Othello : public BoardGame{
 private:
   ANSI::Color player1;
   ANSI::Color player2;
+  ANSI::Color currentPlayer;
   unsigned short score[2];
 
 public:
@@ -17,6 +18,9 @@ public:
 	  ANSI::Color = ANSI::Color::RED );
   virtual ~Othello();
   virtual void handle(const char& = ' ');
+  /** prend les positions d'un placement de coup et calcule si c'est un coup possible pour le joueur donné.
+   Dans ce cas précis, on renvoie le nombre de pions gagnés (et <0 si le coup n'est pas possible, car dans othello comme on place un pion qui encercle, le score est censé augmenter d'au moins 2) */
+  virtual short next(const unsigned short&, const unsigned short&, const ANSI::Color&) const;
   virtual void update();
   virtual void render();
   virtual bool init();
