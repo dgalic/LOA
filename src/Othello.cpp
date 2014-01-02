@@ -62,7 +62,7 @@ void Othello::handle(const char& c){
     return;
   }
 
-  if(c == 'p'){
+  if(c == 'p' || c == MARK){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
@@ -229,7 +229,7 @@ void Othello::render(){
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("OTHELLO  -  z:up  s:down  q:left  d:right  p:place  x:quit");
+  Console::getInstance()->draw("OTHELLO  -  z:up  s:down  q:left  d:right  !/p:place  x:quit");
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
