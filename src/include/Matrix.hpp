@@ -5,19 +5,11 @@
 #include <vector>
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
-///// This class is a wrapper to easily work /////
-///// with 2D matrix. In fact, it is just an /////
-///// array of arrays.                       /////
+///// Classe wrapper pour travailler avec    /////
+///// des matrices 2x2 facilement. En fait   /////
+///// c'est juste un tableau.                /////
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
-
-/**
-   |1|2|3|4|5|
-   |6|7|8|9|0|
-
-2,1 = 1*width+2
-
- */
 
 
 template <class T>
@@ -32,6 +24,7 @@ public:
   Matrix(const unsigned int&, const unsigned int&);
   virtual ~Matrix();
   virtual T& at(const unsigned int&, const unsigned int&);
+  virtual T get(const unsigned int&, const unsigned int&) const;
   virtual unsigned int getHeight() const;
   virtual unsigned int getWidth() const;
   virtual void set(const unsigned int&, const unsigned int&, const T&);
@@ -58,6 +51,11 @@ Matrix<T>::~Matrix(){
 
 template <class T>
 T& Matrix<T>::at(const unsigned int& x, const unsigned int& y){
+  return data.at(y*width+x);
+}
+
+template <class T>
+T Matrix<T>::get(const unsigned int& x, const unsigned int& y) const{
   return data.at(y*width+x);
 }
 
