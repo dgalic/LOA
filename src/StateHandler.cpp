@@ -10,23 +10,23 @@ void StateHandler::push(State * gs){
   
 }
 
-State * StateHandler::pop(){
+void StateHandler::pop(){
   if( states.empty() )
-    return NULL;
+    return;
   State * gs = states.top();
-  if(gs->exit() )
+  if(gs->exit() ){
     states.pop();
-  return gs;
+    delete gs;
+  }
 }
 
 bool StateHandler::isEmpty(){
   return states.empty();
 }
 
-State * StateHandler::change(State * gs ){
-  State * old = pop();
+void StateHandler::change(State * gs ){
+  pop();
   push(gs);
-  return old;
 }
 
 void StateHandler::clear(){
