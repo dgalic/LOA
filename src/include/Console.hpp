@@ -8,6 +8,7 @@
 
 #define ESC '\033'
 #define CSI "\033["
+#define MARK 33 // caractère '!'
 
 class Console : public Singleton<Console>{
 
