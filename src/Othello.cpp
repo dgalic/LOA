@@ -65,10 +65,66 @@ void Othello::handle(const char& c){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
-    if( next(pointerX, pointerY, currentPlayer) > 0)
+    if( next(pointerX, pointerY, currentPlayer) > 0){
       board.at(pointerX, pointerY ) = currentPlayer;
+      shuffle(pointerX, pointerY);
+    }
   }
 }
+
+/** 
+    retourne les pions qui devraient l'être, lors d'un coup supposé correct.
+*/
+void Othello::shuffle(const unsigned short& x,
+		      const unsigned short& y){
+  ANSI::Color p = (ANSI::Color) board.get(x, y);
+  unsigned short right = board.getWidth(), bottom = board.getHeight();
+  for(short i = -1; i <= 1 ; i++){
+    for(short j = -1; j <= 1; j++){
+      short k = 1;
+      while( k < 49){ // normalement infini, mais on se fait une sécurité
+	if( (k*i+x) < 0 
+	    || (k*i+x) >= (short)right 
+	    || (k*j+y) < 0 
+			 || (k*j+y) >= (short)bottom 
+	      )
+	  break;
+	    short element = board.get(x+k*i, y+k*j);
+	    std::cerr<<"element => "<<element<<std::endl;
+	    if(element == -1) //case vide
+	      break;
+	    if(element != p)
+	      k++;
+	    if(element == p){
+	      if(k > 1){ // la pièce amie a été rencontrée après des ennemies
+		short k2 = k;
+		std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
+		while(x+(k2*i) != x || y+(k2*j) != y){		  
+		std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
+
+		  board.at(x+k2*i, y+k2*j) = p;
+		  if( (ANSI::Color)p == player1){
+		    score[0]++;
+		    score[1]--;
+		  }else{
+		    score[0]--;
+		    score[1]++;
+		  }
+		k2--;
+		}
+		break;
+	      }
+	      else
+		break; // la pièce amie est voisine de la "cible"
+	    }
+	    
+	    }
+      }
+    }
+  }
+	    
+	    
+      
 
 /** un coup est possible si il prend en sandwich au moins 1 pion adverse : 
     depuis la position courante, on va chercher des pions adverses dans le 8
