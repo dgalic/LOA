@@ -68,6 +68,11 @@ void Othello::handle(const char& c){
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
     if( isNext(pointerX, pointerY, successors) ){
       board.at(pointerX, pointerY ) = currentPlayer;
+      if( currentPlayer == player1){
+	score[0] ++;
+      }else{
+	score[1] ++;
+      }
       shuffle(pointerX, pointerY);      
       currentPlayer = (ANSI::Color) ((int)player1+(int)player2-(int)currentPlayer);
     }
@@ -100,18 +105,19 @@ void Othello::shuffle(const unsigned short& x,
 	if(element == p){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    short k2 = k;
+	    if( (ANSI::Color)p == player1){
+	      score[0] += k-1;
+	      score[1] -= k-1;
+	    }else{
+	      score[0] -= k-1;
+	      score[1] += k-1;
+	    }
 	    std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 	    while(x+(k2*i) != x || y+(k2*j) != y){		  
 	      std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 
 	      board.at(x+k2*i, y+k2*j) = p;
-	      if( (ANSI::Color)p == player1){
-		score[0]++;
-		score[1]--;
-	      }else{
-		score[0]--;
-		score[1]++;
-	      }
+
 	      k2--;
 	    }
 	    break;
@@ -237,7 +243,7 @@ void Othello::render(){
   Console::getInstance()->drawString(1, 3, oss.str() );
   Console::getInstance()->setCursor(25, 3);
   Console::getInstance()->setForeground(player2);
-  oss.str("Joueur 2 -");
+  oss.str("Joueur 2 - ");
   oss << score[1];
   Console::getInstance()->drawString(25, 3, oss.str() );
   oss.clear();
