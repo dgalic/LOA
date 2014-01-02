@@ -26,7 +26,8 @@ void Game::exit(){
   stop();
   StateHandler::getInstance()->clear();
   StateHandler::getInstance()->destroy();
-  Console::getInstance()->exit();
+  Console::getInstance()->exit();  
+  Console::getInstance()->destroy();
   std::cerr<<"Game destroyed properly"<<std::endl;
 }
 
@@ -44,4 +45,5 @@ int main(){
   Game::getInstance()->init();
   Game::getInstance()->loop();
   Game::getInstance()->exit();
+  Game::getInstance()->destroy();
 }

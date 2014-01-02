@@ -197,23 +197,24 @@ void Othello::update(){
     char c;
     std::cin>>c;
     StateHandler::getInstance()->change(new MainMenuState() );
-  }
-  BoardGame::update();
-  successors = next(board, currentPlayer);
-  ANSI::Color opponent = (ANSI::Color) ( (int)player1+(int)player2-(int)currentPlayer);
-  if(successors.empty() ){
-    //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
-    if(next(board, opponent).empty() )
-      // partie terminée
-      ingame = false;
-    else{
-      // changement de joueurs
-      currentPlayer = opponent;
-    }
   }else{
-    char c;
-    std::cin>>c;
-    handle(c);
+    BoardGame::update();
+    successors = next(board, currentPlayer);
+    ANSI::Color opponent = (ANSI::Color) ( (int)player1+(int)player2-(int)currentPlayer);
+    if(successors.empty() ){
+      //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
+      if(next(board, opponent).empty() )
+	// partie terminée
+	ingame = false;
+      else{
+	// changement de joueurs
+	currentPlayer = opponent;
+      }
+    }else{
+      char c;
+      std::cin>>c;
+      handle(c);
+    }
   }
 }
 

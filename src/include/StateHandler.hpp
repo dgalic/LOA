@@ -15,9 +15,9 @@ class StateHandler:public Singleton<StateHandler>
 
 public:
   void push (State * gs );
-  State * pop();
+  void pop();
   bool isEmpty();
-  State * change(State * gs );
+  void change(State * gs );
   void clear();
   void update();
   void render();

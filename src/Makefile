@@ -56,5 +56,9 @@ proper:clean
 	rm -f $(PROGRAM)
 
 start:
-	@echo "'s' - start"
+	@echo "'l' - launch"
 	@./$(PROGRAM) 2> Errlog; reset
+
+valgrind:
+	@echo "'l' - launch"
+	@valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./$(PROGRAM) 2> Valgrind_log; reset
