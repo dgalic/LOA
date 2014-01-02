@@ -5,6 +5,14 @@
 #include "BoardGame.hpp"
 #include "StateHandler.hpp"
 
+#include <vector>
+#include <set>
+#include <utility> // pour std::pair
+
+/* le type de retour de la fonction de succession : 
+   des paires (x,y) de positions possibles depuis la configuration courante */
+typedef std::set< std::pair< unsigned short, unsigned short> > succ;
+
 class Othello : public BoardGame{
 
 private:
@@ -12,15 +20,18 @@ private:
   ANSI::Color player2;
   ANSI::Color currentPlayer;
   unsigned short score[2];
+  succ successors; //les coups possibles depuis le plateau courant
 
 public:
   Othello(ANSI::Color = ANSI::Color::BLUE, 
 	  ANSI::Color = ANSI::Color::RED );
   virtual ~Othello();
   virtual void handle(const char& = ' ');
-  /** prend les positions d'un placement de coup et calcule si c'est un coup possible pour le joueur donné.
-   Dans ce cas précis, on renvoie le nombre de pions gagnés (et <0 si le coup n'est pas possible, car dans othello comme on place un pion qui encercle, le score est censé augmenter d'au moins 2) */
-  virtual short next(const unsigned short&, const unsigned short&, const ANSI::Color&) const;  
+  /** calcule les coups possibles de la configuration (plateau) donné
+   pour le joueur donné */
+  virtual succ next(Board, const ANSI::Color&) const;
+  /** dit si le coup est possible */
+  virtual bool isNext(const unsigned short&, const unsigned short&, const succ&) const;
   virtual void shuffle(const unsigned short&, const unsigned short&);
   virtual void update();
   virtual void render();
