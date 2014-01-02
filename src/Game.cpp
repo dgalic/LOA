@@ -40,8 +40,10 @@ void Game::loop(){
 }
 
 int main(){
-  char c = 27;
-  std::cerr << "test 27 "<<c<<"-"<<(int)ESC<<std::endl;
+  char c = 16;
+  std::cerr << "test 16: "<<c<<"-"<<"-"<<std::endl;
+  c = 32;
+  std::cerr << "test 32: "<<c<<"-"<<"-"<<std::endl;
   Game::getInstance()->init();
   Game::getInstance()->loop();
   Game::getInstance()->exit();

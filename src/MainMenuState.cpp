@@ -35,7 +35,7 @@ void MainMenuState::handle(const char& c){
     return;
   }
 
-  if(c == 'p'){
+  if(c == 'p' || c == MARK){
     switch(entry){
     case 0:
       StateHandler::getInstance()->change(new OthelloConfig() );
@@ -57,7 +57,7 @@ void MainMenuState::render(){
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  p:ok");
+  Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  !/p:ok");
   Console::getInstance()->setForeground(ANSI::Color::GREEN);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
