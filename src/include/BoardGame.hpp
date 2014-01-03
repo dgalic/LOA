@@ -23,7 +23,7 @@ protected:
   unsigned short pointerX, pointerY; // case séléctionnée
   bool ingame; //dit si le jeu est terminé ou pas
   Player player1; //un jeu possède au moins 1 joueur, sinon c'est nul
-  Player * currentPlayer;
+  Player currentPlayer;
   Positions successors; //les coups possibles depuis le plateau courant
   std::function<bool(Board, 
 		     const unsigned short&,
