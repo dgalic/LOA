@@ -17,7 +17,7 @@ Othello::Othello(Player p1,
   : BoardGame(8, 8){
   player1 = p1;
   player2 = p2;
-  *currentPlayer = p1;
+  currentPlayer = p1;
   typeIA = t;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -80,14 +80,14 @@ void Othello::handle(const char& c){
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
     if( isNext(pointerX, pointerY, successors) ){
-      board.at(pointerX, pointerY ) = *currentPlayer;
-      if( *currentPlayer == player1){
+      board.at(pointerX, pointerY ) = currentPlayer;
+      if( currentPlayer == player1){
 	score[0] ++;
       }else{
 	score[1] ++;
       }
       shuffle(pointerX, pointerY);      
-      *currentPlayer = (Player) ((int)player1+(int)player2-( (int)*currentPlayer));
+      currentPlayer = (Player) ((int)player1+(int)player2-( (int)(currentPlayer)) );
     }
   }
 }
@@ -193,8 +193,8 @@ void Othello::update(){
     StateHandler::getInstance()->change(new MainMenuState() );
   }else{
     BoardGame::update();
-    successors = BoardGame::computeNext(board, *currentPlayer, succ_function);
-    Player opponent = (Player) ( (int)player1+(int)player2-(int)( *currentPlayer) );
+    successors = BoardGame::computeNext(board, currentPlayer, succ_function);
+    Player opponent = (Player) ( (int)player1+(int)player2-(int)( currentPlayer) );
     if(successors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
       if(computeNext(board, opponent, succ_function).empty() )
@@ -202,7 +202,7 @@ void Othello::update(){
 	ingame = false;
       else{
 	// changement de joueurs
-	*currentPlayer = opponent;
+	currentPlayer = opponent;
       }
     }else{
       char c;
@@ -237,7 +237,7 @@ void Othello::render(){
   oss.clear();
   // indicateur du joueur courant
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(*currentPlayer == player1){
+  if(currentPlayer == player1){
     Console::getInstance()->draw(6, 5, '^');
   }else{
     Console::getInstance()->draw(30, 5, '^');
