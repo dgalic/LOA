@@ -15,4 +15,4 @@ proper:clean
 	cd src; make proper;
 
 start:
-	export LD_LIBRARY_PATH=$(LIB) && ./$(PROGRAM)
+	cd src; make start;
