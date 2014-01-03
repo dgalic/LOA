@@ -9,16 +9,28 @@
 
 #include <sstream> // ostringstream
 #include <utility> // pour std::pair
+#include <functional>
 
-Othello::Othello(ANSI::Color c1,
-		 ANSI::Color c2,
+Othello::Othello(Player p1,
+		 Player p2,
 		 const unsigned short& t)
-  : BoardGame(8, 8), player1(c1), player2(c2), currentPlayer(c1), typeIA(t){
-  
+  : BoardGame(8, 8){
+  player1 = p1;
+  player2 = p2;
+  *currentPlayer = p1;
+  typeIA = t;
+  succ_function = [this](Board b, 
+			 const unsigned short& x,
+			 const unsigned short& y,
+			 const Player& p) 
+    -> bool{
+    return isSucc(b, x, y, p);
+  };
+
 }
-
+  
 Othello::~Othello(){
-
+    
 }
 
 /**
@@ -68,14 +80,14 @@ void Othello::handle(const char& c){
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
     if( isNext(pointerX, pointerY, successors) ){
-      board.at(pointerX, pointerY ) = currentPlayer;
-      if( currentPlayer == player1){
+      board.at(pointerX, pointerY ) = *currentPlayer;
+      if( *currentPlayer == player1){
 	score[0] ++;
       }else{
 	score[1] ++;
       }
       shuffle(pointerX, pointerY);      
-      currentPlayer = (ANSI::Color) ((int)player1+(int)player2-(int)currentPlayer);
+      *currentPlayer = (Player) ((int)player1+(int)player2-( (int)*currentPlayer));
     }
   }
 }
@@ -85,7 +97,7 @@ void Othello::handle(const char& c){
 */
 void Othello::shuffle(const unsigned short& x,
 		      const unsigned short& y){
-  ANSI::Color p = (ANSI::Color) board.get(x, y);
+  Player p = (Player)board.get(x, y);
   unsigned short right = board.getWidth(), bottom = board.getHeight();
   for(short i = -1; i <= 1 ; i++){
     for(short j = -1; j <= 1; j++){
@@ -106,7 +118,7 @@ void Othello::shuffle(const unsigned short& x,
 	if(element == p){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    short k2 = k;
-	    if( (ANSI::Color)p == player1){
+	    if( (Player)p == player1){
 	      score[0] += k-1;
 	      score[1] -= k-1;
 	    }else{
@@ -132,69 +144,44 @@ void Othello::shuffle(const unsigned short& x,
   }
 }
 	    
-	    
+	     
       
 
-/** un coup est possible si il prend en sandwich au moins 1 pion adverse : 
-    depuis la position courante, on va chercher des pions adverses dans le 8
-    directions, jusqu'à ce que : 
-    -on tombe sur du vide -> échec 
-    -on tombe sur le bord -> échec
-    -on trouve un pion ami -> possible
-*/
-succ Othello::next(Board b,
-		   const ANSI::Color& p) const{
-  short k; //itérateur de "droite"
-  succ res;
-  for(unsigned short x = 0; x < b.getWidth(); x++){
-    for(unsigned short y = 0; y < b.getHeight(); y++){
-      if(b.get(x, y) != -1) //seule une case vide est jouable
-	continue;
-      for(short i = -1; i <= 1; i++){
-	for(short j = -1; j <= 1; j++){
-	  //	  std::cerr<<"Othello : "<<i<<","<<j<<" (itérateurs)"<<std::endl;
-	  k = 1;
-	  while(k < 9){ // normalement infini, mais c'est une sécurité en plus
-	    if( (k*i+x) < 0 
-		|| (k*i+x) >= (short)b.getWidth()
-		|| (k*j+y) < 0 
-		|| (k*j+y) >= (short)b.getHeight() 
-		) // sortie du plateau en cherchant un pion allié
-	      break;
-	    short element = b.get(x+k*i, y+k*j);
-	    if(element == -1) //case vide
-	      break;
-	    else if(element != p)
-	      k++;
-	    else if(element == p){
-	      if(k > 1){ // la pièce amie a été rencontrée après des ennemies
-		res.insert(std::make_pair(x, y) );
-		std::cerr<<"Othello "<<k<<": ("<<x<<","<<y<<") est possible pour "<<player1<<std::endl;
-		std::cerr<<"Othello "<<k<<": "<<successors.size()<<" coups possibles"<<std::endl;
-		
-		break;
-	      }
-	      else
-		break; // la pièce amie est voisine de la "cible"
-	    }
-	    
+bool Othello::isSucc(Board b,
+		     const unsigned short& x,
+		     const unsigned short& y,
+		     const Player& p) const{
+  if(b.get(x, y) != -1) //seule une case vide est jouable
+    return false;
+  unsigned short k;
+  for(short i = -1; i <= 1; i++){
+    for(short j = -1; j <= 1; j++){
+      k = 1;
+      while(k < 9){ // normalement infini, mais c'est une sécurité en plus 
+	if( (k*i+x) < 0 
+	    || (k*i+x) >= (short)b.getWidth()
+	    || (k*j+y) < 0 
+	    || (k*j+y) >= (short)b.getHeight() 
+	    ) // sortie du plateau en cherchant un pion allié
+	  break;
+	short element = b.get(x+k*i, y+k*j);
+	if(element == -1) //case vide
+	  break;
+	else if(element != p)
+	  k++;
+	else if(element == p){
+	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
+	    return true;
 	  }
-	  
-	} }
-
+	  else
+	    break; // la pièce amie est voisine de la "cible"
+	}
+	
+      }
+      
     } }
-  return res;
-}
-
-bool Othello::isNext(const unsigned short& x, 
-		     const unsigned short& y, 
-		     const succ& s) const{
-  std::pair<unsigned short, unsigned short> p = std::make_pair(x, y);
-  for(auto it = s.begin(); it != s.end(); ++it){
-    if( (*it) == p) 
-      return true;
-  }
   return false;
+  
 }
 
 
@@ -206,16 +193,16 @@ void Othello::update(){
     StateHandler::getInstance()->change(new MainMenuState() );
   }else{
     BoardGame::update();
-    successors = next(board, currentPlayer);
-    ANSI::Color opponent = (ANSI::Color) ( (int)player1+(int)player2-(int)currentPlayer);
+    successors = BoardGame::computeNext(board, *currentPlayer, succ_function);
+    Player opponent = (Player) ( (int)player1+(int)player2-(int)( *currentPlayer) );
     if(successors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
-      if(next(board, opponent).empty() )
+      if(computeNext(board, opponent, succ_function).empty() )
 	// partie terminée
 	ingame = false;
       else{
 	// changement de joueurs
-	currentPlayer = opponent;
+	*currentPlayer = opponent;
       }
     }else{
       char c;
@@ -250,7 +237,7 @@ void Othello::render(){
   oss.clear();
   // indicateur du joueur courant
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(currentPlayer == player1){
+  if(*currentPlayer == player1){
     Console::getInstance()->draw(6, 5, '^');
   }else{
     Console::getInstance()->draw(30, 5, '^');
