@@ -9,7 +9,8 @@
 
 BoardGame::BoardGame(const unsigned int& w = 0, 
 		     const unsigned int& h = 0)
-  : State(), board(Board(w,h)), pointerX(0), pointerY(0), ingame(true), player1(ANSI::RED), currentPlayer(&player1){
+  : State(), board(Board(w,h)), pointerX(0), pointerY(0), ingame(true), player1(ANSI::RED), currentPlayer(player1){
+
 }
 
 BoardGame::~BoardGame(){
@@ -35,7 +36,6 @@ Positions BoardGame::computeNext(Board b,
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
       if(succ(b, x, y, p) ){
-	std::cerr<<"trouvé un successeur"<<std::endl;
 	res.insert(std::make_pair(x,y) );
       }
     }
