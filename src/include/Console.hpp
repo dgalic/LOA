@@ -17,9 +17,9 @@ class Console : public Singleton<Console>{
 
 private:
   Console();
-  unsigned short width, height;
-  unsigned short cursorX; //current X of the cursor
-  unsigned short cursorY; //current Y of the cursor
+  unsigned short mWidth, mHeight;
+  unsigned short mCursorX; //current X of the cursor
+  unsigned short mCursorY; //current Y of the cursor
   ANSI::Color currentBG; //current BackGround color
   ANSI::Color currentFG; //current ForeGround color
   double framerate; // number of frame displayed per second
@@ -77,11 +77,9 @@ public:
   /* move the cursor on its line of the given amount */
   void moveCursorX(const int&);
 
-  /* move the cursor on its line of the given amount */
+  /* move the cursor on its column of the given amount */
   void moveCursorY(const int&);
 
-  /** plays a little sound */
-  void beep() const;
 
 };
 
