@@ -19,13 +19,13 @@ void MainMenuState::handle(const char& c){
   arr = checkArrow(c);
   if( arr == ANSI::UP
       || c == 'z'){
-    entry = (entry == 0)? nbgames-1:entry-1;
+    mEntry = (mEntry == 0)? mNbGames-1:mEntry-1;
     return;
   }
 
   if( arr == ANSI::DOWN 
       || c == 's'){
-    entry = (entry+1)%nbgames;
+    mEntry = (mEntry+1)%mNbGames;
     return;
   }
 
@@ -36,7 +36,7 @@ void MainMenuState::handle(const char& c){
   }
 
   if(c == 'p' || c == MARK){
-    switch(entry){
+    switch(mEntry){
     case 0:
       StateHandler::getInstance()->change(new OthelloConfig() );
       break;
@@ -67,19 +67,19 @@ void MainMenuState::render(){
   Console::getInstance()->draw(4, 6, "5 or more");
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  Console::getInstance()->drawString(gameDescs.at(entry) );
-  Console::getInstance()->draw(2, 4+entry, '~');
+  Console::getInstance()->drawString(mGameDescs.at(mEntry) );
+  Console::getInstance()->draw(2, 4+mEntry, '~');
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
 
 bool MainMenuState::init(){
-  entry = 0;
-  nbgames = 3;
-  gameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
+  mEntry = 0;
+  mNbGames = 3;
+  mGameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
 pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
 pions de sa couleur à la fin de la partie.");
-  gameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions.");
-  gameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 couleurs.");
+  mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions.");
+  mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 couleurs.");
   
   return true;
 }

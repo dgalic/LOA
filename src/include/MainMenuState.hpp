@@ -16,9 +16,9 @@ public :
   virtual bool exit();
 
 private:
-  std::vector<std::string> gameDescs; //descriptions des jeux disponibles
-  unsigned short entry;
-  unsigned short nbgames;
+  std::vector<std::string> mGameDescs; //descriptions des jeux disponibles
+  unsigned short mEntry;
+  unsigned short mNbGames;
   
 
 };

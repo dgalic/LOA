@@ -19,10 +19,10 @@ typedef ANSI::Color Player;
 class BoardGame : public State{
 
 protected:
-  Board board;
-  unsigned short pointerX, pointerY; // case séléctionnée
-  bool ingame; //dit si le jeu est terminé ou pas
-  Player player1; //un jeu possède au moins 1 joueur, sinon c'est nul
+  Board mBoard;
+  unsigned short mPointerX, mPointerY; // case séléctionnée
+  bool mIngame; //dit si le jeu est terminé ou pas
+  Player mPlayer1; //un jeu possède au moins 1 joueur, sinon c'est nul
   Player currentPlayer;
   Positions successors; //les coups possibles depuis le plateau courant
   std::function<bool(Board, 
