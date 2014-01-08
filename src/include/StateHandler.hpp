@@ -14,16 +14,16 @@ class StateHandler:public Singleton<StateHandler>
   friend class Singleton<StateHandler>;
 
 public:
-  void push (State * gs );
+  void push (State *);
   void pop();
   bool isEmpty();
-  void change(State * gs );
+  void change(State *);
   void clear();
   void update();
   void render();
   
 private:
-  std::stack<State *> states;
+  std::stack<State *> mStates;
 
 };
 

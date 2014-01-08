@@ -11,7 +11,7 @@ void StateHandler::push(State * s){
    * @param s Etat à poser.
    **/
   if( s->init() )
-    states.push(s);
+    mStates.push(s);
   
 }
 
@@ -20,17 +20,17 @@ void StateHandler::pop(){
    * @brief Dépile l'état au sommet du StateHandler.
    * @details L'état dépilé appelle sa fonction @e exit.
    **/
-  if( states.empty() )
+  if( mStates.empty() )
     return;
-  State * s = states.top();
+  State * s = mStates.top();
   if(s->exit() ){
-    states.pop();
+    mStates.pop();
     delete s;
   }
 }
 
 bool StateHandler::isEmpty(){
-  return states.empty();
+  return mStates.empty();
 }
 
 void StateHandler::change(State * s ){
@@ -42,7 +42,7 @@ void StateHandler::clear(){
   /**
    * @brief Depile tous les états.
    */
-  while( !states.empty() )
+  while( !mStates.empty() )
     pop();
 }
 
@@ -50,14 +50,14 @@ void StateHandler::update(){
   /**
    * @brief Appelle @e update de l'état courant (sommet de la pile).
    */
-  if( not states.empty() )
-    states.top()->update();
+  if( not mStates.empty() )
+    mStates.top()->update();
 }
 
 void StateHandler::render(){
   /**
    * @brief Appelle @e render de l'état courant (sommet de la pile).
    */
-  if( not states.empty() )
-     states.top()->render();
+  if( not mStates.empty() )
+     mStates.top()->render();
 }

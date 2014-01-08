@@ -6,16 +6,6 @@
 #include <vector>
 
 
-namespace StateID{
-
-  typedef enum{
-    MAINMENU,
-    FOURINAROW,
-    OTHELLO,
-    FIVEORMORE,
-    NIM
-  } ID;
-}
 
 /** 
     Cette classe représente un état de jeu, et par extension, un état du programme.

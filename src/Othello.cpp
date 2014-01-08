@@ -15,10 +15,10 @@ Othello::Othello(Player p1,
 		 Player p2,
 		 const unsigned short& t)
   : BoardGame(8, 8){
-  player1 = p1;
-  player2 = p2;
+  mPlayer1 = p1;
+  mPlayer2 = p2;
   currentPlayer = p1;
-  typeIA = t;
+  mTypeIA = t;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
@@ -76,13 +76,13 @@ void Othello::handle(const char& c){
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
     if( isNext(pointerX, pointerY, successors) ){
       board.at(pointerX, pointerY ) = currentPlayer;
-      if( currentPlayer == player1){
-	score[0] ++;
+      if( currentPlayer == mPlayer1){
+	mScore[0] ++;
       }else{
-	score[1] ++;
+	mScore[1] ++;
       }
       shuffle(pointerX, pointerY);      
-      currentPlayer = (Player) ((int)player1+(int)player2-( (int)(currentPlayer)) );
+      currentPlayer = (Player) ((int)mPlayer1+(int)mPlayer2-( (int)(currentPlayer)) );
     }
   }
 }
@@ -118,12 +118,12 @@ void Othello::shuffle(const unsigned short& x,
 	if(element == p){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    short k2 = k;
-	    if( (Player)p == player1){
-	      score[0] += k-1;
-	      score[1] -= k-1;
+	    if( (Player)p == mPlayer1){
+	      mScore[0] += k-1;
+	      mScore[1] -= k-1;
 	    }else{
-	      score[0] -= k-1;
-	      score[1] += k-1;
+	      mScore[0] -= k-1;
+	      mScore[1] += k-1;
 	    }
 	    std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 	    while(x+(k2*i) != x || y+(k2*j) != y){		  
@@ -202,7 +202,7 @@ void Othello::update(){
   }else{
     BoardGame::update();
     successors = BoardGame::computeNext(board, currentPlayer, succ_function);
-    Player opponent = (Player) ( (int)player1+(int)player2-(int)( currentPlayer) );
+    Player opponent = (Player) ( (int)mPlayer1+(int)mPlayer2-(int)( currentPlayer) );
     if(successors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
       if(computeNext(board, opponent, succ_function).empty() )
@@ -230,22 +230,22 @@ void Othello::render(){
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 3);
-  Console::getInstance()->setForeground(player1);
+  Console::getInstance()->setForeground(mPlayer1);
   std::ostringstream oss(std::ostringstream::ate);
   /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
      par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
   oss.str("Joueur 1 - ");
-  oss << score[0];
+  oss << mScore[0];
   Console::getInstance()->drawString(1, 3, oss.str() );
   Console::getInstance()->setCursor(25, 3);
-  Console::getInstance()->setForeground(player2);
+  Console::getInstance()->setForeground(mPlayer2);
   oss.str("Joueur 2 - ");
-  oss << score[1];
+  oss << mScore[1];
   Console::getInstance()->drawString(25, 3, oss.str() );
   oss.clear();
   // indicateur du joueur courant
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(currentPlayer == player1){
+  if(currentPlayer == mPlayer1){
     Console::getInstance()->draw(6, 5, '^');
   }else{
     Console::getInstance()->draw(30, 5, '^');
@@ -256,12 +256,12 @@ void Othello::render(){
 
 bool Othello::init(){
   BoardGame::init();
-  score[0] = 2;
-  score[1] = 2;
-  board.at(3,3) = player1;
-  board.at(4,4) = player1;
-  board.at(3,4) = player2;
-  board.at(4,3) = player2;
+  mScore[0] = 2;
+  mScore[1] = 2;
+  board.at(3,3) = mPlayer1;
+  board.at(4,4) = mPlayer1;
+  board.at(3,4) = mPlayer2;
+  board.at(4,3) = mPlayer2;
   return true;
 }
 
