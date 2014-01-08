@@ -71,7 +71,7 @@ void OthelloConfig::handle(const char& c){
 	mColor2++;
       }
       if( mColor2 == mPossibleColors.end() ){
-	mColor2 = (possible_mColors.begin() )++;
+	mColor2 = (mPossibleColors.begin() )++;
       }
       return;
     }
@@ -83,7 +83,7 @@ void OthelloConfig::handle(const char& c){
 
   if(c == 'p' || c == MARK){
     if(mColor1 != mColor2){
-      StateHandler::getInstance()->change(new Othello(*mColor1, *mColor2, mType2) );
+      Game::getInstance()->getHandler().change(new Othello(*mColor1, *mColor2, mType2) );
     }else{
       Console::getInstance()->setForeground(ANSI::WHITE);
       Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas avoir la même couleur ! ");
@@ -93,7 +93,7 @@ void OthelloConfig::handle(const char& c){
   }
   
   if(c == 'x'){
-    StateHandler::getInstance()->change(new MainMenuState() );
+    Game::getInstance()->getHandler().change(new MainMenuState() );
     return;
   }
 

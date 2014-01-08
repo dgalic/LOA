@@ -5,22 +5,20 @@
 #include <stack>
 
 #include "State.hpp"
-#include "Singleton.hpp"
 
 
-class StateHandler:public Singleton<StateHandler>
+class StateHandler
 {
 
-  friend class Singleton<StateHandler>;
-
-public:
-  void push (State *);
-  void pop();
-  bool isEmpty();
-  void change(State *);
-  void clear();
-  void update();
-  void render();
+public: 
+  virtual ~StateHandler();
+  virtual void push (State *);
+  virtual void pop();
+  virtual bool isEmpty();
+  virtual void change(State *);
+  virtual void clear();
+  virtual void update();
+  virtual void render();
   
 private:
   std::stack<State *> mStates;
