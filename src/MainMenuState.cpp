@@ -38,7 +38,7 @@ void MainMenuState::handle(const char& c){
   if(c == 'p' || c == MARK){
     switch(mEntry){
     case 0:
-      StateHandler::getInstance()->change(new OthelloConfig() );
+      Game::getInstance()->getHandler().change(new OthelloConfig() );
       break;
       
     default:

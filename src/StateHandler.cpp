@@ -1,8 +1,8 @@
 #include "StateHandler.hpp"
 
-#include "Singleton.hpp"
+#include <stack>
 
-#include <iostream>
+StateHandler::~StateHandler(){ }
 
 void StateHandler::push(State * s){
   /**

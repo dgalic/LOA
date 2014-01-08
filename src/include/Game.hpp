@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "Singleton.hpp"
+#include "StateHandler.hpp"
 
 class Game: public Singleton<Game>{
 
@@ -14,9 +15,11 @@ public:
   bool isRunning() const;
   void stop();
   void resume();
+  StateHandler& getHandler();
 
 private:
   bool mRunning;
+  StateHandler mHandler;
 };
 
 #endif
