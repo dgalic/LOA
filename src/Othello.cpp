@@ -17,7 +17,7 @@ Othello::Othello(Player p1,
   : BoardGame(8, 8){
   mPlayer1 = p1;
   mPlayer2 = p2;
-  currentPlayer = p1;
+  mCurrentPlayer = p1;
   mTypeIA = t;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -39,34 +39,34 @@ void Othello::handle(const char& c){
   arr = checkArrow(c);
   if(arr == ANSI::UP 
      || c == 'z'){
-    if(pointerY > 0)
-      pointerY--;
+    if(mPointerY > 0)
+      mPointerY--;
     return;
   }
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if(pointerX > 0)
-      pointerX--;
+    if(mPointerX > 0)
+      mPointerX--;
     return;
   }
 
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if(pointerY < board.getHeight()-1 )
-      pointerY++;
+    if(mPointerY < mBoard.getHeight()-1 )
+      mPointerY++;
     return;
   }
 
   if(arr == ANSI::RIGHT 
      || c == 'd'){
-    if(pointerX < board.getWidth()-1 )
-      pointerX++;
+    if(mPointerX < mBoard.getWidth()-1 )
+      mPointerX++;
     return;
   }
   
   if(c == 'x'){
-    StateHandler::getInstance()->change(new MainMenuState() );
+    Game::getInstance()->getHandler().change(new MainMenuState() );
     return;
   }
 
@@ -74,15 +74,15 @@ void Othello::handle(const char& c){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
-    if( isNext(pointerX, pointerY, successors) ){
-      board.at(pointerX, pointerY ) = currentPlayer;
-      if( currentPlayer == mPlayer1){
+    if( isNext(mPointerX, mPointerY, successors) ){
+      mBoard.at(mPointerX, mPointerY ) = mCurrentPlayer;
+      if( mCurrentPlayer == mPlayer1){
 	mScore[0] ++;
       }else{
 	mScore[1] ++;
       }
-      shuffle(pointerX, pointerY);      
-      currentPlayer = (Player) ((int)mPlayer1+(int)mPlayer2-( (int)(currentPlayer)) );
+      shuffle(mPointerX, mPointerY);      
+      mCurrentPlayer = (Player) ((int)mPlayer1+(int)mPlayer2-( (int)(mCurrentPlayer)) );
     }
   }
 }
@@ -97,8 +97,8 @@ void Othello::shuffle(const unsigned short& x,
    * @param x Abscisse du coup joué.
    * @param y Ordonnée du coup joué.
    */
-  Player p = (Player)board.get(x, y);
-  unsigned short right = board.getWidth(), bottom = board.getHeight();
+  Player p = (Player)mBoard.get(x, y);
+  unsigned short right = mBoard.getWidth(), bottom = mBoard.getHeight();
   for(short i = -1; i <= 1 ; i++){
     for(short j = -1; j <= 1; j++){
       short k = 1;
@@ -109,7 +109,7 @@ void Othello::shuffle(const unsigned short& x,
 	    || (k*j+y) >= (short)bottom 
 	    )
 	  break;
-	short element = board.get(x+k*i, y+k*j);
+	short element = mBoard.get(x+k*i, y+k*j);
 	std::cerr<<"element => "<<element<<std::endl;
 	if(element == -1) //case vide
 	  break;
@@ -129,7 +129,7 @@ void Othello::shuffle(const unsigned short& x,
 	    while(x+(k2*i) != x || y+(k2*j) != y){		  
 	      std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 
-	      board.at(x+k2*i, y+k2*j) = p;
+	      mBoard.at(x+k2*i, y+k2*j) = p;
 
 	      k2--;
 	    }
@@ -194,23 +194,23 @@ bool Othello::isSucc(Board b,
 
 
 void Othello::update(){
-  if(not ingame){
+  if(not mIngame){
     //partie terminée 
     char c;
     std::cin>>c;
-    StateHandler::getInstance()->change(new MainMenuState() );
+    Game::getInstance()->getHandler().change(new MainMenuState() );
   }else{
     BoardGame::update();
-    successors = BoardGame::computeNext(board, currentPlayer, succ_function);
-    Player opponent = (Player) ( (int)mPlayer1+(int)mPlayer2-(int)( currentPlayer) );
+    successors = BoardGame::computeNext(mBoard, mCurrentPlayer, succ_function);
+    Player opponent = (Player) ( (int)mPlayer1+(int)mPlayer2-(int)( mCurrentPlayer) );
     if(successors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
-      if(computeNext(board, opponent, succ_function).empty() )
+      if(computeNext(mBoard, opponent, succ_function).empty() )
 	// partie terminée
-	ingame = false;
+	mIngame = false;
       else{
 	// changement de joueurs
-	currentPlayer = opponent;
+	mCurrentPlayer = opponent;
       }
     }else{
       char c;
@@ -245,23 +245,23 @@ void Othello::render(){
   oss.clear();
   // indicateur du joueur courant
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(currentPlayer == mPlayer1){
+  if(mCurrentPlayer == mPlayer1){
     Console::getInstance()->draw(6, 5, '^');
   }else{
     Console::getInstance()->draw(30, 5, '^');
   }
-  board.draw(12, 8);
-  Console::getInstance()->setCursor(13+(pointerX*2), 9+pointerY);
+  mBoard.draw(12, 8);
+  Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);
 }
 
 bool Othello::init(){
   BoardGame::init();
   mScore[0] = 2;
   mScore[1] = 2;
-  board.at(3,3) = mPlayer1;
-  board.at(4,4) = mPlayer1;
-  board.at(3,4) = mPlayer2;
-  board.at(4,3) = mPlayer2;
+  mBoard.at(3,3) = mPlayer1;
+  mBoard.at(4,4) = mPlayer1;
+  mBoard.at(3,4) = mPlayer2;
+  mBoard.at(4,3) = mPlayer2;
   return true;
 }
 

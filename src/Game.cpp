@@ -13,7 +13,7 @@ void Game::init(){
    * @details L'état de commencement est @e StartState. Le membre @e mRunning est 
    * mis à true, permettant de lancer la boucle de jeu par la suite.
   */
-  StateHandler::getInstance()->push(new MainMenuState() );
+  mHandler.push(new MainMenuState() );
   mRunning = true;
   std::cerr<<"Game initialized"<<std::endl;
 }
@@ -36,8 +36,7 @@ void Game::resume(){
 
 void Game::exit(){
   stop();
-  StateHandler::getInstance()->clear();
-  StateHandler::getInstance()->destroy();
+  mHandler.clear();
   Console::getInstance()->exit();  
   Console::getInstance()->destroy();
   std::cerr<<"Game destroyed properly"<<std::endl;
@@ -52,16 +51,16 @@ void Game::loop(){
    **/
   std::cerr<<"Starting Game Loop"<<std::endl;
   while(mRunning){
-    StateHandler::getInstance()->update();
-    StateHandler::getInstance()->render();
+    mHandler.update();
+    mHandler.render();
   }
 }
 
+StateHandler& Game::getHandler(){
+  return mHandler;
+}
+
 int main(){
-  char c = 16;
-  std::cerr << "test 16: "<<c<<"-"<<"-"<<std::endl;
-  c = 32;
-  std::cerr << "test 32: "<<c<<"-"<<"-"<<std::endl;
   Game::getInstance()->init();
   Game::getInstance()->loop();
   Game::getInstance()->exit();

@@ -9,7 +9,7 @@
 
 BoardGame::BoardGame(const unsigned int& w = 0, 
 		     const unsigned int& h = 0)
-  : State(), mBoard(Board(w,h)), mPointerX(0), mPointerY(0), mIngame(true), mPlayer1(ANSI::RED), currentPlayer(mPlayer1){
+  : State(), mBoard(Board(w,h)), mPointerX(0), mPointerY(0), mIngame(true), mPlayer1(ANSI::RED), mCurrentPlayer(mPlayer1){
 
 }
 
