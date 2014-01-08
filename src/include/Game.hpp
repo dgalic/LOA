@@ -16,7 +16,7 @@ public:
   void resume();
 
 private:
-  bool running;
+  bool mRunning;
 };
 
 #endif

@@ -9,19 +9,19 @@ private:
 
 public:
   static T * getInstance(){
-    if( instance == nullptr ){
-      instance = new T();
+    if( sInstance == nullptr ){
+      sInstance = new T();
     }
-    return instance;
+    return sInstance;
   }
 
   static void destroy(){
-    delete instance;
-    instance = nullptr;
+    delete sInstance;
+    sInstance = nullptr;
   }
   
 protected:
-  static T * instance;
+  static T * sInstance;
 
 };
 
@@ -30,7 +30,7 @@ protected:
 /////////////////////////////////////////////
 
 template <class T> 
-T * Singleton<T>::instance= nullptr;
+T * Singleton<T>::sInstance= nullptr;
 
 
 #endif

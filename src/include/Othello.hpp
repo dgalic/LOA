@@ -11,9 +11,9 @@
 class Othello : public BoardGame{
 
 private:
-  Player player2;
-  unsigned short typeIA;
-  unsigned short score[2];
+  Player mPlayer2;
+  unsigned short mTypeIA;
+  unsigned short mScore[2];
 
 public:
   Othello(Player = ANSI::Color::BLUE, 

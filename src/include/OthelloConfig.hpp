@@ -18,11 +18,11 @@
 class OthelloConfig : public State{
 
 private:
-  unsigned short entry;
-  unsigned short type2; // 0 pour humain, entre 1 et ?? pour IA
-  std::list<ANSI::Color>::iterator color1;
-  std::list<ANSI::Color>::iterator color2;
-  std::list<ANSI::Color> possible_colors; // couleurs séléctionnables
+  unsigned short mEntry;
+  unsigned short mType2; // 0 pour humain, entre 1 et ?? pour IA
+  std::list<ANSI::Color>::iterator mColor1;
+  std::list<ANSI::Color>::iterator mColor2;
+  std::list<ANSI::Color> mPossibleColors; // couleurs séléctionnables
 
 public:
   OthelloConfig();

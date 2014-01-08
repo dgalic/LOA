@@ -10,28 +10,28 @@
 void Game::init(){
   /**
    * @brief Initialise le programme.
-   * @details L'état de commencement est @e StartState. Le membre @e running est 
+   * @details L'état de commencement est @e StartState. Le membre @e mRunning est 
    * mis à true, permettant de lancer la boucle de jeu par la suite.
   */
   StateHandler::getInstance()->push(new MainMenuState() );
-  running = true;
+  mRunning = true;
   std::cerr<<"Game initialized"<<std::endl;
 }
 
 void Game::stop(){
   /**
    * @brief Stoppe l'exécution de la boucle.
-   * @details Le membre @e running est mis sur @e false.
+   * @details Le membre @e mRunning est mis sur @e false.
   */
-  running = false;
+  mRunning = false;
 }
 
 void Game::resume(){
   /**
    * @brief Reprend l'exécution de la boucle.
-   * @details Le membre @e running est mis sur @e true.
+   * @details Le membre @e mRunning est mis sur @e true.
   */
-  running = true;
+  mRunning = true;
 }
 
 void Game::exit(){
@@ -48,10 +48,10 @@ void Game::loop(){
    * @brief Lance la boucle de jeu.
    * @details La boucle de jeu va calculer le nouvel état suivant la logique de 
    * jeu, puis rendre l'état obtenu suite à cette mise à jour. Si le membre
-   * @e running passe à @e false, la boucle s'arrête.
+   * @e mRunning passe à @e false, la boucle s'arrête.
    **/
   std::cerr<<"Starting Game Loop"<<std::endl;
-  while(running){
+  while(mRunning){
     StateHandler::getInstance()->update();
     StateHandler::getInstance()->render();
   }
