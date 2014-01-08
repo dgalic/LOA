@@ -33,13 +33,8 @@ Othello::~Othello(){
     
 }
 
-/**
-   controles : 
-   -flèches/ zqsd : bouger
-   -p : placer pion
-   -x : retour au menu principal
-*/
 void Othello::handle(const char& c){
+
   ANSI::Arrow arr;
   arr = checkArrow(c);
   if(arr == ANSI::UP 
@@ -92,11 +87,16 @@ void Othello::handle(const char& c){
   }
 }
 
-/** 
-    retourne les pions qui devraient l'être, lors d'un coup supposé correct.
-*/
 void Othello::shuffle(const unsigned short& x,
 		      const unsigned short& y){
+  /**
+   * @brief Retourne les pions retournables depuis une position.
+   * @details A utiliser après un coup joué (donc supposé correct. On cherche 
+   * dans les 8 directions si on peut manger des pions adverses à la case donnée
+   * par la position.
+   * @param x Abscisse du coup joué.
+   * @param y Ordonnée du coup joué.
+   */
   Player p = (Player)board.get(x, y);
   unsigned short right = board.getWidth(), bottom = board.getHeight();
   for(short i = -1; i <= 1 ; i++){
@@ -151,6 +151,14 @@ bool Othello::isSucc(Board b,
 		     const unsigned short& x,
 		     const unsigned short& y,
 		     const Player& p) const{
+  /**
+   * @brief Teste si le coup amène à une position successeur.
+   * @details C'est la fonction de succession à passer à @e compute_next.
+   * @param b Plateau où on teste la validité du coup.
+   * @param x Abscisse du coup à tester.
+   * @param y Ordonnée du coup à tester.
+   * @param p Joueur supposé jouer le coup.
+   **/
   if(b.get(x, y) != -1) //seule une case vide est jouable
     return false;
   unsigned short k;
