@@ -17,9 +17,9 @@ Console::Console(){
   mHeight = 24;
   mCursorX = 0;
   mCursorY = 0;
-  framerate = 40;
-  currentBG = ANSI::Color::BLACK;
-  currentFG = ANSI::Color::WHITE;
+  mFramerate = 40;
+  mCurrentBG = ANSI::Color::BLACK;
+  mCurrentFG = ANSI::Color::WHITE;
   //  showCursor(false);
   setBlocking(false);
 }
@@ -29,7 +29,7 @@ char Console::getInput() const{
    * @brief Lit un caractère sur l'entrée standard.
    * @details Si @e setBlocking() n'a pas été rappelée, la lecture ne nécessite 
    * pas de retour chariot.
-   * @return le caractère entrée au clavier.
+   * @return le caractère entré au clavier.
    */
   char c;
   std::cin >> c;
@@ -84,23 +84,21 @@ void Console::setHeight(const unsigned short& h){
 }
 
 ANSI::Color Console::getBackground() const{
-  return this->currentBG;
+  return this->mCurrentBG;
 }
 
 ANSI::Color Console::getForeground() const{
-  return this->currentFG;
+  return this->mCurrentFG;
 }
 
-/* changes the background color */
 void Console::setBackground(const ANSI::Color& bc){
-  this->currentBG = bc;
+  this->mCurrentBG = bc;
   //    std::cout<<CSI<<bc<<"m";
   std::cout<<CSI<<"48;5;"<<bc<<"m";
 }
 
-/* changes the foreground color */
 void Console::setForeground(const ANSI::Color& fc){
-  this->currentFG = fc;
+  this->mCurrentFG = fc;
   //    std::cout<<CSI<<fc<<"m";
   std::cout<<CSI<<"38;5;"<<fc<<"m";
 }
@@ -113,31 +111,28 @@ unsigned short Console::getCursorY() const{
   return this->mCursorY;
 }
 
-/** changes the cursor's position to the given coordinates */    
 void Console::setCursor(const unsigned short& x, const unsigned short& y){
-  this->cursorX = min(x, getWidth() );
-  this->cursorY = min(y, getHeigth() );
+  this->mCursorX = min(x, getWidth() );
+  this->mCursorY = min(y, getHeight() );
   std::cout<<CSI<<this->mCursorY<<";"<<this->mCursorX<<"H";
 }
 
-/** changes the cursor's X */
 void Console::setCursorX(const unsigned short& x){
   this->mCursorX = min(x, getWidth() );
   std::cout<<CSI<<this->mCursorY<<";"<<this->mCursorX<<"H";
 }
 
-/** changes the cursor's Y */
 void Console::setCursorY(const unsigned short& y){
-  this->mCursorY = min(y, getHeigth() );
+  this->mCursorY = min(y, getHeight() );
   std::cout<<CSI<<this->mCursorY<<";"<<this->mCursorX<<"H";
 }
 
 void Console::setFramerate(const double& f){
-  this->framerate = f;
+  this->mFramerate = f;
 }
 
 double Console::getFramerate() const{
-  return this->framerate;
+  return this->mFramerate;
 }
 
 
@@ -185,7 +180,7 @@ void Console::draw(const unsigned short& x, const unsigned short& y, const std::
   if( x > 0 
       and y > 0
       and x <= this->getWidth() 
-      and y <= this->getHeigth() ){
+      and y <= this->getHeight() ){
     unsigned short previousX = Console::getInstance()->getCursorX();
     unsigned short previousY = Console::getInstance()->getCursorY();
     Console::getInstance()->setCursor(x, y);
@@ -209,7 +204,7 @@ void Console::drawString(const unsigned short& x, const unsigned short& y, const
   if( x > 0 
       and y > 0
       and x <= this->getWidth() 
-      and y <= this->getHeigth() ){
+      and y <= this->getHeight() ){
     unsigned short previousX = Console::getInstance()->getCursorX();
     unsigned short previousY = Console::getInstance()->getCursorY();
     unsigned short cx = x, cy = y;
@@ -316,19 +311,29 @@ void Console::clear(){
   std::cout<<ESC<<"c";
 }
 
-/* move the cursor by the given vector */
 void Console::moveCursor(const int& vx, const int& vy){
+  /**
+     @brief Déplace le curseur du vecteur donné.
+     @param vx Déplacement horizontal.
+     @param vy Déplacement vertical.
+   */
   setCursor(mCursorX + vx, mCursorY += vy);
 }
 
-/* move the cursor on its line of the given amount */
 void Console::moveCursorX(const int& vx){
+  /**
+     @brief Déplace le curseur sur sa ligne.
+     @param vx Déplacement horizontal.
+   */
   setCursorX(mCursorX + vx);
   std::cout<<CSI<<this->mCursorY<<";"<<this->mCursorX<<"H";
 }
 
-/* move the cursor on its column of the given amount */
 void Console::moveCursorY(const int& vy){
+  /**
+     @brief Déplace le curseur sur sa colonne.
+     @param vy Déplacement vertical.
+   */
   setCursorY(mCursorY+ vy);
   std::cout<<CSI<<this->mCursorY<<";"<<this->mCursorX<<"H";
 }
@@ -336,7 +341,10 @@ void Console::moveCursorY(const int& vy){
 
 ANSI::Arrow checkArrow(const char & c){
   /**
-   * 
+   * @brief Vérifie l'appui d'une touche.
+   * @details Une flèche consiste à une caractère ESC[ suivi d'une lettre. 
+   * @param c Touche entrée.
+   * @return La direction entrée, ou NOARROW si ce n'est pas une flèche.
    */
   if(c != ESC)
     return ANSI::NOARROW;

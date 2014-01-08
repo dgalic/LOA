@@ -20,9 +20,9 @@ private:
   unsigned short mWidth, mHeight;
   unsigned short mCursorX; //current X of the cursor
   unsigned short mCursorY; //current Y of the cursor
-  ANSI::Color currentBG; //current BackGround color
-  ANSI::Color currentFG; //current ForeGround color
-  double framerate; // number of frame displayed per second
+  ANSI::Color mCurrentBG; //current BackGround color
+  ANSI::Color mCurrentFG; //current ForeGround color
+  double mFramerate; // number of frame displayed per second
     
 public:
 

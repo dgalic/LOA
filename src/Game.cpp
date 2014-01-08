@@ -5,20 +5,32 @@
 #include "StateHandler.hpp"
 #include "Console.hpp"
 #include "MainMenuState.hpp"
-#include "ResourceManager.hpp"
 #include "Singleton.hpp"
 
 void Game::init(){
+  /**
+   * @brief Initialise le programme.
+   * @details L'état de commencement est @e StartState. Le membre @e running est 
+   * mis à true, permettant de lancer la boucle de jeu par la suite.
+  */
   StateHandler::getInstance()->push(new MainMenuState() );
   running = true;
   std::cerr<<"Game initialized"<<std::endl;
 }
 
 void Game::stop(){
+  /**
+   * @brief Stoppe l'exécution de la boucle.
+   * @details Le membre @e running est mis sur @e false.
+  */
   running = false;
 }
 
 void Game::resume(){
+  /**
+   * @brief Reprend l'exécution de la boucle.
+   * @details Le membre @e running est mis sur @e true.
+  */
   running = true;
 }
 
@@ -32,6 +44,12 @@ void Game::exit(){
 }
 
 void Game::loop(){
+  /**
+   * @brief Lance la boucle de jeu.
+   * @details La boucle de jeu va calculer le nouvel état suivant la logique de 
+   * jeu, puis rendre l'état obtenu suite à cette mise à jour. Si le membre
+   * @e running passe à @e false, la boucle s'arrête.
+   **/
   std::cerr<<"Starting Game Loop"<<std::endl;
   while(running){
     StateHandler::getInstance()->update();
