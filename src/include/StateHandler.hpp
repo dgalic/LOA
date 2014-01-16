@@ -20,7 +20,7 @@ public:
   virtual void update();
   virtual void render();
   
-private:
+protected:
   std::stack<State *> mStates;
 
 };

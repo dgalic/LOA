@@ -4,7 +4,7 @@
 #include "Board.hpp"
 #include "State.hpp"
 
-#include "ANSI.hpp"
+#include "Player.hpp"
 
 #include <set>
 #include <utility> // pour std::pair
@@ -14,16 +14,12 @@
    des paires (x,y) de positions possibles depuis la configuration courante */
 typedef std::set< std::pair< unsigned short, unsigned short> > Positions;
 
-typedef ANSI::Color Player;
-
 class BoardGame : public State{
 
 protected:
   Board mBoard;
   unsigned short mPointerX, mPointerY; // case séléctionnée
   bool mIngame; //dit si le jeu est terminé ou pas
-  Player mPlayer1; //un jeu possède au moins 1 joueur, sinon c'est nul
-  Player mCurrentPlayer;
   Positions successors; //les coups possibles depuis le plateau courant
   std::function<bool(Board, 
 		     const unsigned short&,

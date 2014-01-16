@@ -11,14 +11,12 @@
 #include <utility> // pour std::pair
 #include <functional>
 
-Othello::Othello(Player p1,
-		 Player p2,
-		 const unsigned short& t)
-  : BoardGame(8, 8){
+Othello::Othello(const Color& p1,
+		 const Color& p2)
+  : BoardGame(8, 8), mPlayer1(p1), mPlayer2(p2) {
   mPlayer1 = p1;
   mPlayer2 = p2;
-  mCurrentPlayer = p1;
-  mTypeIA = t;
+  mCurrentPlayer = &mPlayer1;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
@@ -75,14 +73,14 @@ void Othello::handle(const char& c){
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
     if( isNext(mPointerX, mPointerY, successors) ){
-      mBoard.at(mPointerX, mPointerY ) = mCurrentPlayer;
-      if( mCurrentPlayer == mPlayer1){
+      mBoard.at(mPointerX, mPointerY ) = mCurrentPlayer->getColor();
+      if( mCurrentPlayer == &mPlayer1){
 	mScore[0] ++;
       }else{
 	mScore[1] ++;
       }
       shuffle(mPointerX, mPointerY);      
-      mCurrentPlayer = (Player) ((int)mPlayer1+(int)mPlayer2-( (int)(mCurrentPlayer)) );
+      mCurrentPlayer = opponent();
     }
   }
 }
@@ -97,7 +95,7 @@ void Othello::shuffle(const unsigned short& x,
    * @param x Abscisse du coup joué.
    * @param y Ordonnée du coup joué.
    */
-  Player p = (Player)mBoard.get(x, y);
+  Color pcolor = (Color)mBoard.get(x, y);
   unsigned short right = mBoard.getWidth(), bottom = mBoard.getHeight();
   for(short i = -1; i <= 1 ; i++){
     for(short j = -1; j <= 1; j++){
@@ -113,12 +111,12 @@ void Othello::shuffle(const unsigned short& x,
 	std::cerr<<"element => "<<element<<std::endl;
 	if(element == -1) //case vide
 	  break;
-	if(element != p)
+	if(element != pcolor )
 	  k++;
-	if(element == p){
+	if(element == pcolor ){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    short k2 = k;
-	    if( (Player)p == mPlayer1){
+	    if( pcolor == mPlayer1.getColor() ){
 	      mScore[0] += k-1;
 	      mScore[1] -= k-1;
 	    }else{
@@ -129,7 +127,7 @@ void Othello::shuffle(const unsigned short& x,
 	    while(x+(k2*i) != x || y+(k2*j) != y){		  
 	      std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 
-	      mBoard.at(x+k2*i, y+k2*j) = p;
+	      mBoard.at(x+k2*i, y+k2*j) = pcolor ;
 
 	      k2--;
 	    }
@@ -175,9 +173,9 @@ bool Othello::isSucc(Board b,
 	short element = b.get(x+k*i, y+k*j);
 	if(element == -1) //case vide
 	  break;
-	else if(element != p)
+	else if(element != p.getColor() )
 	  k++;
-	else if(element == p){
+	else if(element == p.getColor() ){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    return true;
 	  }
@@ -192,6 +190,13 @@ bool Othello::isSucc(Board b,
   
 }
 
+const Player * Othello::opponent() const{
+  if(*mCurrentPlayer == mPlayer1 )
+    return &mPlayer2;
+  else 
+    return &mPlayer1;
+}
+
 
 void Othello::update(){
   if(not mIngame){
@@ -200,17 +205,16 @@ void Othello::update(){
     std::cin>>c;
     Game::getInstance()->getHandler().change(new MainMenuState() );
   }else{
-    BoardGame::update();
-    successors = BoardGame::computeNext(mBoard, mCurrentPlayer, succ_function);
-    Player opponent = (Player) ( (int)mPlayer1+(int)mPlayer2-(int)( mCurrentPlayer) );
+    successors = BoardGame::computeNext(mBoard, *mCurrentPlayer, succ_function);
+    const Player * other = opponent();
     if(successors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
-      if(computeNext(mBoard, opponent, succ_function).empty() )
+      if(computeNext(mBoard, *other, succ_function).empty() )
 	// partie terminée
 	mIngame = false;
       else{
 	// changement de joueurs
-	mCurrentPlayer = opponent;
+	mCurrentPlayer = other;
       }
     }else{
       char c;
@@ -221,7 +225,6 @@ void Othello::update(){
 }
 
 void Othello::render(){
-  BoardGame::render();
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
@@ -230,7 +233,7 @@ void Othello::render(){
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 3);
-  Console::getInstance()->setForeground(mPlayer1);
+  Console::getInstance()->setForeground(mPlayer1.getColor() );
   std::ostringstream oss(std::ostringstream::ate);
   /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
      par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
@@ -238,14 +241,14 @@ void Othello::render(){
   oss << mScore[0];
   Console::getInstance()->drawString(1, 3, oss.str() );
   Console::getInstance()->setCursor(25, 3);
-  Console::getInstance()->setForeground(mPlayer2);
+  Console::getInstance()->setForeground(mPlayer2.getColor() );
   oss.str("Joueur 2 - ");
   oss << mScore[1];
   Console::getInstance()->drawString(25, 3, oss.str() );
   oss.clear();
   // indicateur du joueur courant
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(mCurrentPlayer == mPlayer1){
+  if(*mCurrentPlayer == mPlayer1){
     Console::getInstance()->draw(6, 5, '^');
   }else{
     Console::getInstance()->draw(30, 5, '^');
@@ -258,10 +261,10 @@ bool Othello::init(){
   BoardGame::init();
   mScore[0] = 2;
   mScore[1] = 2;
-  mBoard.at(3,3) = mPlayer1;
-  mBoard.at(4,4) = mPlayer1;
-  mBoard.at(3,4) = mPlayer2;
-  mBoard.at(4,3) = mPlayer2;
+  mBoard.at(3,3) = mPlayer1.getColor();
+  mBoard.at(4,4) = mPlayer1.getColor();
+  mBoard.at(3,4) = mPlayer2.getColor();
+  mBoard.at(4,3) = mPlayer2.getColor();
   return true;
 }
 
