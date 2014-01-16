@@ -1,35 +1,36 @@
 #ifndef OTHELLO_HPP
 #define OTHELLO_HPP
 
-#include "ANSI.hpp"
 #include "BoardGame.hpp"
+#include "Player.hpp"
 #include "StateHandler.hpp"
-
-#include <vector>
-
+#include "Color.hpp"
 
 class Othello : public BoardGame{
 
 private:
+  Player mPlayer1;
   Player mPlayer2;
-  unsigned short mTypeIA;
+  const Player * mCurrentPlayer;
   unsigned short mScore[2];
 
+
 public:
-  Othello(Player = ANSI::Color::BLUE, 
-	  Player = ANSI::Color::GREEN,
-	  const unsigned short& = 0);
+  Othello(const Color&, 
+	  const Color&);
   virtual ~Othello();
-  virtual void handle(const char& = ' ');
-  virtual void shuffle(const unsigned short&, const unsigned short&);
+  void handle(const char&);
+  void shuffle(const unsigned short&, const unsigned short&);
   bool isSucc(Board,
 	      const unsigned short&,
 	      const unsigned short&,
 	      const Player&) const;
+  const Player * opponent() const;
   virtual void update();
   virtual void render();
   virtual bool init();
   virtual bool exit();
+  
 
 };
 
