@@ -38,35 +38,8 @@ Othello::~Othello(){
 
 void Othello::handle(const char& c){
 
-  ANSI::Arrow arr;
-  arr = checkArrow(c);
-  if(arr == ANSI::UP 
-     || c == 'z'){
-    if(mPointerY > 0)
-      mPointerY--;
+  if( checkMove(c) )
     return;
-  }
-    
-  if(arr == ANSI::LEFT 
-     || c == 'q'){
-    if(mPointerX > 0)
-      mPointerX--;
-    return;
-  }
-
-  if(arr == ANSI::DOWN 
-     || c == 's'){
-    if(mPointerY < mBoard.getHeight()-1 )
-      mPointerY++;
-    return;
-  }
-
-  if(arr == ANSI::RIGHT 
-     || c == 'd'){
-    if(mPointerX < mBoard.getWidth()-1 )
-      mPointerX++;
-    return;
-  }
   
   if(c == 'x'){
     Game::getInstance()->getHandler().change(new MainMenuState() );
