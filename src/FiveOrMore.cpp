@@ -44,8 +44,9 @@ void FiveOrMore::handle(const char& c){
     handleSelection(c);
   }else{
     std::cerr<<"FIVE OR MORE : mode déplacement"<<std::endl;
-    handleMove(c);
+    handleAction(c);
   }
+  BoardGame::handle(c);
 }
 
 void FiveOrMore::handleSelection(const char& c){
@@ -58,15 +59,42 @@ void FiveOrMore::handleSelection(const char& c){
     }
   }
    
-  if(c == 'x'){
-    Game::getInstance()->getHandler().change(new MainMenuState() );
-    return;
-  }
 }
 
-void FiveOrMore::handleMove(const char& c){
-  checkMove(c);
-   
+void FiveOrMore::handleAction(const char& c){
+  ANSI::Arrow arr;
+  arr = checkArrow(c);
+  if(arr == ANSI::UP 
+     || c == 'z'){
+    if(mPointerY > 0 
+       && mBoard.at(mPointerX, mPointerY-1) == -1 )
+      mPointerY--;
+    return ;
+  }
+    
+  if(arr == ANSI::LEFT 
+     || c == 'q'){
+    if(mPointerX > 0 
+       && mBoard.at(mPointerX-1, mPointerY) == -1)
+      mPointerX--;
+    return ;
+  }
+
+  if(arr == ANSI::DOWN 
+     || c == 's'){
+    if(mPointerY < mBoard.getHeight()-1  
+       && mBoard.at(mPointerX, mPointerY+1) == -1 )
+      mPointerY++;
+    return ;
+  }
+
+  if(arr == ANSI::RIGHT 
+     || c == 'd'){
+    if(mPointerX < mBoard.getWidth()-1 
+       && mBoard.at(mPointerX+1, mPointerY) )
+      mPointerX++;
+    return ;
+  }
   if(c == 'p' || c == MARK){
     /* fixage du pion, mais attention : si on n'a pas changé sa position,
        on doit pouvoir rejouer */
@@ -94,7 +122,6 @@ void FiveOrMore::update(){
     handle(c);
     //ajout de n pions randoms si on a déplacé un pion
     if(mPlaced){
-      std::cerr<<"FIVE OR MORE : ajout de "<<mAdds<<" pièces"<<std::endl;
       for(unsigned short i = 0; i < mAdds; i++){
         if(addRandom() ){
           return;
@@ -109,6 +136,7 @@ void FiveOrMore::update(){
 
 void FiveOrMore::render(){
   // petit marqueur de l'emplacement d'origine du pion séléctionné
+  static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
@@ -128,10 +156,9 @@ void FiveOrMore::render(){
   if(mIngame == false){
     oss.str("Game Over. Score final : ");
     oss << mScore;
-    Console::getInstance()->drawString(7, 19, oss.str() );
+    Console::getInstance()->drawString(boardX+mSize*3+3, boardY+mSize/2, oss.str() );
     oss.clear();
   } 
-  static unsigned short boardX = 12, boardY = 8;
   mBoard.draw(boardX, boardY);
   // surlignage de la case séléctionnée
   if(mSelectedX != -1 && mSelectedY != -1){
@@ -163,10 +190,9 @@ void FiveOrMore::searchLines(const unsigned short& x,
     for(short iy = -1; iy <= 1; iy++){
       xtest = x;
       ytest = y;
-      std::cerr<<"FIVE OR MORE : direction "<<ix<<","<<iy<<std::endl;
       if(ix == 0 && iy == 0)
         continue;
-      //pion de la même couleur le plus à gauche
+      //pion de la même couleur le plus éloigné
       while( xtest > 0  && 
              (  iy == 0 
                 || (iy < 0 && ytest < mSize-1 ) 
@@ -175,20 +201,19 @@ void FiveOrMore::searchLines(const unsigned short& x,
         xtest -= ix;
         ytest -= iy;
       }
-      std::cerr<<"FIVE OR MORE : pion de la même couleur le plus à gauche :  "<<xtest<<","<<ytest<<std::endl;
       count = 1;
+      //on cherche les pions, dans la direction opposée, en comptant
       while(xtest < mSize-1 &&            
             (  iy == 0 
                || (iy > 0 && ytest < mSize-1 ) 
                    || (iy < 0 && ytest > 0 ) )
             &&
             mBoard.at(xtest+ix, ytest+iy) == c){
-        std::cerr<<"FIVE OR MORE : "<<xtest+ix<<","<<ytest+iy<<" = "<<mBoard.at(xtest+ix, ytest+iy)<<"/"<<c<<std::endl; 
         count++;
         xtest += ix;
         ytest += iy;
       }
-      std::cerr<<"FIVE OR MORE : "<<count<<" pions alignés"<<std::endl;
+      //si il y a plus de 5, on fait machine arrière et on fait l'action
       if(count >= 5){
         for(unsigned short i = 0; i < count; i++){
           if(xtest != x or ytest != y)
@@ -221,10 +246,8 @@ bool FiveOrMore::addRandom(){
   unsigned short x, y;
   Color c;
   unsigned short r = Random::get(0, mNbColors);
-  std::cerr<< "accès aux couleurs : "<<r<<"/"<<sColorList.size() <<std::endl;
   c = sColorList.at(r);
   do{  
-    std::cerr<< "accès aux cases : "<<mSize<<" /"<<mSize <<std::endl;
     x = Random::get(0, mSize);
     y = Random::get(0, mSize);
   }while( mBoard.at(x, y) != -1 );

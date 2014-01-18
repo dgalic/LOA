@@ -2,7 +2,10 @@
 
 #include "State.hpp"
 
+#include "ANSI.hpp"
 #include "Console.hpp"
+#include "Game.hpp"
+#include "MainMenuState.hpp"
 
 #include <functional>
 #include <utility>
@@ -15,6 +18,13 @@ BoardGame::BoardGame(const unsigned int& w = 0,
 
 BoardGame::~BoardGame(){
 
+}
+
+void BoardGame::handle(const char& c){
+  if(c == 'x'){
+    Game::getInstance()->getHandler().change(new MainMenuState() );
+    return;
+  }
 }
 
 bool BoardGame::checkMove(const char& c){

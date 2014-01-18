@@ -29,7 +29,7 @@ public:
              const unsigned short& = 3);
   virtual ~FiveOrMore();
   virtual void handleSelection(const char&);
-  virtual void handleMove(const char&);
+  virtual void handleAction(const char&);
   virtual void update();
   virtual void render();
   virtual void searchLines(const unsigned short&,

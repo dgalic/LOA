@@ -37,14 +37,9 @@ Othello::~Othello(){
 }
 
 void Othello::handle(const char& c){
-
   if( checkMove(c) )
     return;
-  
-  if(c == 'x'){
-    Game::getInstance()->getHandler().change(new MainMenuState() );
-    return;
-  }
+  BoardGame::handle(c);
 
   if(c == 'p' || c == MARK){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
@@ -203,6 +198,7 @@ void Othello::update(){
 }
 
 void Othello::render(){
+  static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
@@ -237,9 +233,9 @@ void Othello::render(){
     oss << ( (mScore[1]>mScore[0])?2:1 );
     oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
     Console::getInstance()->setForeground(ANSI::Color::WHITE);
-    Console::getInstance()->drawString(7, 19, oss.str() );
+    Console::getInstance()->drawString(boardX+25, boardY+4, oss.str() );
     oss.clear();
   }
-  mBoard.draw(12, 8);
+  mBoard.draw(boardX, boardY);
   Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);
 }
