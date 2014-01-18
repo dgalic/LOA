@@ -9,7 +9,7 @@ protected:
   Color mColor;
 
 public:
-  Player(const Color&);
+  Player(const Color& = Color::WHITE);
   Player(const Player& p);
   virtual ~Player(){ };
   virtual Color getColor() const;
