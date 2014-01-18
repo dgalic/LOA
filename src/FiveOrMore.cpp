@@ -38,12 +38,12 @@ FiveOrMore::~FiveOrMore(){
 }
 
 void FiveOrMore::handle(const char& c){
-  std::cerr<<"FIVE OR MORE : sélécted : "<<mSelectedX<<" "<<mSelectedY<<std::endl;
+  //std::cerr<<"FIVE OR MORE : sélécted : "<<mSelectedX<<" "<<mSelectedY<<std::endl;
   if(mSelectedX == -1 or mSelectedY == -1){
-    std::cerr<<"FIVE OR MORE : mode séléction"<<std::endl;
+    //std::cerr<<"FIVE OR MORE : mode séléction"<<std::endl;
     handleSelection(c);
   }else{
-    std::cerr<<"FIVE OR MORE : mode déplacement"<<std::endl;
+    //std::cerr<<"FIVE OR MORE : mode déplacement"<<std::endl;
     handleAction(c);
   }
   BoardGame::handle(c);
@@ -64,40 +64,55 @@ void FiveOrMore::handleSelection(const char& c){
 void FiveOrMore::handleAction(const char& c){
   ANSI::Arrow arr;
   arr = checkArrow(c);
-  if(arr == ANSI::UP 
+    if(arr == ANSI::UP 
      || c == 'z'){
-    if(mPointerY > 0 
-       && mBoard.at(mPointerX, mPointerY-1) == -1 )
+    /* on peut bouger sur une case, soit si elle est vide, 
+       soit si c'est la case d'origine */
+    if( mPointerY > 0 && 
+        ( (mPointerX == mSelectedX && mPointerY-1 == mSelectedY )
+          || 
+          (mBoard.at(mPointerX, mPointerY-1) == -1 )  )
+        )
       mPointerY--;
-    return ;
+    return;
   }
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if(mPointerX > 0 
-       && mBoard.at(mPointerX-1, mPointerY) == -1)
+    if( mPointerX > 0 && 
+        ( (mPointerX-1 == mSelectedX && mPointerX == mSelectedY )
+          || 
+          (mBoard.at(mPointerX-1, mPointerY) == -1 )   )
+        )
       mPointerX--;
-    return ;
+    return;
   }
 
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if(mPointerY < mBoard.getHeight()-1  
-       && mBoard.at(mPointerX, mPointerY+1) == -1 )
+    if( mPointerY < mSize-1 && 
+        ( (mPointerX == mSelectedX && mPointerY+1 == mSelectedY )
+          || 
+          (mBoard.at(mPointerX, mPointerY+1) == -1 )  )
+        )
       mPointerY++;
-    return ;
+    return;
   }
 
   if(arr == ANSI::RIGHT 
-     || c == 'd'){
-    if(mPointerX < mBoard.getWidth()-1 
-       && mBoard.at(mPointerX+1, mPointerY) )
+     || c == 'd'){  
+    if( mPointerX < mSize-1 && 
+        ( (mPointerX+1 == mSelectedX && mPointerY == mSelectedY )
+          || 
+          (mBoard.at(mPointerX+1, mPointerY) == -1 )  )
+        )
       mPointerX++;
-    return ;
+    return;
   }
-  if(c == 'p' || c == MARK){
+ 
+ if(c == 'p' || c == MARK){
     /* fixage du pion, mais attention : si on n'a pas changé sa position,
-       on doit pouvoir rejouer */
+       on doit pouvoir rejouer : d'où le mPlaced */
 
     if(mPointerX != mSelectedX or mPointerY != mSelectedY){
       mBoard.at( mPointerX, mPointerY) = mBoard.at(mSelectedX, mSelectedY);
@@ -112,6 +127,7 @@ void FiveOrMore::handleAction(const char& c){
 
 void FiveOrMore::update(){
   if(not mIngame){
+    std::cerr<<"c'est vraiment la fin"<<std::endl;
     char c;
     std::cin>>c;
     Game::getInstance()->getHandler().change(new MainMenuState() );
@@ -124,6 +140,7 @@ void FiveOrMore::update(){
     if(mPlaced){
       for(unsigned short i = 0; i < mAdds; i++){
         if(addRandom() ){
+          mPlaced = false;
           return;
         }
       }
@@ -181,7 +198,6 @@ void FiveOrMore::searchLines(const unsigned short& x,
    * @param x Abscisse du pion à tester.
    * @param y Ordonnée du pion à tester.
    */
-  std::cerr<<"FIVE OR MORE : test des pions à supprimer à cause de "<<x<<","<<y<<std::endl;
   unsigned short nb = 0; // nombre de pions détruits (le posé est cumulé)
   unsigned short count = 0;
   unsigned short c = mBoard.at(x, y);  
@@ -216,8 +232,10 @@ void FiveOrMore::searchLines(const unsigned short& x,
       //si il y a plus de 5, on fait machine arrière et on fait l'action
       if(count >= 5){
         for(unsigned short i = 0; i < count; i++){
-          if(xtest != x or ytest != y)
+          if(xtest != x or ytest != y){
             mBoard.at(xtest, ytest) = -1;
+            mFreePlaces++;
+          }          
           xtest -= ix;
           ytest -= iy;
           nb++;
@@ -229,6 +247,7 @@ void FiveOrMore::searchLines(const unsigned short& x,
   // fin des vérifications
   if(nb > 0){
     mBoard.at(x, y) = -1;
+    mFreePlaces++;
     nb++;
   }
   mScore += (nb * ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
@@ -252,7 +271,15 @@ bool FiveOrMore::addRandom(){
     y = Random::get(0, mSize);
   }while( mBoard.at(x, y) != -1 );
   mBoard.at(x, y) = c;
+  mFreePlaces--;
+  std::cerr<<"avant"<<std::endl;
   searchLines(x, y);
+  int theory = 0;
+  for(unsigned int i = 0; i < mSize; i++)    
+    for(unsigned int j = 0; j < mSize; j++)
+    if(mBoard.at(i, j) == -1)
+      theory++;
+  std::cerr<<"après : "<<mFreePlaces<<"/"<<theory<<std::endl;
   return end();
 }
 
@@ -260,6 +287,7 @@ bool FiveOrMore::addRandom(){
 bool FiveOrMore::end(){
   if(mFreePlaces <= 0){
     mIngame = false;
+    std::cerr<<"c'est la fin"<<std::endl;
     return true;
   }else{
     return false;
