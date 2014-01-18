@@ -57,8 +57,8 @@ proper:clean
 
 start:
 	@echo "'l' - launch"
-	@./$(PROGRAM) 2> Errlog; reset
+	@./$(PROGRAM) 2> errlog; reset
 
 valgrind:
 	@echo "'l' - launch"
-	@valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./$(PROGRAM) 2> Valgrind_log; reset
+	@valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./$(PROGRAM) 2> valgrind_log; reset
