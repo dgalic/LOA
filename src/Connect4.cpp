@@ -15,8 +15,6 @@
 Connect4::Connect4(const Color& p1,
                    const Color& p2)
 : BoardGame(7, 6, p1, p2){
-  mPlayer1 = p1;
-  mPlayer2 = p2;
   mCurrentPlayer = &mPlayer1;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -185,7 +183,7 @@ void Connect4::render(){
   // nettoye l'interface et la rafraichie
   Console::getInstance()->clear();
 
-  BoardGame::displayHeader("Connect 4 - q/left  d/right  !/p:drop  x:quit");
+  Console::getInstance()->drawHeader("Connect 4 - q/left  d/right  !/p:drop  x:quit");
 
   std::ostringstream oss(std::ostringstream::ate);
   /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
@@ -206,7 +204,7 @@ void Connect4::render(){
   // si la partie n'est pas finie
   if (mIngame == true) {
     // indicateur du joueur courant
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->setForeground(Color::WHITE);
         
     // affiche sur l'interface à quel joueur doit jouer
     if (*mCurrentPlayer == mPlayer1) {
@@ -218,7 +216,7 @@ void Connect4::render(){
     // Si partie finie affiche qui à gagner ou égaliter
     oss.str("Joueur ");
     oss << ( (mCurrentPlayer == &mPlayer1)?1:2);
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->setForeground(Color::WHITE);
     Console::getInstance()->drawString(7, 19, oss.str() );
     oss.clear();
   }

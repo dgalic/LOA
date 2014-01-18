@@ -4,6 +4,7 @@
 #include "Board.hpp"
 #include "State.hpp"
 
+#include "ANSI.hpp"
 #include "Player.hpp"
 
 #include <set>
@@ -46,7 +47,6 @@ protected:
   bool isNext(const unsigned short& x, 
               const unsigned short& y,
               const Positions& p) const;
-  void displayHeader(const std::string&);
   void displayScore();
   void displayCurrentPlayer();
   void displayResult(const unsigned short&, const unsigned short&);

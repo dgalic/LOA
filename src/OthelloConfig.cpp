@@ -3,6 +3,7 @@
 
 #include "Game.hpp"
 #include "ANSI.hpp"
+#include "Color.hpp"
 #include "Console.hpp"
 #include "StateHandler.hpp"
 #include "MainMenuState.hpp"
@@ -12,14 +13,14 @@
 
 OthelloConfig::OthelloConfig()
   :mEntry(0), mType2(0){
-  mPossibleColors.push_front(ANSI::BROWN);
-  mPossibleColors.push_front(ANSI::YELLOW);
-  mPossibleColors.push_front(ANSI::GREEN);
-  mPossibleColors.push_front(ANSI::LIGHTCYAN);
-  mPossibleColors.push_front(ANSI::BLUE);
-  mPossibleColors.push_front(ANSI::PURPLE);
-  mPossibleColors.push_front(ANSI::PINK);
-  mPossibleColors.push_front(ANSI::RED);
+  mPossibleColors.push_front(Color::BROWN);
+  mPossibleColors.push_front(Color::YELLOW);
+  mPossibleColors.push_front(Color::GREEN);
+  mPossibleColors.push_front(Color::LIGHTCYAN);
+  mPossibleColors.push_front(Color::BLUE);
+  mPossibleColors.push_front(Color::PURPLE);
+  mPossibleColors.push_front(Color::PINK);
+  mPossibleColors.push_front(Color::RED);
   mColor1 = (mPossibleColors.begin() )++;
   mColor2 = mColor1;
   mColor2++;
@@ -96,7 +97,7 @@ void OthelloConfig::handle(const char& c){
     if(mColor1 != mColor2){
       Game::getInstance()->getHandler().change(new Othello(*mColor1, *mColor2) );
     }else{
-      Console::getInstance()->setForeground(ANSI::WHITE);
+      Console::getInstance()->setForeground(Color::WHITE);
       Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas avoir la même couleur ! ");
       Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
     }
@@ -118,16 +119,16 @@ void OthelloConfig::update(){
 
 void OthelloConfig::render(){
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("Othello  -  z:up  s:down  !/p:select  x:quit");
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
+  Console::getInstance()->setForeground(Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(*mColor1);
   Console::getInstance()->draw(4, 4, "Couleur joueur 1");
   Console::getInstance()->setForeground(*mColor2);
   Console::getInstance()->draw(4, 5, "Couleur joueur 2");
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->draw(4, 6, "Type adversaire : "); 
   if(mType2 == 0){
     Console::getInstance()->draw(30, 6, "Humain");

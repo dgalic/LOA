@@ -1,5 +1,6 @@
 #include "Console.hpp"
 #include "ANSI.hpp"
+#include "Color.hpp"
 #include "Helpers.hpp"
 
 #include <string>
@@ -18,8 +19,8 @@ Console::Console(){
   mCursorX = 0;
   mCursorY = 0;
   mFramerate = 40;
-  mCurrentBG = ANSI::Color::BLACK;
-  mCurrentFG = ANSI::Color::WHITE;
+  mCurrentBG = Color::BLACK;
+  mCurrentFG = Color::WHITE;
   //  showCursor(false);
   setBlocking(false);
 }
@@ -83,21 +84,21 @@ void Console::setHeight(const unsigned short& h){
   mHeight = h;
 }
 
-ANSI::Color Console::getBackground() const{
+Color Console::getBackground() const{
   return this->mCurrentBG;
 }
 
-ANSI::Color Console::getForeground() const{
+Color Console::getForeground() const{
   return this->mCurrentFG;
 }
 
-void Console::setBackground(const ANSI::Color& bc){
+void Console::setBackground(const Color& bc){
   this->mCurrentBG = bc;
   //    std::cout<<CSI<<bc<<"m";
   std::cout<<CSI<<"48;5;"<<bc<<"m";
 }
 
-void Console::setForeground(const ANSI::Color& fc){
+void Console::setForeground(const Color& fc){
   this->mCurrentFG = fc;
   //    std::cout<<CSI<<fc<<"m";
   std::cout<<CSI<<"38;5;"<<fc<<"m";
@@ -290,6 +291,13 @@ void Console::drawRectangle(const unsigned short& w, const unsigned short& h, co
   drawRectangle(mCursorX, mCursorY, w, h, c);
 }
 
+void Console::drawHeader(const std::string& txt){
+  setForeground(Color::WHITE);
+  draw(1, 1, txt);
+  setForeground(Color::GRAY);
+  drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
+  drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
+}
 
 void Console::showCursor(const bool& b) const{
   /**

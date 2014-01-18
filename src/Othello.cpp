@@ -197,7 +197,7 @@ void Othello::update(){
 void Othello::render(){
   static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
-  BoardGame::displayHeader("OTHELLO  -  z/up  s/down  q/left  d/right  !/p:place  x:quit");
+  Console::getInstance()->drawHeader("OTHELLO  -  z/up  s/down  q/left  d/right  !/p:place  x:quit");
   BoardGame::displayScore();
   if(mIngame == true){
     // indicateur du joueur courant

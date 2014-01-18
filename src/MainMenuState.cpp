@@ -58,11 +58,11 @@ void MainMenuState::handle(const char& c){
       break;
      
     case 1:
-      Game::getInstance()->getHandler().change(new Connect4(ANSI::Color::RED, ANSI::Color::YELLOW) );
+      Game::getInstance()->getHandler().change(new Connect4(Color::RED, Color::YELLOW) );
       break;
 
     case 2:
-      Game::getInstance()->getHandler().change(new Connect4_long(ANSI::Color::RED, ANSI::Color::YELLOW) );
+      Game::getInstance()->getHandler().change(new Connect4_long(Color::RED, Color::YELLOW) );
       break;
 
     case 3:
@@ -87,20 +87,20 @@ void MainMenuState::update(){
 
 void MainMenuState::render(){
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  !/p:ok");
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
+  Console::getInstance()->setForeground(Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');  
   Console::getInstance()->drawRectangle(1, 12, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->draw(4, 4, "Othello");
   Console::getInstance()->draw(4, 5, "Puissance 4");
   Console::getInstance()->draw(4, 6, "Puissance 4 - variante à points");
   Console::getInstance()->draw(4, 7, "5 or more");
   Console::getInstance()->draw(4, 8, "5 or more - variante couleurs");
   Console::getInstance()->setCursor(1, 14);
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->drawString(mGameDescs.at(mEntry) );
   Console::getInstance()->draw(2, 4+mEntry, '~');
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
