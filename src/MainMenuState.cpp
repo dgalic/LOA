@@ -20,7 +20,9 @@ MainMenuState::MainMenuState(){
 pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
 pions de sa couleur à la fin de la partie.");
   mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur.");
-  mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 pions de même couleurs ou plus. Chaque pion vous rapporte des points avant de disparaitre. Faites vite avant que le plateau ne soit rempli !!");
+  mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur. Chaque ligne vous rapporte 1 point et disparait ensuite.");
+  mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 pions de même couleurs ou plus, en déplaçant un pion. Chaque pion vous rapporte des points avant de disparaitre. Faites vite avant que le plateau ne soit rempli !!");
+  mGameDescs.push_back("Dans cette variante de Five or more, vous ne déplacez pas les pions, vous changez leur couleur.");
  
 }
 

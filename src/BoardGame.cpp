@@ -3,16 +3,22 @@
 #include "State.hpp"
 
 #include "ANSI.hpp"
+#include "Color.hpp"
 #include "Console.hpp"
 #include "Game.hpp"
 #include "MainMenuState.hpp"
 
 #include <functional>
+#include <string>
+#include <sstream>
 #include <utility>
 
-BoardGame::BoardGame(const unsigned int& w = 0, 
-		     const unsigned int& h = 0)
-  : State(), mBoard(Board(w,h)), mPointerX(0), mPointerY(0), mIngame(true){
+BoardGame::BoardGame(const unsigned int& w, 
+		     const unsigned int& h,
+                     const Color& p1, const Color& p2)
+  : State(), mBoard(w, h),
+    mPlayer1(p1), mPlayer2(p2),
+    mPointerX(0), mPointerY(0), mIngame(true){
 
 }
 
@@ -116,3 +122,51 @@ bool BoardGame::isNext(const unsigned short& x,
 }
 
 
+void BoardGame::displayHeader(const std::string& txt){
+  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setCursor(1, 1);
+  Console::getInstance()->draw(txt);
+  Console::getInstance()->setForeground(ANSI::Color::GRAY);
+  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
+  Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
+}
+
+void BoardGame::displayScore(){
+   std::ostringstream oss(std::ostringstream::ate);
+  /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
+     par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
+  oss.str("Joueur 1 - ");
+  oss << mScore[0];
+  Console::getInstance()->setCursor(1, 3);
+  Console::getInstance()->setForeground(mPlayer1.getColor() );
+  Console::getInstance()->drawString(1, 3, oss.str() );
+  Console::getInstance()->setCursor(25, 3);
+  Console::getInstance()->setForeground(mPlayer2.getColor() );
+  oss.str("Joueur 2 - ");
+  oss << mScore[1];
+  Console::getInstance()->drawString(25, 3, oss.str() );
+  oss.clear();
+}
+
+void BoardGame::displayCurrentPlayer(){
+    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    if(*mCurrentPlayer == mPlayer1){
+      Console::getInstance()->draw(6, 5, '^');
+    }else{
+      Console::getInstance()->draw(30, 5, '^');
+    }
+}
+
+void BoardGame::displayResult(const unsigned short& x, const unsigned short& y){
+  if( mScore[0] == mScore[1]){
+    Console::getInstance()->drawString(x, y, "Egalité" );
+  }else{
+    std::ostringstream oss(std::ostringstream::ate);
+    oss.str("Joueur ");
+    oss << ( (mScore[1]>mScore[0])?2:1 );
+    oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
+    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->drawString(x, y, oss.str() );
+    oss.clear();
+  }
+}

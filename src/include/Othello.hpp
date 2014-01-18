@@ -8,13 +8,6 @@
 
 class Othello : public BoardGame{
 
-protected:
-  Player mPlayer1;
-  Player mPlayer2;
-  const Player * mCurrentPlayer;
-  unsigned short mScore[2];
-
-
 public:
   Othello(const Color&, 
 	  const Color&);

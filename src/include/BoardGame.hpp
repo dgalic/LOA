@@ -9,15 +9,17 @@
 #include <set>
 #include <utility> // pour std::pair
 #include <functional>
+#include <string>
 
-/* le type de retour de la fonction de succession : 
-   des paires (x,y) de positions possibles depuis la configuration courante */
 typedef std::set< std::pair< unsigned short, unsigned short> > Positions;
 
 class BoardGame : public State{
 
 protected:
   Board mBoard;
+  const Player mPlayer1;
+  const Player mPlayer2;
+  const Player * mCurrentPlayer;
   unsigned short mPointerX, mPointerY; // case séléctionnée
   bool mIngame; //dit si le jeu est terminé ou pas
   Positions successors; //les coups possibles depuis le plateau courant
@@ -25,9 +27,12 @@ protected:
 		     const unsigned short&,
 		     const unsigned short&,
 		     const Player&) > succ_function;
- 
+
+unsigned short mScore[2];
+
 public:
-  BoardGame(const unsigned int&, const unsigned int&);
+  BoardGame(const unsigned int&, const unsigned int&,
+            const Color&, const Color&);
   virtual ~BoardGame();
   virtual void update() = 0;
   virtual void render() = 0;
@@ -41,6 +46,10 @@ protected:
   bool isNext(const unsigned short& x, 
               const unsigned short& y,
               const Positions& p) const;
+  void displayHeader(const std::string&);
+  void displayScore();
+  void displayCurrentPlayer();
+  void displayResult(const unsigned short&, const unsigned short&);
   
 };
 

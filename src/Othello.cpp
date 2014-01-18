@@ -1,7 +1,6 @@
 #include "Othello.hpp"
 
 #include "Game.hpp"
-#include "ANSI.hpp"
 #include "Console.hpp"
 #include "Board.hpp"
 #include "StateHandler.hpp"
@@ -13,9 +12,7 @@
 
 Othello::Othello(const Color& p1,
 		 const Color& p2)
-  : BoardGame(8, 8), mPlayer1(p1), mPlayer2(p2) {
-  mPlayer1 = p1;
-  mPlayer2 = p2;
+  : BoardGame(8, 8, p1, p2) {
   mCurrentPlayer = &mPlayer1;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -200,41 +197,13 @@ void Othello::update(){
 void Othello::render(){
   static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("OTHELLO  -  z:up  s:down  q:left  d:right  !/p:place  x:quit");
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->setCursor(1, 3);
-  Console::getInstance()->setForeground(mPlayer1.getColor() );
-  std::ostringstream oss(std::ostringstream::ate);
-  /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
-     par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
-  oss.str("Joueur 1 - ");
-  oss << mScore[0];
-  Console::getInstance()->drawString(1, 3, oss.str() );
-  Console::getInstance()->setCursor(25, 3);
-  Console::getInstance()->setForeground(mPlayer2.getColor() );
-  oss.str("Joueur 2 - ");
-  oss << mScore[1];
-  Console::getInstance()->drawString(25, 3, oss.str() );
-  oss.clear();
+  BoardGame::displayHeader("OTHELLO  -  z/up  s/down  q/left  d/right  !/p:place  x:quit");
+  BoardGame::displayScore();
   if(mIngame == true){
     // indicateur du joueur courant
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
-    if(*mCurrentPlayer == mPlayer1){
-      Console::getInstance()->draw(6, 5, '^');
-    }else{
-      Console::getInstance()->draw(30, 5, '^');
-    }
+    BoardGame::displayCurrentPlayer();
   }else{
-    oss.str("Joueur ");
-    oss << ( (mScore[1]>mScore[0])?2:1 );
-    oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
-    Console::getInstance()->drawString(boardX+25, boardY+4, oss.str() );
-    oss.clear();
+    BoardGame::displayResult(boardX+25, boardY+4);
   }
   mBoard.draw(boardX, boardY);
   Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);

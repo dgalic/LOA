@@ -23,7 +23,8 @@ const std::array<Color, 10> FiveOrMore::sColorList = {
 FiveOrMore::FiveOrMore(const unsigned short& dim,
                        const unsigned short& colors,
                        const unsigned short& pieces)
-  :BoardGame(dim, dim), mSize(dim), mNbColors(colors), mAdds(pieces), mScore(0),
+  :BoardGame(dim, dim, ANSI::Color::RED, ANSI::Color::BLUE), 
+   mSize(dim), mNbColors(colors), mAdds(pieces), mScore(0),
    mSelectedX(-1), mSelectedY(-1), mPlaced(true)
 {
   mFreePlaces = mSize*mSize;
