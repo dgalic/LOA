@@ -9,6 +9,7 @@
 #include "Console.hpp"
 #include "ANSI.hpp"
 #include "OthelloConfig.hpp"
+#include "FiveOrMore.hpp"
 
 MainMenuState::MainMenuState(){
   mEntry = 0;
@@ -50,6 +51,13 @@ void MainMenuState::handle(const char& c){
     switch(mEntry){
     case 0:
       Game::getInstance()->getHandler().change(new OthelloConfig() );
+      break;
+     
+    case 1:
+      break;
+
+    case 2:
+      Game::getInstance()->getHandler().change(new FiveOrMore(10) );
       break;
       
     default:
