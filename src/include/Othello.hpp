@@ -8,7 +8,7 @@
 
 class Othello : public BoardGame{
 
-private:
+protected:
   Player mPlayer1;
   Player mPlayer2;
   const Player * mCurrentPlayer;
@@ -19,6 +19,10 @@ public:
   Othello(const Color&, 
 	  const Color&);
   virtual ~Othello();
+  virtual void update();
+  virtual void render();
+
+protected:
   void handle(const char&);
   void shuffle(const unsigned short&, const unsigned short&);
   bool isSucc(Board,
@@ -26,9 +30,7 @@ public:
 	      const unsigned short&,
 	      const Player&) const;
   const Player * opponent() const;
-  virtual void update();
-  virtual void render();
-
+  
 };
 
 #endif
