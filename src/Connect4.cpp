@@ -68,16 +68,18 @@ void Connect4::handle(const char& c){
         /* vérifie si b est en position gagnante 
         * avec le coup jouer */
         if( isNext( mPointerX, mPointerY, successors)) {
-            if (isPosGa(MBoard, MPointerX, MPointerY)    
+            short y;
+            if ( (y = isPosGa(mBoard, mPointerX, mPointerY)) == -1) { 
                 mIngame = true;
                 return;
             }
+            mBoard.at(mPointerX, y) = mCurrentPlayer->getColor();
             mCurrentPlayer = opponent();
         }
     }
 }
 
-bool Connect4::isPosGa(Board b,
+short Connect4::isPosGa(Board b,
 		     const unsigned short& x,
 		     const unsigned short& y ) const{
     /**
@@ -87,12 +89,12 @@ bool Connect4::isPosGa(Board b,
     * @param y Ordonnée du coup à tester.
     **/
     // tout d'abord determiner la vrai position y sur le tableau
-    short i, tmp, good_color;
-    unsigned short new_y = y;
-    good_color = MCurrentPlayer.getColor();
+    unsigned short i, new_y = y;
+    short tmp, good_color;
+    good_color = mCurrentPlayer->getColor();
     // on sauve la derniere position vide trouvé
     for (i = 0; i <= 6; i++) { 
-        tmp = mBoard.at(x,i);
+        tmp = mBoard.get(x,i);
         // si case vide on sauve
         if ( tmp == -1){
             new_y = i;
@@ -101,7 +103,7 @@ bool Connect4::isPosGa(Board b,
    
     /*  maintenant on test la ligne , colonne et diagonales,
         si la position est gagnante, si 4 pieces aligné*/
-    short j;
+    unsigned short j;
     int lig_p, lig_m, col_p, col_m;
     int dia1_p, dia1_m, dia2_p, dia2_m; // dia1 \ - dia2 /
     short right = mBoard.getWidth(), bottom = mBoard.getHeight();
@@ -172,14 +174,11 @@ bool Connect4::isPosGa(Board b,
                     || (col_p + col_m -1 >= 4)
                     || (dia1_p + dia1_m -1 >= 4)
                     || (dia2_p + dia2_m -1 >= 4)) {
-                return true;
+                return -1;
             }
         }
     }
-
-    // pose la piece du joueur courant²
-    mBoard.at(&x, &new_y) = good_color;
-    return false;
+    return  (short)new_y;
 }
 
 const Player *Connect4::opponent() const{
@@ -206,7 +205,6 @@ void Connect4::update(){
         Game::getInstance()->getHandler().change(new MainMenuState());
     } else {
         successors = BoardGame::computeNext(mBoard, *mCurrentPlayer, succ_function);
-        const Player * other = opponent();
         if (successors.empty()) {
 	        mIngame = false;
         } else{
