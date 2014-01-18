@@ -122,15 +122,6 @@ bool BoardGame::isNext(const unsigned short& x,
 }
 
 
-void BoardGame::displayHeader(const std::string& txt){
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw(txt);
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
-}
-
 void BoardGame::displayScore(){
    std::ostringstream oss(std::ostringstream::ate);
   /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
@@ -149,7 +140,7 @@ void BoardGame::displayScore(){
 }
 
 void BoardGame::displayCurrentPlayer(){
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->setForeground(Color::WHITE);
     if(*mCurrentPlayer == mPlayer1){
       Console::getInstance()->draw(6, 5, '^');
     }else{
@@ -165,7 +156,7 @@ void BoardGame::displayResult(const unsigned short& x, const unsigned short& y){
     oss.str("Joueur ");
     oss << ( (mScore[1]>mScore[0])?2:1 );
     oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->setForeground(Color::WHITE);
     Console::getInstance()->drawString(x, y, oss.str() );
     oss.clear();
   }
