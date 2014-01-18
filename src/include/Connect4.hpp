@@ -21,17 +21,17 @@ class Connect4: public BoardGame {
         
         // gére les touches des joueurs
         void handle(const char&);
-        // test si il y a une position gangante
-        short isPosGa(Board,
-	        const unsigned short&,
-	        const unsigned short&) const;        
 
         // change de joueur
         const Player * opponent() const;
        
         // calcul la logique de jeux
         virtual void update();
-        
+
+  virtual unsigned short drop(const unsigned short&, const unsigned short&);
+
+  virtual void searchLines(const unsigned short&, const unsigned short&);
+
         //gére l'affichage
         virtual void render();
 };
