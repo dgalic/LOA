@@ -24,7 +24,12 @@ Othello::Othello(const Color& p1,
     -> bool{
     return isSucc(b, x, y, p);
   };
-
+  mScore[0] = 2;
+  mScore[1] = 2;
+  mBoard.at(3,3) = mPlayer1.getColor();
+  mBoard.at(4,4) = mPlayer1.getColor();
+  mBoard.at(3,4) = mPlayer2.getColor();
+  mBoard.at(4,3) = mPlayer2.getColor();
 }
   
 Othello::~Othello(){
@@ -246,29 +251,22 @@ void Othello::render(){
   oss << mScore[1];
   Console::getInstance()->drawString(25, 3, oss.str() );
   oss.clear();
-  // indicateur du joueur courant
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  if(*mCurrentPlayer == mPlayer1){
-    Console::getInstance()->draw(6, 5, '^');
+  if(mIngame == true){
+    // indicateur du joueur courant
+    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    if(*mCurrentPlayer == mPlayer1){
+      Console::getInstance()->draw(6, 5, '^');
+    }else{
+      Console::getInstance()->draw(30, 5, '^');
+    }
   }else{
-    Console::getInstance()->draw(30, 5, '^');
+    oss.str("Joueur ");
+    oss << ( (mScore[1]>mScore[0])?2:1 );
+    oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
+    Console::getInstance()->setForeground(ANSI::Color::WHITE);
+    Console::getInstance()->drawString(7, 19, oss.str() );
+    oss.clear();
   }
   mBoard.draw(12, 8);
   Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);
-}
-
-bool Othello::init(){
-  BoardGame::init();
-  mScore[0] = 2;
-  mScore[1] = 2;
-  mBoard.at(3,3) = mPlayer1.getColor();
-  mBoard.at(4,4) = mPlayer1.getColor();
-  mBoard.at(3,4) = mPlayer2.getColor();
-  mBoard.at(4,3) = mPlayer2.getColor();
-  return true;
-}
-
-bool Othello::exit(){
-  BoardGame::exit();
-  return true;
 }

@@ -28,9 +28,6 @@ public:
   const Player * opponent() const;
   virtual void update();
   virtual void render();
-  virtual bool init();
-  virtual bool exit();
-  
 
 };
 
