@@ -15,6 +15,8 @@
 Connect4::Connect4(const Color& p1,
                    const Color& p2)
 : BoardGame(7, 6, p1, p2){
+  mScore[0] = 0;
+  mScore[1] = 0;
   mCurrentPlayer = &mPlayer1;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -137,6 +139,10 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
         ytest += iy;
       }
       if(count >= 4){
+        if(*mCurrentPlayer == mPlayer1)
+          mScore[0]++;
+        else
+          mScore[1]++;
         mIngame = false;
         mCurrentPlayer = opponent();
       }
@@ -181,45 +187,21 @@ void Connect4::update(){
 
 void Connect4::render(){
   // nettoye l'interface et la rafraichie
+  static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
 
   Console::getInstance()->drawHeader("Connect 4 - q/left  d/right  !/p:drop  x:quit");
-
-  std::ostringstream oss(std::ostringstream::ate);
-  /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
-     par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
-    
-  Console::getInstance()->setCursor(1, 3);
-  Console::getInstance()->setForeground(mPlayer1.getColor() );
-  oss.str("Joueur 1 - ");
-  Console::getInstance()->drawString(1, 3, oss.str() );
-
-  Console::getInstance()->setCursor(25, 3);
-  Console::getInstance()->setForeground(mPlayer2.getColor() );
-  oss.str("Joueur 2 - ");
-  Console::getInstance()->drawString(25, 3, oss.str() );
-    
-  oss.clear();
+  BoardGame::displayScore();
    
   // si la partie n'est pas finie
   if (mIngame == true) {
     // indicateur du joueur courant
-    Console::getInstance()->setForeground(Color::WHITE);
-        
-    // affiche sur l'interface à quel joueur doit jouer
-    if (*mCurrentPlayer == mPlayer1) {
-      Console::getInstance()->draw(6, 5, '^');
-    } else {
-      Console::getInstance()->draw(30, 5, '^');
-    }
+  
+    BoardGame::displayCurrentPlayer();
   } else {
-    // Si partie finie affiche qui à gagner ou égaliter
-    oss.str("Joueur ");
-    oss << ( (mCurrentPlayer == &mPlayer1)?1:2);
-    Console::getInstance()->setForeground(Color::WHITE);
-    Console::getInstance()->drawString(7, 19, oss.str() );
-    oss.clear();
+    BoardGame::displayResult(boardX + 25, boardY+ 3);
+
   }
-  mBoard.draw(12, 8);
-  Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);
+  mBoard.draw(boardX, boardY);
+  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
 }

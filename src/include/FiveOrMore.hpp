@@ -15,7 +15,6 @@ protected:
   unsigned short mFreePlaces; //nombre de cases libres restants -> pour la fin
   unsigned short mNbColors; // nombre de couleurs du jeu
   const unsigned short mAdds; //nombre de pions ajoutés par tour
-  unsigned short mScore;
   short mSelectedX;
   short mSelectedY;
   bool mPlaced;
@@ -30,12 +29,14 @@ public:
 
 protected:
   void handle(const char &c= ' ');  
-  virtual void handleSelection(const char&);
+  void handleSelection(const char&);
   virtual void handleAction(const char&);
-  virtual void searchLines(const unsigned short&,
+  void searchLines(const unsigned short&,
                     const unsigned short&);
-  virtual bool addRandom();
-  virtual bool end();
+  bool addRandom();
+  bool end();
+  virtual void displayScore();
+  virtual void displayResult(const unsigned short&, const unsigned short&);
 };
 
 #endif
