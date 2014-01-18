@@ -49,35 +49,7 @@ void FiveOrMore::handle(const char& c){
 }
 
 void FiveOrMore::handleSelection(const char& c){
-  ANSI::Arrow arr; 
-  arr = checkArrow(c);   
-  if(arr == ANSI::UP 
-     || c == 'z'){
-    if(mPointerY > 0)
-      mPointerY--;
-    return;
-  }
-    
-  if(arr == ANSI::LEFT 
-     || c == 'q'){
-    if(mPointerX > 0)
-      mPointerX--;
-    return;
-  }
-
-  if(arr == ANSI::DOWN 
-     || c == 's'){
-    if(mPointerY < mBoard.getHeight()-1 )
-      mPointerY++;
-    return;
-  }
-
-  if(arr == ANSI::RIGHT 
-     || c == 'd'){
-    if(mPointerX < mBoard.getWidth()-1 )
-      mPointerX++;
-    return;
-  }
+ checkMove(c);
   if(c == 'p' || c == MARK){
     // séléction d'un pion, si la case n'est pas vide
     if(mBoard.at(mPointerX, mPointerY) != -1 ){
@@ -93,53 +65,8 @@ void FiveOrMore::handleSelection(const char& c){
 }
 
 void FiveOrMore::handleMove(const char& c){
-  ANSI::Arrow arr;
-  arr = checkArrow(c);
-  if(arr == ANSI::UP 
-     || c == 'z'){
-    /* on peut bouger sur une case, soit si elle est vide, 
-       soit si c'est la case d'origine */
-    if( mPointerY > 0 && 
-        ( (mPointerX == mSelectedX && mPointerY-1 == mSelectedY )
-          || 
-          (mBoard.at(mPointerX, mPointerY-1) == -1 )  )
-        )
-      mPointerY--;
-    return;
-  }
-    
-  if(arr == ANSI::LEFT 
-     || c == 'q'){
-    if( mPointerX > 0 && 
-        ( (mPointerX-1 == mSelectedX && mPointerX == mSelectedY )
-          || 
-          (mBoard.at(mPointerX-1, mPointerY) == -1 )   )
-        )
-      mPointerX--;
-    return;
-  }
-
-  if(arr == ANSI::DOWN 
-     || c == 's'){
-    if( mPointerY < mSize-1 && 
-        ( (mPointerX == mSelectedX && mPointerY+1 == mSelectedY )
-          || 
-          (mBoard.at(mPointerX, mPointerY+1) == -1 )  )
-        )
-      mPointerY++;
-    return;
-  }
-
-  if(arr == ANSI::RIGHT 
-     || c == 'd'){  
-    if( mPointerX < mSize-1 && 
-        ( (mPointerX+1 == mSelectedX && mPointerY == mSelectedY )
-          || 
-          (mBoard.at(mPointerX+1, mPointerY) == -1 )  )
-        )
-      mPointerX++;
-    return;
-  }
+  checkMove(c);
+   
   if(c == 'p' || c == MARK){
     /* fixage du pion, mais attention : si on n'a pas changé sa position,
        on doit pouvoir rejouer */

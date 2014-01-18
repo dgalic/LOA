@@ -22,6 +22,8 @@ class Connect4: public BoardGame {
         // gére les touches des joueurs
         void handle(const char&);
 
+  bool checkMove(const char&);
+
         // change de joueur
         const Player * opponent() const;
        

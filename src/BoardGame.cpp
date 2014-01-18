@@ -17,8 +17,43 @@ BoardGame::~BoardGame(){
 
 }
 
-void BoardGame::handle(const char& c){
+bool BoardGame::checkMove(const char& c){
+  /**
+   * @brief Bouge le curseur si on a pressé les touches standard.
+   * @details Sur pression d'une flèche ou de zqsd.
+   * @param c Caractère à tester (touche entrée).
+   * @return True si on a déplace, false sinon.
+   */
+  ANSI::Arrow arr;
+  arr = checkArrow(c);
+  if(arr == ANSI::UP 
+     || c == 'z'){
+    if(mPointerY > 0)
+      mPointerY--;
+    return true;
+  }
+    
+  if(arr == ANSI::LEFT 
+     || c == 'q'){
+    if(mPointerX > 0)
+      mPointerX--;
+    return true;
+  }
 
+  if(arr == ANSI::DOWN 
+     || c == 's'){
+    if(mPointerY < mBoard.getHeight()-1 )
+      mPointerY++;
+    return true;
+  }
+
+  if(arr == ANSI::RIGHT 
+     || c == 'd'){
+    if(mPointerX < mBoard.getWidth()-1 )
+      mPointerX++;
+    return true;
+  }
+  return false;
 }
 
 Positions BoardGame::computeNext(Board b,
