@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
+
 unsigned int Random::sNumbers[100];
 
 void Random::init(){
