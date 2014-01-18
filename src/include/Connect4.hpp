@@ -6,7 +6,7 @@
 #include "StateHandler.hpp"
 #include "Color.hpp"
 
-class Connext4: public BoardGame {
+class Connect4: public BoardGame {
 
     protected :
         Player mPlayer1;
@@ -21,7 +21,7 @@ class Connext4: public BoardGame {
         // gére les touches des joueurs
         void handle(const char&);
         // test si il y a une position gangante
-        bool isPosGa(Board,
+        short isPosGa(Board,
 	        const unsigned short&,
 	        const unsigned short&) const;        
 
