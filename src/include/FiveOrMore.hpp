@@ -20,18 +20,18 @@ protected:
   short mSelectedY;
   bool mPlaced;
 
-private:
-  void handle(const char &c= ' ');
-
 public:
   FiveOrMore(const unsigned short&,
              const unsigned short& = 5,
              const unsigned short& = 3);
   virtual ~FiveOrMore();
-  virtual void handleSelection(const char&);
-  virtual void handleAction(const char&);
   virtual void update();
   virtual void render();
+
+protected:
+  void handle(const char &c= ' ');  
+  virtual void handleSelection(const char&);
+  virtual void handleAction(const char&);
   virtual void searchLines(const unsigned short&,
                     const unsigned short&);
   virtual bool addRandom();

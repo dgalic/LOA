@@ -29,16 +29,18 @@ protected:
 public:
   BoardGame(const unsigned int&, const unsigned int&);
   virtual ~BoardGame();
+  virtual void update() = 0;
+  virtual void render() = 0;
+
+protected:
   virtual void handle(const char& c = ' ');
   virtual bool checkMove(const char&);
   Positions computeNext(Board b, // plateau à tester
-				const Player& p, //joueur dont on cherche les coups
-				const std::function< bool(Board, const unsigned short&, const unsigned short&, const Player&)> & succ ); //fonction de succession
+                        const Player& p, //joueur dont on cherche les coups
+                        const std::function< bool(Board, const unsigned short&, const unsigned short&, const Player&)> & succ ); //fonction de succession
   bool isNext(const unsigned short& x, 
-		      const unsigned short& y,
-		      const Positions& p) const;
-  virtual void update() = 0;
-  virtual void render() = 0;
+              const unsigned short& y,
+              const Positions& p) const;
   
 };
 
