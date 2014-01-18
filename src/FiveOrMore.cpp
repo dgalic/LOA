@@ -147,7 +147,7 @@ void FiveOrMore::handleMove(const char& c){
     if(mPointerX != mSelectedX or mPointerY != mSelectedY){
       mBoard.at( mPointerX, mPointerY) = mBoard.at(mSelectedX, mSelectedY);
       mBoard.at(mSelectedX, mSelectedY) = -1;
-      drop(mPointerX, mPointerY);
+      searchLines(mPointerX, mPointerY);
       mPlaced = true;
     }
     mSelectedX = -1;
@@ -218,8 +218,8 @@ void FiveOrMore::render(){
 }
 
 
-void FiveOrMore::drop(const unsigned short& x,
-                      const unsigned short& y){
+void FiveOrMore::searchLines(const unsigned short& x,
+                             const unsigned short& y){
   /**
    * @brief Supprime les pions alignés avec @a x, @a y et met à jour le score.
    * @details Les pions ne sont supprimés que si une ligne de 5 est faite. 
@@ -302,7 +302,7 @@ bool FiveOrMore::addRandom(){
     y = Random::get(0, mSize);
   }while( mBoard.at(x, y) != -1 );
   mBoard.at(x, y) = c;
-  drop(x, y);
+  searchLines(x, y);
   return end();
 }
 

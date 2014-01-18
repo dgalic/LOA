@@ -32,7 +32,7 @@ public:
   virtual void handleMove(const char&);
   virtual void update();
   virtual void render();
-  virtual void drop(const unsigned short&,
+  virtual void searchLines(const unsigned short&,
                     const unsigned short&);
   virtual bool addRandom();
   virtual bool end();
