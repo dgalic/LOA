@@ -70,10 +70,4 @@ bool BoardGame::isNext(const unsigned short& x,
   return false;
 }
 
-bool BoardGame::init(){
-  return true;
-}
 
-bool BoardGame::exit(){
-  return true;
-}
