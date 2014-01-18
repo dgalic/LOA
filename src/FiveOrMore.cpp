@@ -9,7 +9,7 @@
 
 const std::array<Color, 10> FiveOrMore::sColorList = { 
   ANSI::RED, 
-  ANSI::GREEN, 
+  ANSI::LIGHTGREEN, 
   ANSI::BLUE, 
   ANSI::YELLOW, 
   ANSI::PINK, 
@@ -17,7 +17,7 @@ const std::array<Color, 10> FiveOrMore::sColorList = {
   ANSI::BROWN, 
   ANSI::PURPLE, 
   ANSI::LIGHTCYAN, 
-  ANSI::LIGHTGREEN
+  ANSI::GREEN
 };
 
 FiveOrMore::FiveOrMore(const unsigned short& dim,
@@ -28,8 +28,8 @@ FiveOrMore::FiveOrMore(const unsigned short& dim,
 {
   mFreePlaces = mSize*mSize;
   /*  for(unsigned short i = 0; i < mAdds; i++){
-    addRandom();
-    }*/
+      addRandom();
+      }*/
   
 }
 
@@ -232,25 +232,30 @@ void FiveOrMore::drop(const unsigned short& x,
   unsigned short count = 0;
   unsigned short c = mBoard.at(x, y);  
   unsigned short xtest = x, ytest = y;
-  //pion de la même couleur le plus à gauche
-  while( xtest > 0  &&   (mBoard.at(xtest-1, ytest) == c )   ){
-    xtest--;
-  }
-  std::cerr<<"FIVE OR MORE : pion de la même couleur le plus à gauche :  "<<xtest<<","<<ytest<<std::endl;
-  count = 1;
-  while(xtest < mSize-1 && mBoard.at(xtest+1, ytest) == c){
-    std::cerr<<"FIVE OR MORE : "<<xtest+1<<","<<ytest<<" = "<<mBoard.at(xtest+1, ytest)<<"/"<<c<<std::endl; 
-    count++;
-    xtest++;
-  }
-  std::cerr<<"FIVE OR MORE : "<<count<<" pions alignés"<<std::endl;
-  if(count >= 5){
-    for(unsigned short i = 0; i < count; i++){
-      if(xtest != x or ytest != y)
-        mBoard.at(xtest, ytest) = -1;
-      xtest--;
-      nb++;
+  for(unsigned short ix = 0; ix <= 1; ix++){
+    if(ix == 0)
+      continue;
+    //pion de la même couleur le plus à gauche
+    while( xtest > 0  &&   (mBoard.at(xtest-ix, ytest) == c )   ){
+      xtest -= ix;
     }
+    std::cerr<<"FIVE OR MORE : pion de la même couleur le plus à gauche :  "<<xtest<<","<<ytest<<std::endl;
+    count = 1;
+    while(xtest < mSize-1 && mBoard.at(xtest+ix, ytest) == c){
+      std::cerr<<"FIVE OR MORE : "<<xtest+ix<<","<<ytest<<" = "<<mBoard.at(xtest+1, ytest)<<"/"<<c<<std::endl; 
+      count++;
+      xtest += ix;
+    }
+    std::cerr<<"FIVE OR MORE : "<<count<<" pions alignés"<<std::endl;
+    if(count >= 5){
+      for(unsigned short i = 0; i < count; i++){
+        if(xtest != x or ytest != y)
+          mBoard.at(xtest, ytest) = -1;
+        xtest -= ix;
+        nb++;
+      }
+    }
+
   }
   
   // fin des vérifications
