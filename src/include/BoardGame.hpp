@@ -29,7 +29,7 @@ protected:
 public:
   BoardGame(const unsigned int&, const unsigned int&);
   virtual ~BoardGame();
-  virtual void handle(const char& c = ' ') = 0;
+  virtual void handle(const char& c = ' ');
   virtual bool checkMove(const char&);
   Positions computeNext(Board b, // plateau à tester
 				const Player& p, //joueur dont on cherche les coups
