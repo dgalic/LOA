@@ -13,5 +13,11 @@
 *.a
 
 #temporary files
+*.d*
+*.swp
 *~
 *#
+
+*LOA
+*Errlog
+*Valgrind_log
