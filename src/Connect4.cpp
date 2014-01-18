@@ -68,117 +68,80 @@ void Connect4::handle(const char& c){
         /* vérifie si b est en position gagnante 
         * avec le coup jouer */
         if( isNext( mPointerX, mPointerY, successors)) {
-            short y;
-            if ( (y = isPosGa(mBoard, mPointerX, mPointerY)) == -1) { 
-                mIngame = true;
-                return;
-            }
-            mBoard.at(mPointerX, y) = mCurrentPlayer->getColor();
+          std::cerr<<"le coup "<<mPointerX<<","<<mPointerY\
+                   <<" est possible"<<std::endl;
+            std::cerr<<"le coup n'est pas gagnant"<<std::endl;
+            mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
+            unsigned short y2 = drop(mPointerX, 0);
+            searchLines(mPointerX, y2);
             mCurrentPlayer = opponent();
         }
     }
 }
 
-short Connect4::isPosGa(Board b,
-		     const unsigned short& x,
-		     const unsigned short& y ) const{
-    /**
-    * @brief Teste si le coup amène à une position gagnante
-    * @param b Plateau où on teste la validité du coup.
-    * @param x Abscisse du coup à tester.
-    * @param y Ordonnée du coup à tester.
-    **/
-    // tout d'abord determiner la vrai position y sur le tableau
-    unsigned short i, new_y = y;
-    short tmp, good_color;
-    good_color = mCurrentPlayer->getColor();
-    // on sauve la derniere position vide trouvé
-    for (i = 0; i <= 6; i++) { 
-        tmp = mBoard.get(x,i);
-        // si case vide on sauve
-        if ( tmp == -1){
-            new_y = i;
-        }
+unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
+  /** 
+      @brief Fait tomber la pièce donnée via la gravité. 
+      Retourne la nouvelle ordonnée.
+   */
+  int c = mBoard.at(x, y);
+  unsigned short y2 = y;
+  mBoard.at(x, y) = -1;
+  while(y2 < mBoard.getHeight()-1 && mBoard.at(x, y2+1) == -1){
+    y2++;
+  }
+  mBoard.at(x, y2) = c;
+  return y2;
+}
+
+void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
+  /**
+   * @brief A partir du pion (@x, @y), vérifie si il y a un alignement de 4.
+   * Si oui, alors met fin à la partie.
+   */
+  unsigned short nb = 0; // nombre de pions détruits (le posé est cumulé)
+  unsigned short count = 0;
+  unsigned short c = mBoard.at(x, y);  
+  unsigned short xtest, ytest;
+  for(unsigned short ix = 0; ix <= 1; ix++){
+    for(short iy = -1; iy <= 1; iy++){
+      xtest = x;
+      ytest = y;
+      if(ix == 0 && iy == 0)
+        continue;
+      while( xtest > 0  && 
+             (  iy == 0 
+                || (iy < 0 && ytest < mBoard.getHeight()-1 ) 
+                    || (iy > 0 && ytest > 0 ) )
+             && (mBoard.at(xtest-ix, ytest-iy) == c )   ){
+        xtest -= ix;
+        ytest -= iy;
+      }
+      count = 1;
+      while(xtest < mBoard.getWidth()-1 &&            
+            (  iy == 0 
+               || (iy > 0 && ytest < mBoard.getHeight()-1 ) 
+                   || (iy < 0 && ytest > 0 ) )
+            &&
+            mBoard.at(xtest+ix, ytest+iy) == c){
+        count++;
+        xtest += ix;
+        ytest += iy;
+      }
+      if(count >= 4){
+        mIngame = false;
+        mCurrentPlayer = opponent();
+        /*        for(unsigned short i = 0; i < count; i++){
+          if(xtest != x or ytest != y)
+            mBoard.at(xtest, ytest) = -1;
+          xtest -= ix;
+          ytest -= iy;
+          nb++;
+          }*/
+      }
+
     }
-   
-    /*  maintenant on test la ligne , colonne et diagonales,
-        si la position est gagnante, si 4 pieces aligné*/
-    unsigned short j;
-    int lig_p, lig_m, col_p, col_m;
-    int dia1_p, dia1_m, dia2_p, dia2_m; // dia1 \ - dia2 /
-    short right = mBoard.getWidth(), bottom = mBoard.getHeight();
-    lig_p = lig_m = col_p = col_m = 1;
-    dia1_p = dia1_m = dia2_p = dia2_m = 1;
-    
-    for(i = 1; i <= 4; i++) {
-        for(j = 1; j <= 4; j++) {
-
-            // test ligne des 2 cotes
-            if ((x + i) <= right 
-                    && lig_p == i 
-                    && b.get(x+i,new_y) == good_color) {
-                lig_p++;
-            }
-        
-            if ((x - i) >= 0 
-                    && lig_m == i 
-                    && b.get(x-i,new_y) == good_color) {
-                lig_m++;
-            }
-
-            //test colonne
-            if ((new_y + i) <= bottom 
-                    && col_p == i 
-                    && b.get(x,new_y + i) == good_color) {
-                col_p++;
-            }
-        
-            if ((new_y - i) >= 0 
-                    && col_m == i 
-                    && b.get(x,new_y - i) == good_color) {
-                col_m++;
-            }
-
-            // test une diagonale \*
-            if ((x + i) <= right 
-                    && (new_y + i) <= bottom
-                    && dia1_p == i 
-                    && b.get(x+i,new_y+i) == good_color) {
-                dia1_p++;
-            }
-        
-            if ((x - i) >= 0 
-                    && (new_y - i) >= 0
-                    && dia1_m == i 
-                    && b.get(x - i,new_y - i) == good_color) {
-                dia1_m++;
-            }
-            
-            // test l'autre diagonale /
-            if ((x + i) <= right 
-                    && (new_y - i) <= 0
-                    && dia2_p == i 
-                    && b.get(x+i,new_y-i) == good_color) {
-                dia1_p++;
-            }
-        
-            if ((x - i) >= 0 
-                    && (new_y + i) >= bottom
-                    && dia2_m == i 
-                    && b.get(x - i,new_y + i) == good_color) {
-                dia1_m++;
-            }
-
-            // test si il y a un résultat égale à 4
-            if ( (lig_p + lig_m -1 >= 4)
-                    || (col_p + col_m -1 >= 4)
-                    || (dia1_p + dia1_m -1 >= 4)
-                    || (dia2_p + dia2_m -1 >= 4)) {
-                return -1;
-            }
-        }
-    }
-    return  (short)new_y;
+  }
 }
 
 const Player *Connect4::opponent() const{
