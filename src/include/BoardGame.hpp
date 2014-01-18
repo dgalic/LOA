@@ -29,11 +29,12 @@ protected:
 public:
   BoardGame(const unsigned int&, const unsigned int&);
   virtual ~BoardGame();
-  virtual void handle(const char& c = ' ');
-  virtual Positions computeNext(Board b, // plateau à tester
+  virtual void handle(const char& c = ' ') = 0;
+  virtual bool checkMove(const char&);
+  Positions computeNext(Board b, // plateau à tester
 				const Player& p, //joueur dont on cherche les coups
 				const std::function< bool(Board, const unsigned short&, const unsigned short&, const Player&)> & succ ); //fonction de succession
-  virtual bool isNext(const unsigned short& x, 
+  bool isNext(const unsigned short& x, 
 		      const unsigned short& y,
 		      const Positions& p) const;
   virtual void update() = 0;
