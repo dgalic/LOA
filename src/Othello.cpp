@@ -206,5 +206,5 @@ void Othello::render(){
     BoardGame::displayResult(boardX+25, boardY+4);
   }
   mBoard.draw(boardX, boardY);
-  Console::getInstance()->setCursor(13+(mPointerX*2), 9+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
 }
