@@ -4,6 +4,7 @@
 #include "BoardGame.hpp"
 #include "Player.hpp"
 #include "StateHandler.hpp"
+#include "ANSI.hpp"
 #include "Color.hpp"
 
 class Connect4: public BoardGame {
