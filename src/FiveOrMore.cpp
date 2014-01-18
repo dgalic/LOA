@@ -146,8 +146,8 @@ void FiveOrMore::handleMove(const char& c){
 
     if(mPointerX != mSelectedX or mPointerY != mSelectedY){
       mBoard.at( mPointerX, mPointerY) = mBoard.at(mSelectedX, mSelectedY);
-      drop(mPointerX, mPointerY);
       mBoard.at(mSelectedX, mSelectedY) = -1;
+      drop(mPointerX, mPointerY);
       mPlaced = true;
     }
     mSelectedX = -1;
@@ -231,39 +231,55 @@ void FiveOrMore::drop(const unsigned short& x,
   unsigned short nb = 0; // nombre de pions détruits (le posé est cumulé)
   unsigned short count = 0;
   unsigned short c = mBoard.at(x, y);  
-  unsigned short xtest = x, ytest = y;
+  unsigned short xtest, ytest;
   for(unsigned short ix = 0; ix <= 1; ix++){
-    if(ix == 0)
-      continue;
-    //pion de la même couleur le plus à gauche
-    while( xtest > 0  &&   (mBoard.at(xtest-ix, ytest) == c )   ){
-      xtest -= ix;
-    }
-    std::cerr<<"FIVE OR MORE : pion de la même couleur le plus à gauche :  "<<xtest<<","<<ytest<<std::endl;
-    count = 1;
-    while(xtest < mSize-1 && mBoard.at(xtest+ix, ytest) == c){
-      std::cerr<<"FIVE OR MORE : "<<xtest+ix<<","<<ytest<<" = "<<mBoard.at(xtest+1, ytest)<<"/"<<c<<std::endl; 
-      count++;
-      xtest += ix;
-    }
-    std::cerr<<"FIVE OR MORE : "<<count<<" pions alignés"<<std::endl;
-    if(count >= 5){
-      for(unsigned short i = 0; i < count; i++){
-        if(xtest != x or ytest != y)
-          mBoard.at(xtest, ytest) = -1;
+    for(short iy = -1; iy <= 1; iy++){
+      xtest = x;
+      ytest = y;
+      std::cerr<<"FIVE OR MORE : direction "<<ix<<","<<iy<<std::endl;
+      if(ix == 0 && iy == 0)
+        continue;
+      //pion de la même couleur le plus à gauche
+      while( xtest > 0  && 
+             (  iy == 0 
+                || (iy < 0 && ytest < mSize-1 ) 
+                    || (iy > 0 && ytest > 0 ) )
+             && (mBoard.at(xtest-ix, ytest-iy) == c )   ){
         xtest -= ix;
-        nb++;
+        ytest -= iy;
       }
-    }
+      std::cerr<<"FIVE OR MORE : pion de la même couleur le plus à gauche :  "<<xtest<<","<<ytest<<std::endl;
+      count = 1;
+      while(xtest < mSize-1 &&            
+            (  iy == 0 
+               || (iy > 0 && ytest < mSize-1 ) 
+                   || (iy < 0 && ytest > 0 ) )
+            &&
+            mBoard.at(xtest+ix, ytest+iy) == c){
+        std::cerr<<"FIVE OR MORE : "<<xtest+ix<<","<<ytest+iy<<" = "<<mBoard.at(xtest+ix, ytest+iy)<<"/"<<c<<std::endl; 
+        count++;
+        xtest += ix;
+        ytest += iy;
+      }
+      std::cerr<<"FIVE OR MORE : "<<count<<" pions alignés"<<std::endl;
+      if(count >= 5){
+        for(unsigned short i = 0; i < count; i++){
+          if(xtest != x or ytest != y)
+            mBoard.at(xtest, ytest) = -1;
+          xtest -= ix;
+          ytest -= iy;
+          nb++;
+        }
+      }
 
+    }
   }
-  
   // fin des vérifications
   if(nb > 0){
     mBoard.at(x, y) = -1;
     nb++;
   }
-  mScore += (nb* ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
+  mScore += (nb * ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
   
 }  
 
