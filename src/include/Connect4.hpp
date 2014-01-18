@@ -20,12 +20,10 @@ class Connext4: public BoardGame {
         
         // gére les touches des joueurs
         void handle(const char&);
-
-        // test si un coup est valide 
-        bool isSucc(Board,
+        // test si il y a une position gangante
+        bool isPosGa(Board,
 	        const unsigned short&,
-	        const unsigned short&,
-	        const Player&) const;
+	        const unsigned short&) const;        
 
         // change de joueur
         const Player * opponent() const;
