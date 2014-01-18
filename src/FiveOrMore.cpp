@@ -23,7 +23,7 @@ const std::array<Color, 10> FiveOrMore::sColorList = {
 FiveOrMore::FiveOrMore(const unsigned short& dim,
                        const unsigned short& colors,
                        const unsigned short& pieces)
-  :BoardGame(dim, dim, ANSI::Color::RED, ANSI::Color::BLUE), 
+  :BoardGame(dim, dim, Color::RED, Color::BLUE), 
    mSize(dim), mNbColors(colors), mAdds(pieces), mScore(0),
    mSelectedX(-1), mSelectedY(-1), mPlaced(true)
 {
@@ -156,10 +156,10 @@ void FiveOrMore::render(){
   // petit marqueur de l'emplacement d'origine du pion séléctionné
   static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->setCursor(1, 1);
   Console::getInstance()->draw("FIVE OR MORE  -  z:up  s:down  q:left  d:right  !/p:select/place  x:quit");
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
+  Console::getInstance()->setForeground(Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setCursor(1, 3);
@@ -168,7 +168,7 @@ void FiveOrMore::render(){
      par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
   oss.str("Score - ");
   oss << mScore;
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->drawString(1, 3, oss.str() );
   oss.clear();
   if(mIngame == false){
@@ -180,11 +180,11 @@ void FiveOrMore::render(){
   mBoard.draw(boardX, boardY);
   // surlignage de la case séléctionnée
   if(mSelectedX != -1 && mSelectedY != -1){
-    Console::getInstance()->setBackground(ANSI::Color::WHITE);
-    Console::getInstance()->setForeground((ANSI::Color) mBoard.at(mSelectedX, mSelectedY) );
+    Console::getInstance()->setBackground(Color::WHITE);
+    Console::getInstance()->setForeground((Color) mBoard.at(mSelectedX, mSelectedY) );
     Console::getInstance()->draw(boardX+1+(mSelectedX*2), boardY+1+(mSelectedY), "ʘ");
-    Console::getInstance()->setBackground(ANSI::Color::BLACK);
-    Console::getInstance()->setForeground(ANSI::Color::WHITE);   
+    Console::getInstance()->setBackground(Color::BLACK);
+    Console::getInstance()->setForeground(Color::WHITE);   
   }
   Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
 }

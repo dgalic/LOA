@@ -2,7 +2,7 @@
 #define CONSOLE_HPP
 
 #include "Singleton.hpp"
-#include "ANSI.hpp"
+#include "Color.hpp"
 
 #include <string>
 
@@ -20,8 +20,8 @@ private:
   unsigned short mWidth, mHeight;
   unsigned short mCursorX; //current X of the cursor
   unsigned short mCursorY; //current Y of the cursor
-  ANSI::Color mCurrentBG; //current BackGround color
-  ANSI::Color mCurrentFG; //current ForeGround color
+  Color mCurrentBG; //current BackGround color
+  Color mCurrentFG; //current ForeGround color
   double mFramerate; // number of frame displayed per second
     
 public:
@@ -36,10 +36,10 @@ public:
   unsigned short getHeight() const;
   void setWidth(const unsigned short&);
   void setHeight(const unsigned short&);
-  ANSI::Color getBackground() const;
-  ANSI::Color getForeground() const;
-  void setBackground(const ANSI::Color&);
-  void setForeground(const ANSI::Color&);
+  Color getBackground() const;
+  Color getForeground() const;
+  void setBackground(const Color&);
+  void setForeground(const Color&);
   /* get current cursor's X of the terminal */
   unsigned short getCursorX() const;
   /* get current cursor's Y of the terminal */
@@ -61,6 +61,9 @@ public:
   void drawString(const std::string& c);
   void drawRectangle(const unsigned short&, const unsigned short&, const unsigned short&, const unsigned short&, const char&);
   void drawRectangle(const unsigned short&, const unsigned short&, const char&);
+  
+  void drawHeader(const std::string&);
+
   /** Allows showing/hiding the cursor */
   void showCursor(const bool& b) const;
   /** adds a component to draw during the render, 

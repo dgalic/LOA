@@ -2,7 +2,7 @@
 #define OTHELLOCONFIG_HPP
 
 
-#include "ANSI.hpp"
+#include "Color.hpp"
 #include "State.hpp"
 #include "StateHandler.hpp"
 
@@ -20,9 +20,9 @@ class OthelloConfig : public State{
 private:
   unsigned short mEntry;
   unsigned short mType2; // 0 pour humain, entre 1 et ?? pour IA
-  std::list<ANSI::Color>::iterator mColor1;
-  std::list<ANSI::Color>::iterator mColor2;
-  std::list<ANSI::Color> mPossibleColors; // couleurs séléctionnables
+  std::list<Color>::iterator mColor1;
+  std::list<Color>::iterator mColor2;
+  std::list<Color> mPossibleColors; // couleurs séléctionnables
 
 public:
   OthelloConfig();

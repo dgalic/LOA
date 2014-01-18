@@ -8,11 +8,6 @@
 #include "Color.hpp"
 
 class Connect4: public BoardGame {
-
-    protected :
-        Player mPlayer1;
-        Player mPlayer2;
-        const Player * mCurrentPlayer;
     
     public:
         // Ctor et  Dtor

@@ -32,11 +32,11 @@ void Board::draw(const unsigned int& x = 12,
    * ajoutés entre chaque colonne, et elle est entre deux lignes de '~'.
    * La couleur de dessin du @e cadre est blanc. Les pions sont dessinés avec
    * le caractère @b ʘ, de couleur correspondant au contenu de la matrice 
-   * converti en @e ANSI::Color.
+   * converti en @e Color.
    * @param x abscisse du point supérieur gauche
    * @param y abscisse du point supérieur droit
    */
-  Console::getInstance()->setForeground( ANSI::Color::WHITE);
+  Console::getInstance()->setForeground( Color::WHITE);
   Console::getInstance()->setCursor(x,y);
   Console::getInstance()->drawRectangle(x, y, 2*getWidth()+1, 1, '~');
   Console::getInstance()->drawRectangle(x, y+getHeight()+1, \
@@ -46,20 +46,20 @@ void Board::draw(const unsigned int& x = 12,
     unsigned int col = 0;
     for(col = 0; col < 2*getWidth(); col += 2)
       {
-      Console::getInstance()->setForeground( ANSI::Color::WHITE);
+      Console::getInstance()->setForeground( Color::WHITE);
       Console::getInstance()->draw(x+col, y+row+1, '|');
       int content = at(col/2, row);
       // std::cerr<<"Board ("<<row<<","<<col/2<<") -> "<< content <<std::endl;
       if(content != -1)
         {
-	Console::getInstance()->setForeground( (ANSI::Color)content);
+	Console::getInstance()->setForeground( (Color)content);
 	Console::getInstance()->draw(x+col+1, y+row+1, "ʘ");
         }else
         {
           Console::getInstance()->draw(x+col+1, y+row+1, ' ');
         }
     }
-    Console::getInstance()->setForeground( ANSI::Color::WHITE);
+    Console::getInstance()->setForeground( Color::WHITE);
     Console::getInstance()->draw(x+col, y+row+1, '|');
   }
 }
