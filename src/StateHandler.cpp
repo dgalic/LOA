@@ -10,8 +10,7 @@ void StateHandler::push(State * s){
    * @details L'état posé est le nouvel état courant.
    * @param s Etat à poser.
    **/
-  if( s->init() )
-    mStates.push(s);
+  mStates.push(s);
   
 }
 
@@ -23,10 +22,8 @@ void StateHandler::pop(){
   if( mStates.empty() )
     return;
   State * s = mStates.top();
-  if(s->exit() ){
-    mStates.pop();
-    delete s;
-  }
+  mStates.pop();
+  delete s;
 }
 
 bool StateHandler::isEmpty(){

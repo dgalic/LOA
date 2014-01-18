@@ -30,16 +30,12 @@ class State {
 
 public:
   virtual ~State(){};
-  /** traite l'évènement décrit par la touche entrée, faux si rien n'est fait */
+  /** traite l'évènement décrit par la touche entrée */
   virtual void handle(const char& = ' ') = 0;
   /** calcule la prochaine configuration, selon la logique de jeu */
   virtual void update() = 0;
   /** dit à la GUI comment représenter la configuration courante */
   virtual void render() = 0;
-  /** mise en place de choses qui ont besoin d'initialisation */
-  virtual bool init() = 0;
-  /** libération des éventuelles allocations dynamiques, remise à zéro de l'état */
-  virtual bool exit() = 0;
 
 
 };

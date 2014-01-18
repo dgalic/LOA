@@ -38,8 +38,6 @@ public:
 		      const Positions& p) const;
   virtual void update() = 0;
   virtual void render() = 0;
-  virtual bool init() = 0;
-  virtual bool exit() = 0;
   
 };
 
