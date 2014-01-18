@@ -11,10 +11,11 @@
 #include "OthelloConfig.hpp"
 #include "FiveOrMore.hpp"
 #include "Connect4.hpp"
+#include "Connect4_long.hpp"
 
 MainMenuState::MainMenuState(){
   mEntry = 0;
-  mNbGames = 3;
+  mNbGames = 5;
   mGameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
 pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
 pions de sa couleur à la fin de la partie.");
@@ -59,9 +60,17 @@ void MainMenuState::handle(const char& c){
       break;
 
     case 2:
+      Game::getInstance()->getHandler().change(new Connect4_long(ANSI::Color::RED, ANSI::Color::YELLOW) );
+      break;
+
+    case 3:
       Game::getInstance()->getHandler().change(new FiveOrMore(10) );
       break;
       
+    case 4:
+      Game::getInstance()->getHandler().change(new FiveOrMore(10) );
+      break;
+
     default:
       break;
     }
@@ -85,7 +94,9 @@ void MainMenuState::render(){
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->draw(4, 4, "Othello");
   Console::getInstance()->draw(4, 5, "Puissance 4");
-  Console::getInstance()->draw(4, 6, "5 or more");
+  Console::getInstance()->draw(4, 6, "Puissance 4 - variante à points");
+  Console::getInstance()->draw(4, 7, "5 or more");
+  Console::getInstance()->draw(4, 8, "5 or more - variante couleurs");
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(ANSI::Color::WHITE);
   Console::getInstance()->drawString(mGameDescs.at(mEntry) );

@@ -79,7 +79,6 @@ void Connect4::handle(const char& c){
       std::cerr<<"le coup n'est pas gagnant"<<std::endl;
       mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
       unsigned short y2 = drop(mPointerX, 0);
-      searchLines(mPointerX, y2);
       mCurrentPlayer = opponent();
     }
   }
@@ -90,13 +89,18 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
       @brief Fait tomber la pièce donnée via la gravité. 
       Retourne la nouvelle ordonnée.
   */
+  std::cerr<<"dropping "<<x<<","<<y<<std::endl;
   int c = mBoard.at(x, y);
+  if(c == -1)
+    return y;
   unsigned short y2 = y;
   mBoard.at(x, y) = -1;
   while(y2 < mBoard.getHeight()-1 && mBoard.at(x, y2+1) == -1){
     y2++;
   }
+  std::cerr<<"tombe en "<<x<<","<<y2<<std::endl;
   mBoard.at(x, y2) = c;
+  searchLines(x, y2);
   return y2;
 }
 
@@ -105,12 +109,12 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
    * @brief A partir du pion (@x, @y), vérifie si il y a un alignement de 4.
    * Si oui, alors met fin à la partie.
    */
-  unsigned short nb = 0; // nombre de pions détruits (le posé est cumulé)
   unsigned short count = 0;
   unsigned short c = mBoard.at(x, y);  
   unsigned short xtest, ytest;
   for(unsigned short ix = 0; ix <= 1; ix++){
     for(short iy = -1; iy <= 1; iy++){
+      count = 0;
       xtest = x;
       ytest = y;
       if(ix == 0 && iy == 0)
@@ -137,13 +141,6 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
       if(count >= 4){
         mIngame = false;
         mCurrentPlayer = opponent();
-        /*        for(unsigned short i = 0; i < count; i++){
-                  if(xtest != x or ytest != y)
-                  mBoard.at(xtest, ytest) = -1;
-                  xtest -= ix;
-                  ytest -= iy;
-                  nb++;
-                  }*/
       }
 
     }
