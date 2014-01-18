@@ -128,13 +128,11 @@ void BoardGame::displayScore(){
      par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
   oss.str("Joueur 1 - ");
   oss << mScore[0];
-  Console::getInstance()->setCursor(1, 3);
   Console::getInstance()->setForeground(mPlayer1.getColor() );
   Console::getInstance()->drawString(1, 3, oss.str() );
-  Console::getInstance()->setCursor(25, 3);
-  Console::getInstance()->setForeground(mPlayer2.getColor() );
   oss.str("Joueur 2 - ");
   oss << mScore[1];
+  Console::getInstance()->setForeground(mPlayer2.getColor() );
   Console::getInstance()->drawString(25, 3, oss.str() );
   oss.clear();
 }

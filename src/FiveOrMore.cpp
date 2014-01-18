@@ -24,9 +24,11 @@ FiveOrMore::FiveOrMore(const unsigned short& dim,
                        const unsigned short& colors,
                        const unsigned short& pieces)
   :BoardGame(dim, dim, Color::RED, Color::BLUE), 
-   mSize(dim), mNbColors(colors), mAdds(pieces), mScore(0),
+   mSize(dim), mNbColors(colors), mAdds(pieces),
    mSelectedX(-1), mSelectedY(-1), mPlaced(true)
 {
+  mScore[0] = 0;
+  mScore[1] = 0;
   mFreePlaces = mSize*mSize;
   /*  for(unsigned short i = 0; i < mAdds; i++){
       addRandom();
@@ -156,26 +158,10 @@ void FiveOrMore::render(){
   // petit marqueur de l'emplacement d'origine du pion séléctionné
   static unsigned short boardX = 12, boardY = 8;
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("FIVE OR MORE  -  z:up  s:down  q:left  d:right  !/p:select/place  x:quit");
-  Console::getInstance()->setForeground(Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->setCursor(1, 3);
-  std::ostringstream oss(std::ostringstream::ate);
-  /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
-     par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
-  oss.str("Score - ");
-  oss << mScore;
-  Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->drawString(1, 3, oss.str() );
-  oss.clear();
+  Console::getInstance()->drawHeader("FIVE OR MORE  -  z:up  s:down  q:left  d:right  !/p:select/place  x:quit");
+  displayScore();
   if(mIngame == false){
-    oss.str("Game Over. Score final : ");
-    oss << mScore;
-    Console::getInstance()->drawString(boardX+mSize*3+3, boardY+mSize/2, oss.str() );
-    oss.clear();
+    displayResult(boardX+2, boardY + mSize/2);
   } 
   mBoard.draw(boardX, boardY);
   // surlignage de la case séléctionnée
@@ -187,6 +173,26 @@ void FiveOrMore::render(){
     Console::getInstance()->setForeground(Color::WHITE);   
   }
   Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+}
+
+
+void FiveOrMore::displayScore(){
+  std::ostringstream oss(std::ostringstream::ate);
+  /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
+     par str(...). Autrement, ça écrit au début, écrasant les 1ers caractères */
+  oss.str("Score - ");
+  oss << mScore[0];
+  Console::getInstance()->setForeground(Color::WHITE);
+  Console::getInstance()->drawString(1, 3, oss.str() );
+  oss.clear();
+}
+
+void FiveOrMore::displayResult(const unsigned short& x, const unsigned short& y){
+  std::ostringstream oss(std::ostringstream::ate);
+  oss.str("Game Over. Score final : ");
+  oss << mScore[0];
+  Console::getInstance()->drawString(x, y, oss.str() );
+  oss.clear();
 }
 
 
@@ -251,7 +257,7 @@ void FiveOrMore::searchLines(const unsigned short& x,
     mFreePlaces++;
     nb++;
   }
-  mScore += (nb * ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
+  mScore[0] += (nb * ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
   
 }  
 
