@@ -30,8 +30,6 @@ public:
   virtual void handle(const char& = ' ');
   virtual void update();
   virtual void render();
-  virtual bool init();
-  virtual bool exit();
 
 };
 
