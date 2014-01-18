@@ -14,7 +14,7 @@
 
 Connect4::Connect4(const Color& p1,
                    const Color& p2)
-: BoardGame(7, 6), mPlayer1(p1), mPlayer2(p2) {
+: BoardGame(7, 6, p1, p2){
   mPlayer1 = p1;
   mPlayer2 = p2;
   mCurrentPlayer = &mPlayer1;
@@ -184,12 +184,8 @@ void Connect4::update(){
 void Connect4::render(){
   // nettoye l'interface et la rafraichie
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(ANSI::Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("OTHELLO  -  q:left  d:right  !/p:place  x:quit");
-  Console::getInstance()->setForeground(ANSI::Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->drawRectangle(1, 4, Console::getInstance()->getWidth(), 1, '#');
+
+  BoardGame::displayHeader("Connect 4 - q/left  d/right  !/p:drop  x:quit");
 
   std::ostringstream oss(std::ostringstream::ate);
   /* construire avec ::ate permet d'ajouter avec "<<" à la FIN du contenu défini
