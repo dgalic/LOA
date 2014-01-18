@@ -10,6 +10,7 @@
 #include "ANSI.hpp"
 #include "OthelloConfig.hpp"
 #include "FiveOrMore.hpp"
+#include "Connect4.hpp"
 
 MainMenuState::MainMenuState(){
   mEntry = 0;
@@ -54,6 +55,7 @@ void MainMenuState::handle(const char& c){
       break;
      
     case 1:
+      Game::getInstance()->getHandler().change(new Connect4(ANSI::Color::RED, ANSI::Color::YELLOW) );
       break;
 
     case 2:
