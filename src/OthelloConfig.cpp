@@ -12,6 +12,17 @@
 
 OthelloConfig::OthelloConfig()
   :mEntry(0), mType2(0){
+  mPossibleColors.push_front(ANSI::BROWN);
+  mPossibleColors.push_front(ANSI::YELLOW);
+  mPossibleColors.push_front(ANSI::GREEN);
+  mPossibleColors.push_front(ANSI::LIGHTCYAN);
+  mPossibleColors.push_front(ANSI::BLUE);
+  mPossibleColors.push_front(ANSI::PURPLE);
+  mPossibleColors.push_front(ANSI::PINK);
+  mPossibleColors.push_front(ANSI::RED);
+  mColor1 = (mPossibleColors.begin() )++;
+  mColor2 = mColor1;
+  mColor2++;
 }
 
 OthelloConfig::~OthelloConfig(){
@@ -130,23 +141,4 @@ void OthelloConfig::render(){
   Console::getInstance()->draw(2, 4+mEntry, '~');
   
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
-}
-
-bool OthelloConfig::init(){
-  mPossibleColors.push_front(ANSI::BROWN);
-  mPossibleColors.push_front(ANSI::YELLOW);
-  mPossibleColors.push_front(ANSI::GREEN);
-  mPossibleColors.push_front(ANSI::LIGHTCYAN);
-  mPossibleColors.push_front(ANSI::BLUE);
-  mPossibleColors.push_front(ANSI::PURPLE);
-  mPossibleColors.push_front(ANSI::PINK);
-  mPossibleColors.push_front(ANSI::RED);
-  mColor1 = (mPossibleColors.begin() )++;
-  mColor2 = mColor1;
-  mColor2++;
-  return true;
-}
-
-bool OthelloConfig::exit(){
-  return true;
 }

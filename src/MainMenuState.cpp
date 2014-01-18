@@ -10,6 +10,17 @@
 #include "ANSI.hpp"
 #include "OthelloConfig.hpp"
 
+MainMenuState::MainMenuState(){
+  mEntry = 0;
+  mNbGames = 3;
+  mGameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
+pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
+pions de sa couleur à la fin de la partie.");
+  mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur.");
+  mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 pions de même couleurs ou plus. Chaque pion vous rapporte des points avant de disparaitre. Faites vite avant que le plateau ne soit rempli !!");
+ 
+}
+
 MainMenuState::~MainMenuState(){
 
 }
@@ -72,20 +83,4 @@ void MainMenuState::render(){
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
 
-bool MainMenuState::init(){
-  mEntry = 0;
-  mNbGames = 3;
-  mGameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
-pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
-pions de sa couleur à la fin de la partie.");
-  mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions.");
-  mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 couleurs.");
-  
-  return true;
-}
-
-bool MainMenuState::exit(){
-
-  return true;
-}
 

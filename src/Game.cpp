@@ -6,6 +6,7 @@
 #include "Console.hpp"
 #include "MainMenuState.hpp"
 #include "Singleton.hpp"
+#include "Random.hpp"
 
 void Game::init(){
   /**
@@ -62,6 +63,7 @@ StateHandler& Game::getHandler(){
 
 int main(){
   Game::getInstance()->init();
+  Random::init();
   Game::getInstance()->loop();
   Game::getInstance()->exit();
   Game::getInstance()->destroy();
