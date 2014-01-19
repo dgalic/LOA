@@ -17,6 +17,7 @@ Connect4::Connect4(const Color& p1,
 : BoardGame(7, 6, p1, p2){
   mScore[0] = 0;
   mScore[1] = 0;
+  mPointerY --;
   mCurrentPlayer = &mPlayer1;
   succ_function = [this](Board b, 
 			 const unsigned short& x,
@@ -73,10 +74,7 @@ void Connect4::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext( mPointerX, mPointerY, successors)) {
-      std::cerr<<"le coup "<<mPointerX<<","<<mPointerY\
-               <<" est possible"<<std::endl;
-      std::cerr<<"le coup n'est pas gagnant"<<std::endl;
+    if( isNext( mPointerX, 0, successors)) {
       mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
       unsigned short y2 = drop(mPointerX, 0);
       searchLines(mPointerX, y2);
@@ -93,13 +91,15 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
   std::cerr<<"dropping "<<x<<","<<y<<std::endl;
   int c = mBoard.at(x, y);
   unsigned short y2 = y;
+  if(c == -1)
+    return y;
   mBoard.at(x, y) = -1;
   while(y2 < mBoard.getHeight()-1 && mBoard.at(x, y2+1) == -1){
     y2++;
   }
   std::cerr<<"tombe en "<<x<<","<<y2<<std::endl;
   mBoard.at(x, y2) = c;
-  if(y2-1 < 0)
+  if(y2 != y && y2-1 < 0)
     drop(x, y2-1);
   //  if( y2 != y)
   //  searchLines(x, y2);
