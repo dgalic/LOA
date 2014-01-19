@@ -20,7 +20,7 @@ Connect4::Connect4(const Color& p1,
   mScore[1] = 0;
   mPointerY --;
   mCurrentPlayer = &mPlayer1;
-  succ_function = [this](Board b, 
+  mSucc_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
 			 const Player& p) 
@@ -75,7 +75,7 @@ void Connect4::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext( mPointerX, 0, successors)) {
+    if( isNext( mPointerX, 0, mSuccessors)) {
       mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
       unsigned short y2 = drop(mPointerX, 0);
       searchLines(mPointerX, y2);
@@ -177,8 +177,8 @@ void Connect4::update(){
     std::cin>>c;
     Game::getInstance()->getHandler().change(new MainMenuState());
   } else {
-    successors = BoardGame::computeNext(mBoard, *mCurrentPlayer, succ_function);
-    if (successors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
+    mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
+    if (mSuccessors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
       mIngame = false;
     } else{
       char c;
