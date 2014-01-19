@@ -73,15 +73,7 @@ bool BoardGame::checkMove(const char& c){
 }
 
 Positions BoardGame::computeNext(Board b,
-				 const Player& p,
-				 const std::function<\
-					       
-						bool	\
-					       (Board, \
-						const unsigned short&, \
-						const unsigned short&,
-						const Player&)>	\
-				 & succ ){
+				 const Player& p){
   /**
    * @brief Calcule les positions qui amènent à une configuration suivante.
    * @details Les configurations suivantes sont calculées relativement à la 
@@ -95,7 +87,7 @@ Positions BoardGame::computeNext(Board b,
   Positions res;
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
-      if(succ(b, x, y, p) ){
+      if(mSucc_function(b, x, y, p) ){
 	res.insert(std::make_pair(x,y) );
       }
     }

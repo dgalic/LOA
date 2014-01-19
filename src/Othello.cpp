@@ -14,7 +14,7 @@ Othello::Othello(const Color& p1,
 		 const Color& p2)
   : BoardGame(8, 8, p1, p2) {
   mCurrentPlayer = &mPlayer1;
-  succ_function = [this](Board b, 
+  mSucc_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
 			 const Player& p) 
@@ -42,7 +42,7 @@ void Othello::handle(const char& c){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
-    if( isNext(mPointerX, mPointerY, successors) ){
+    if( isNext(mPointerX, mPointerY, mSuccessors) ){
       mBoard.at(mPointerX, mPointerY ) = mCurrentPlayer->getColor();
       if( mCurrentPlayer == &mPlayer1){
 	mScore[0] ++;
@@ -175,11 +175,11 @@ void Othello::update(){
     std::cin>>c;
     Game::getInstance()->getHandler().change(new MainMenuState() );
   }else{
-    successors = BoardGame::computeNext(mBoard, *mCurrentPlayer, succ_function);
+    mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     const Player * other = opponent();
-    if(successors.empty() ){
+    if(mSuccessors.empty() ){
       //le joueur ne peut pas jouer si l'autre ne peut pas jouer, la partie finie
-      if(computeNext(mBoard, *other, succ_function).empty() )
+      if(computeNext(mBoard, *other).empty() )
 	// partie terminée
 	mIngame = false;
       else{
