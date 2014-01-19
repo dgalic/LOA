@@ -23,11 +23,11 @@ protected:
   const Player * mCurrentPlayer;
   unsigned short mPointerX, mPointerY; // case séléctionnée
   bool mIngame; //dit si le jeu est terminé ou pas
-  Positions successors; //les coups possibles depuis le plateau courant
+  Positions mSuccessors; //les coups possibles depuis le plateau courant
   std::function<bool(Board, 
 		     const unsigned short&,
 		     const unsigned short&,
-		     const Player&) > succ_function;
+		     const Player&) > mSucc_function;
 
 unsigned short mScore[2];
 
@@ -42,8 +42,7 @@ protected:
   virtual void handle(const char& c = ' ');
   virtual bool checkMove(const char&);
   Positions computeNext(Board b, // plateau à tester
-                        const Player& p, //joueur dont on cherche les coups
-                        const std::function< bool(Board, const unsigned short&, const unsigned short&, const Player&)> & succ ); //fonction de succession
+                        const Player& p); //joueur dont on cherche les coups
   bool isNext(const unsigned short& x, 
               const unsigned short& y,
               const Positions& p) const;
