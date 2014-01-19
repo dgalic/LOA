@@ -8,10 +8,13 @@
 #include "Color.hpp"
 
 class Connect4: public BoardGame {
+
+protected:
+    const unsigned short mVictory; //nb de points pour la victoire
     
     public:
         // Ctor et  Dtor
-        Connect4(const Color&, const Color&);
+  Connect4(const Color&, const Color&, const unsigned short& = 1);
         virtual ~Connect4();
         
         // gére les touches des joueurs
@@ -31,6 +34,7 @@ class Connect4: public BoardGame {
 
         //gére l'affichage
         virtual void render();
+
 };
 
 #endif

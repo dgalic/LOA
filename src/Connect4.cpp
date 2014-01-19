@@ -13,8 +13,9 @@
 
 
 Connect4::Connect4(const Color& p1,
-                   const Color& p2)
-: BoardGame(7, 6, p1, p2){
+                   const Color& p2,
+                   const unsigned short& v)
+: BoardGame(7, 6, p1, p2), mVictory(v){
   mScore[0] = 0;
   mScore[1] = 0;
   mPointerY --;
@@ -177,7 +178,7 @@ void Connect4::update(){
     Game::getInstance()->getHandler().change(new MainMenuState());
   } else {
     successors = BoardGame::computeNext(mBoard, *mCurrentPlayer, succ_function);
-    if (successors.empty()) {
+    if (successors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
       mIngame = false;
     } else{
       char c;

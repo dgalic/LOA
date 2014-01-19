@@ -147,6 +147,7 @@ void BoardGame::displayCurrentPlayer(){
 }
 
 void BoardGame::displayResult(const unsigned short& x, const unsigned short& y){
+  Console::getInstance()->setForeground(Color::WHITE);
   if( mScore[0] == mScore[1]){
     Console::getInstance()->drawString(x, y, "Egalité" );
   }else{
@@ -154,7 +155,6 @@ void BoardGame::displayResult(const unsigned short& x, const unsigned short& y){
     oss.str("Joueur ");
     oss << ( (mScore[1]>mScore[0])?2:1 );
     oss << " gagne par " <<mScore[0]<<" - "<<mScore[1];
-    Console::getInstance()->setForeground(Color::WHITE);
     Console::getInstance()->drawString(x, y, oss.str() );
     oss.clear();
   }
