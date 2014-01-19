@@ -62,7 +62,7 @@ void MainMenuState::handle(const char& c){
       break;
 
     case 2:
-      Game::getInstance()->getHandler().change(new Connect4_long(Color::RED, Color::YELLOW) );
+      Game::getInstance()->getHandler().change(new Connect4_long(Color::RED, Color::YELLOW, 6) );
       break;
 
     case 3:
