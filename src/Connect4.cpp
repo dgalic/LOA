@@ -79,6 +79,7 @@ void Connect4::handle(const char& c){
       std::cerr<<"le coup n'est pas gagnant"<<std::endl;
       mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
       unsigned short y2 = drop(mPointerX, 0);
+      searchLines(mPointerX, y2);
       mCurrentPlayer = opponent();
     }
   }
@@ -91,8 +92,6 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
   */
   std::cerr<<"dropping "<<x<<","<<y<<std::endl;
   int c = mBoard.at(x, y);
-  if(c == -1)
-    return y;
   unsigned short y2 = y;
   mBoard.at(x, y) = -1;
   while(y2 < mBoard.getHeight()-1 && mBoard.at(x, y2+1) == -1){
@@ -100,7 +99,10 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
   }
   std::cerr<<"tombe en "<<x<<","<<y2<<std::endl;
   mBoard.at(x, y2) = c;
-  searchLines(x, y2);
+  if(y2-1 < 0)
+    drop(x, y2-1);
+  //  if( y2 != y)
+  //  searchLines(x, y2);
   return y2;
 }
 
