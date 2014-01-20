@@ -1,11 +1,8 @@
 #include "Point.hpp"
 
-#include <iostream>
-
 Point::Point(const unsigned short& t1, const unsigned short& t2)
   : mPair(std::make_pair(t1, t2) ) 
 {
-  std::cerr<<"point construit : "<<t1<<","<<t2<<std::endl;
 }
 
 
@@ -63,30 +60,3 @@ bool Point::operator>(const Point& t) const{
 bool Point::operator>=(const Point& t) const{
   return getPair() >= t.getPair();
 }
-
-/*
-bool operator==(const Point& t1, const Point& t2){
-  return t1 == t2;
-}
-
-
-bool operator>(const Point& t1, const Point& t2){
-  return t1 > t2;
-}
-
-
-bool operator>=(const Point& t1, const Point& t2){
-  return t1 >= t2;
-}
-
-
-bool operator<(const Point& t1, const Point& t2){
-  return t1 < t2;
-}
-
-bool operator<=(const Point& t1, const Point& t2){
-  return t1 <= t2;
-}
-
-
-*/
