@@ -6,11 +6,11 @@
 
 #include <functional>
 
-Chomp::Chomp()
-: BoardGame(8, 10, Color::RED, Color::BLUE){
+Chomp::Chomp(const Color& p1, const Color& p2,
+             const unsigned short& w, const unsigned short& h)
+: BoardGame(w, h, p1, p2){
   mScore[0] = 0;
   mScore[1] = 0;
-  mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
 			 const Point& pos,
 			 const Player& p) 
@@ -121,4 +121,35 @@ void Chomp::render(){
   Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->draw(boardX+1, boardY+mBoard.getHeight(), 'X');
   Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd());
+}
+
+
+
+
+
+
+
+
+
+
+Chomp::Config::Config()
+  : ::Config(4)
+{
+
+}
+
+Chomp::Config::~Config(){ 
+  
+}
+
+void Chomp::Config::launchGame(){
+  Game::getInstance()->getHandler().change(new Chomp(*mColor1, *mColor2,
+                                                   mWidth, mHeight) );
+}
+
+void Chomp::Config::render(){
+  ::Config::render();
+  Console::getInstance()->draw(1, 1, "Chomp  -  !/p:select  x:quit");
+  Console::getInstance()->setForeground(Color::WHITE);
+  Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
