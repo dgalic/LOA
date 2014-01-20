@@ -7,16 +7,22 @@
 class Point{
 
 protected:
-  const std::pair<unsigned short, unsigned short> mPair;
+  std::pair<int, int> mPair;
 
 public:
-  Point(const unsigned short&, const unsigned short&);
+  Point(const int& = 0, const int& = 0);
+  Point(const Point&);
   virtual ~Point();
-  unsigned short first() const;
-  unsigned short second() const;
-  unsigned short fst() const;
-  unsigned short snd() const;
-  std::pair<unsigned short, unsigned short> getPair() const;
+   int first() const;
+   int second() const;
+   int fst() const;
+   int snd() const;
+   int& first();
+   int& second();
+   int& fst();
+   int& snd();
+   std::pair<int, int> getPair() const;
+  void operator=(const Point&);
   bool operator==(const Point&) const;
   bool operator<(const Point&) const;
   bool operator<=(const Point&) const;

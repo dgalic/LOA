@@ -17,10 +17,10 @@ FiveOrMore_var::~FiveOrMore_var(){}
 void FiveOrMore_var::handleSelection(const char& c){
  checkMove(c);
   if(c == 'p' || c == MARK){
-    int i = mBoard.at(mPointerX, mPointerY);
+    int i = mBoard.at(mPointer.fst(), mPointer.snd());
     if( i != -1 ){
-      mSelectedX = mPointerX;
-      mSelectedY = mPointerY;
+      mSelected.fst() = mPointer.fst();
+      mSelected.snd() = mPointer.snd();
       mPreviousColor = findIndex( i );
       mColorIndex = mPreviousColor;
     }
@@ -38,7 +38,7 @@ void FiveOrMore_var::handleAction(const char& c){
     }else{
       mColorIndex = mNbColors-1;
     }
-    mBoard.at(mPointerX, mPointerY) = sColorList[mColorIndex];    
+    mBoard.at(mPointer.fst(), mPointer.snd()) = sColorList[mColorIndex];    
     return;
   }
 
@@ -49,16 +49,16 @@ void FiveOrMore_var::handleAction(const char& c){
     }else{
       mColorIndex = 0;
     }      
-    mBoard.at(mPointerX, mPointerY) = sColorList[mColorIndex];
+    mBoard.at(mPointer.fst(), mPointer.snd()) = sColorList[mColorIndex];
     return;
   }
 
   if(arr == ANSI::DOWN 
      || c == 's'){
     // annulation, retour à la couleur initiale
-    mBoard.at(mPointerX, mPointerY) = sColorList[mPreviousColor];
-    mSelectedX = -1;
-    mSelectedY = -1;
+    mBoard.at(mPointer.fst(), mPointer.snd()) = sColorList[mPreviousColor];
+    mSelected.fst() = -1;
+    mSelected.snd() = -1;
     return;
   }
  
@@ -67,11 +67,11 @@ void FiveOrMore_var::handleAction(const char& c){
        on doit pouvoir rejouer : d'où le mPlaced */
 
    if(mColorIndex != mPreviousColor){
-      searchLines(mPointerX, mPointerY);
+      searchLines(mPointer.fst(), mPointer.snd());
       mPlaced = true;
    }
-   mSelectedX = -1;
-   mSelectedY = -1;
+   mSelected.fst() = -1;
+   mSelected.snd() = -1;
  }
 
 }
