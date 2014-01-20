@@ -148,6 +148,7 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
             mScore[1]++;
           }
           mCurrentPlayer = opponent();
+          return;
       }
     }
   }
