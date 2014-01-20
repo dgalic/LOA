@@ -1,5 +1,5 @@
-#ifndef CONNECT4_HPP
-#define CONNECT4_HPP
+#ifndef Tic_tac_toe_HPP
+#define Tic_tac_toe_HPP
 
 #include "BoardGame.hpp"
 #include "Player.hpp"

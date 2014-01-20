@@ -12,64 +12,24 @@
 #include <functional>
 
 
-Tic_tac_toe::Tic_Tac_toe(const Color& p1,
+Tic_tac_toe::Tic_tac_toe(const Color& p1,
                    const Color& p2,
                    const unsigned short& v)
 : BoardGame(3, 3, p1, p2), mVictory(v){
   mScore[0] = 0;
   mScore[1] = 0;
-  mPointerY --;
   mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
 			 const Player& p) 
     -> bool {
-    return (b.get(x, y) != -1); //seule une case vide est jouable
+    return (b.get(x, y) == -1); //seule une case vide est jouable
   };
 
 }
   
  Tic_tac_toe::~Tic_tac_toe(){
-}
-
-bool Tic_tac_toe::checkMove(const char& c){
-  /**
-   * @brief Bouge le curseur si on a pressé les touches standard.
-   * @details Sur pression d'une flèche ou de zqsd.
-   * @param c Caractère à tester (touche entrée).
-   * @return True si on a déplace, false sinon.
-   */
-  ANSI::Arrow arr;
-  arr = checkArrow(c);
-  if(arr == ANSI::UP 
-     || c == 'z'){
-    if(mPointerY > 0)
-      mPointerY--;
-    return true;
-  }
-    
-  if(arr == ANSI::LEFT 
-     || c == 'q'){
-    if(mPointerX > 0)
-      mPointerX--;
-    return true;
-  }
-
-  if(arr == ANSI::DOWN 
-     || c == 's'){
-    if(mPointerY < mBoard.getHeight()-1 )
-      mPointerY++;
-    return true;
-  }
-
-  if(arr == ANSI::RIGHT 
-     || c == 'd'){
-    if(mPointerX < mBoard.getWidth()-1 )
-      mPointerX++;
-    return true;
-  }
-  return false;
 }
 
 void Tic_tac_toe::handle(const char& c){
@@ -95,7 +55,7 @@ void Tic_tac_toe::handle(const char& c){
      * avec le coup jouer */
     if( isNext(mPointerX, mPointerY, mSuccessors) ){
       mBoard.at(mPointerX, mPointerY) = mCurrentPlayer->getColor(); 
-      searchLines(mPointerX, y2);
+      searchLines(mPointerX, mPointerY);
       mCurrentPlayer = opponent();
     }
   }
@@ -122,22 +82,22 @@ void Tic_tac_toe::searchLines(const unsigned short& x, const unsigned short& y){
 
     bool ligne_is_align = false;
     //test ligne
-    if ( ((h_g == h_m) && (h_g == h_d))
-        || ((m_g == m_m) && (m_g == h_d))
-        || ((b_g == b_m) && (b_g == b_d))){
+    if ( ((h_g == h_m) && (h_g == h_d) && (h_g != -1))
+        || ((m_g == m_m) && (m_g == h_d) && (m_g != -1))
+        || ((b_g == b_m) && (b_g == b_d)) && (b_g != -1)){
         ligne_is_align = true;
     }
 
     //test colonne
-    if ( ((h_g == m_g) && (h_g == b_g))
-        || ((h_m == m_m) && (h_m == b_m))
-        || ((h_d == m_d) && (h_d == b_d))){
+    if ( ((h_g == m_g) && (h_g == b_g) && (h_g != -1))
+        || ((h_m == m_m) && (h_m == b_m) && (h_m != -1))
+        || ((h_d == m_d) && (h_d == b_d)) && (h_d != -1)){
         ligne_is_align = true;
     }
 
     //test diagonale \ et /
-    if ( ((h_g == m_m) && (h_g == b_d))
-        || ((b_g == m_m) && (b_g == h_d))){
+    if ( ((h_g == m_m) && (h_g == b_d) && (h_g != -1))
+        || ((b_g == m_m) && (b_g == h_d)) && (b_g != -1)){
         ligne_is_align = true;
     }
 
