@@ -22,13 +22,7 @@ public:
   bool operator<=(const Point&) const;
   bool operator>(const Point&) const;
   bool operator>=(const Point&) const;
-  /*
-  friend bool operator==(const Point&, const Point&);
-  friend bool operator<(const Point&, const Point&);
-  friend bool operator<=(const Point&, const Point&);
-  friend bool operator>(const Point&, const Point&);
-  friend bool operator>=(const Point&, const Point&);*/
-};
+ };
 
 
 #endif
