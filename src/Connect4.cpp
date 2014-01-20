@@ -18,14 +18,13 @@ Connect4::Connect4(const Color& p1,
 : BoardGame(7, 6, p1, p2), mVictory(v){
   mScore[0] = 0;
   mScore[1] = 0;
-  mPointer.snd() --;
+  mPointer.snd()--;
   mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
-			 const unsigned short& x,
-			 const unsigned short& y,
-			 const Player& p) 
+			 const Point& po,
+			 const Player& pl) 
     -> bool {
-    return b.at(x,0) == -1;
+    return b.at(po.fst(), 0) == -1;
   };
 
 }
@@ -46,7 +45,7 @@ bool Connect4::checkMove(const char& c){
 
   // si le joueur veut déplacer son curseur vers la droite
   if ( arr == ANSI::RIGHT || c == 'd') {
-    if ( mPointer.fst() < mBoard.getWidth()-1 ) {
+    if ( mPointer.fst() < (int)mBoard.getWidth()-1 ) {
       mPointer.fst()++;
     }
     return true;
@@ -75,7 +74,7 @@ void Connect4::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext( mPointer.fst(), 0, mSuccessors)) {
+    if( isNext( mPointer, mSuccessors)) {
       mBoard.at(mPointer.fst(), 0) = mCurrentPlayer->getColor(); 
       unsigned short y2 = drop(mPointer.fst(), 0);
       searchLines(mPointer.fst(), y2);
@@ -167,6 +166,7 @@ void Connect4::update(){
     Game::getInstance()->getHandler().change(new MainMenuState());
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
+    std::cerr<<mSuccessors.size()<<" successeurs"<<std::endl;
     if (mSuccessors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
       mIngame = false;
     } else{
