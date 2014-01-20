@@ -93,16 +93,15 @@ void MainMenuState::render(){
   Console::getInstance()->draw("MAIN MENU  -  z:up  s:down  x:quit  !/p:ok");
   Console::getInstance()->setForeground(Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');  
-  Console::getInstance()->drawRectangle(1, 12, Console::getInstance()->getWidth(), 1, '#');
+  Console::getInstance()->drawRectangle(1, 16, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->draw(4, 4, "Othello");
   Console::getInstance()->draw(4, 5, "Puissance 4");
   Console::getInstance()->draw(4, 6, "Puissance 4 - variante à points");
   Console::getInstance()->draw(4, 7, "5 or more");
   Console::getInstance()->draw(4, 8, "5 or more - variante couleurs");
-  Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->drawString(mGameDescs.at(mEntry) );
+  Console::getInstance()->drawString(2, 18, mGameDescs.at(mEntry) );
   Console::getInstance()->draw(2, 4+mEntry, '~');
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
