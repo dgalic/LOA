@@ -100,8 +100,9 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
   }
   std::cerr<<"tombe en "<<x<<","<<y2<<std::endl;
   mBoard.at(x, y2) = c;
-  if(y2 != y && y2-1 < 0)
-    drop(x, y2-1);
+  if( (y != 0) && (mBoard.get(x,y-1) != -1)) {
+    drop(x, y-1);
+  }
   //  if( y2 != y)
   //  searchLines(x, y2);
   return y2;
