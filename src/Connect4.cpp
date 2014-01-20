@@ -1,14 +1,9 @@
 #include "Connect4.hpp"
 
 #include "Game.hpp"
-#include "ANSI.hpp"
 #include "Console.hpp"
 #include "Board.hpp"
-#include "StateHandler.hpp"
-#include "MainMenuState.hpp"
 
-#include <sstream> // ostringstream
-#include <utility> // pour std::pair
 #include <functional>
 
 
@@ -62,14 +57,6 @@ void Connect4::handle(const char& c){
   if(checkMove(c) ){
     return;
   }
-  
-  // si le joueur veut quitter le jeux
-  if (c == 'x') {
-    Game::getInstance()->getHandler().change(
-                                             new MainMenuState());
-    return;
-  }
-
   // si le joueur veux executer une action, ici joueur une piece
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
@@ -81,6 +68,7 @@ void Connect4::handle(const char& c){
       mCurrentPlayer = opponent();
     }
   }
+  BoardGame::handle(c);
 }
 
 unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
@@ -88,7 +76,6 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
       @brief Fait tomber la pièce donnée via la gravité. 
       Retourne la nouvelle ordonnée.
   */
-  std::cerr<<"dropping "<<x<<","<<y<<std::endl;
   int c = mBoard.at(x, y);
   unsigned short y2 = y;
   if(c == -1)
@@ -97,7 +84,6 @@ unsigned short Connect4::drop(const unsigned short& x, const unsigned short& y){
   while(y2 < mBoard.getHeight()-1 && mBoard.at(x, y2+1) == -1){
     y2++;
   }
-  std::cerr<<"tombe en "<<x<<","<<y2<<std::endl;
   mBoard.at(x, y2) = c;
   if( (y != 0) && (mBoard.get(x,y-1) != -1)) {
     drop(x, y-1);
@@ -163,7 +149,7 @@ void Connect4::update(){
     //partie terminée 
     char c;
     std::cin>>c;
-    Game::getInstance()->getHandler().change(new MainMenuState());
+    Game::getInstance()->mainMenu();
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     if (mSuccessors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {

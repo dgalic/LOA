@@ -3,11 +3,7 @@
 #include "Game.hpp"
 #include "Console.hpp"
 #include "Board.hpp"
-#include "StateHandler.hpp"
-#include "MainMenuState.hpp"
 
-#include <sstream> // ostringstream
-#include <utility> // pour std::pair
 #include <functional>
 
 Othello::Othello(const Color& p1,
@@ -76,7 +72,6 @@ void Othello::shuffle(const Point& p){
 	    )
 	  break;
 	short element = mBoard.get(x+k*i, y+k*j);
-	std::cerr<<"element => "<<element<<std::endl;
 	if(element == -1) //case vide
 	  break;
 	if(element != pcolor )
@@ -91,12 +86,8 @@ void Othello::shuffle(const Point& p){
 	      mScore[0] -= k-1;
 	      mScore[1] += k-1;
 	    }
-	    std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
 	    while(x+(k2*i) != x || y+(k2*j) != y){		  
-	      std::cerr<<"shuffle "<<x+k2*i<<","<<y+k2*j<<"/"<<x<<","<<y <<std::endl;
-
 	      mBoard.at(x+k2*i, y+k2*j) = pcolor ;
-
 	      k2--;
 	    }
 	    break;
@@ -165,7 +156,7 @@ void Othello::update(){
     //partie terminée 
     char c;
     std::cin>>c;
-    Game::getInstance()->getHandler().change(new MainMenuState() );
+    Game::getInstance()->mainMenu();
   }else{
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     const Player * other = opponent();

@@ -1,10 +1,8 @@
 #include "FiveOrMore.hpp"
 #include "Random.hpp"
 #include "Game.hpp"
-#include "ANSI.hpp"
 #include "Console.hpp"
-#include "MainMenuState.hpp"
-#include "StateHandler.hpp"
+
 #include <sstream>
 
 const std::array<Color, 10> FiveOrMore::sColorList = { 
@@ -30,9 +28,6 @@ FiveOrMore::FiveOrMore(const unsigned short& dim,
   mScore[0] = 0;
   mScore[1] = 0;
   mFreePlaces = mSize*mSize;
-  /*  for(unsigned short i = 0; i < mAdds; i++){
-      addRandom();
-VV      }*/
   
 }
 
@@ -41,12 +36,9 @@ FiveOrMore::~FiveOrMore(){
 }
 
 void FiveOrMore::handle(const char& c){
-  //std::cerr<<"FIVE OR MORE : sélécted : "<<mSelected.fst()<<" "<<mSelected.snd()<<std::endl;
   if(mSelected.fst() == -1 or mSelected.snd() == -1){
-    //std::cerr<<"FIVE OR MORE : mode séléction"<<std::endl;
     handleSelection(c);
   }else{
-    //std::cerr<<"FIVE OR MORE : mode déplacement"<<std::endl;
     handleAction(c);
   }
   BoardGame::handle(c);
@@ -130,10 +122,9 @@ void FiveOrMore::handleAction(const char& c){
 
 void FiveOrMore::update(){
   if(not mIngame){
-    std::cerr<<"c'est vraiment la fin"<<std::endl;
     char c;
     std::cin>>c;
-    Game::getInstance()->getHandler().change(new MainMenuState() );
+    Game::getInstance()->mainMenu();
   }else{
     //le joueur joue
     char c;
@@ -217,7 +208,7 @@ void FiveOrMore::searchLines(const unsigned short& x,
       ytest = y;
       if(ix == 0 && iy == 0) //prévient des boucles
         continue;
-      std::cerr<<"phase 1"<<std::endl;
+
       //pion de la même couleur le plus éloigné
       while( xtest > 0  && 
              (  iy == 0 
@@ -227,8 +218,8 @@ void FiveOrMore::searchLines(const unsigned short& x,
         xtest -= ix;
         ytest -= iy;
       }
+
       count = 1;
-      std::cerr<<"phase 2"<<std::endl;
       //on cherche les pions, dans la direction opposée, en comptant
       while( (ix == 0 || xtest < mSize-1) &&      
              (  iy == 0 
@@ -241,7 +232,7 @@ void FiveOrMore::searchLines(const unsigned short& x,
           ytest += iy;
         
         }
-      std::cerr<<"phase 3"<<std::endl;
+
       //si il y a plus de 5, on fait machine arrière et on fait l'action
       if(count >= 5){
         for(unsigned short i = 0; i < count; i++){
@@ -254,12 +245,9 @@ void FiveOrMore::searchLines(const unsigned short& x,
           nb++;
         }
       }
-      std::cerr<<"phase 4"<<std::endl;
-
     }
   }
   
-  std::cerr<<"phase 5"<<std::endl;
   // fin des vérifications
   if(nb > 0){
     mBoard.at(x, y) = -1;
@@ -268,7 +256,6 @@ void FiveOrMore::searchLines(const unsigned short& x,
   }
   mScore[0] += (nb * ( (nb+mAdds)/2) ); // proportionnel aux pions posés, et au challenge
   
-  std::cerr<<"phase 6"<<std::endl;
 }  
 
 bool FiveOrMore::addRandom(){

@@ -28,7 +28,7 @@ BoardGame::~BoardGame(){
 
 void BoardGame::handle(const char& c){
   if(c == 'x'){
-    Game::getInstance()->getHandler().change(new MainMenuState() );
+    Game::getInstance()->mainMenu();
     return;
   }
 }

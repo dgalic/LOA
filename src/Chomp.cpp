@@ -1,14 +1,9 @@
 #include "Chomp.hpp"
 
 #include "Game.hpp"
-#include "ANSI.hpp"
 #include "Console.hpp"
 #include "Board.hpp"
-#include "StateHandler.hpp"
-#include "MainMenuState.hpp"
 
-#include <sstream> // ostringstream
-#include <utility> // pour std::pair
 #include <functional>
 
 Chomp::Chomp()
@@ -40,8 +35,7 @@ void Chomp::handle(const char& c){
   
   // si le joueur veut quitter le jeux
   if (c == 'x') {
-    Game::getInstance()->getHandler().change(
-                                             new MainMenuState());
+    Game::getInstance()->mainMenu();
     return;
   }
 
@@ -93,7 +87,7 @@ void Chomp::update(){
     //partie terminée 
     char c;
     std::cin>>c;
-    Game::getInstance()->getHandler().change(new MainMenuState());
+    Game::getInstance()->mainMenu();
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     if (mSuccessors.empty()) {

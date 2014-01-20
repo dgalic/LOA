@@ -6,7 +6,6 @@
 #include "Color.hpp"
 #include "Console.hpp"
 #include "StateHandler.hpp"
-#include "MainMenuState.hpp"
 
 #include <list>
 #include <sstream>
@@ -105,7 +104,7 @@ void OthelloConfig::handle(const char& c){
   }
   
   if(c == 'x'){
-    Game::getInstance()->getHandler().change(new MainMenuState() );
+    Game::getInstance()->mainMenu();
     return;
   }
 
