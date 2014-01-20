@@ -47,24 +47,31 @@ bool Isola::isSucc(Board b,
                    const Player& p) const{
   bool res;
   unsigned short testX, testY;
-  if(p == player1){
+  if(p == mPlayer1){
     testX = mP1x;
     testY = mP1y;
   }else{
     testX = mP2x;
     testY = mP2y;
   }
-  if(x > mBoard.getWidth() && y > mBoard.getHeight() )
+  if(x > mBoard.getWidth() && y > mBoard.getHeight() ){
+    std::cerr<<x<<","<<y<<" hors du plateau" <<std::endl;
     return false; // coup hors du plateau
+  }
+
+  if(mBoard.at(x, y) != -1 ){ // case non vide
+    std::cerr<<x<<","<<y<<" non vide" <<std::endl;
+    return false;
+  }
 
   if( (abs(x-testX) > 1) 
-           or (abs(y-testY) > 1 )
+      or (abs(y-testY) > 1 )
       )
+    {
+    std::cerr<<x<<","<<y<<" trop loin" <<std::endl;
     return false; // déplacement trop éloigné
-
-  if(mBoard.at(x, y) != -1 ) // case non vide
-    return false;
-
+    }
+  std::cerr<<x<<","<<y<<" est possible" <<std::endl;
   return true; 
   
 }
@@ -83,15 +90,13 @@ void Isola::handleMove(const char& c){
   static const unsigned short width = mBoard.getWidth(), 
     height = mBoard.getHeight();
   arr = checkArrow(c);
-
-  
     
   if(arr == ANSI::UP
      || c == 'z'){
     if( mPointerY > 0){
       
-      if ( (abs(mPointerX-mCurrentX) <= 1) 
-           && (abs(mPointerY-mCurrentY-1) <= 1 ) ){
+      if(mBoard.at(mPointerX, mPointerY-1) == mCurrentPlayer->getColor()
+         || isNext(mPointerX, mPointerY-1, mSuccessors) ){
         mPointerY--; // interdit de déplacer trop loin
       }
       return;
@@ -104,8 +109,8 @@ void Isola::handleMove(const char& c){
      || c == 'q'){
     if( mPointerX > 0){
       
-      if ( (abs(mPointerX-1-mCurrentX) <= 1) 
-           && (abs(mPointerY-mCurrentY) <= 1 ) ){
+      if(mBoard.at(mPointerX-1, mPointerY) == mCurrentPlayer->getColor()
+         || isNext(mPointerX-1, mPointerY, mSuccessors) ){
         mPointerX--;
       }
       return;
@@ -116,8 +121,8 @@ void Isola::handleMove(const char& c){
   if(arr == ANSI::DOWN 
      || c == 's'){
     if( mPointerY < height-1  ){
-      if ( (abs(mPointerX-mCurrentX) <= 1) 
-           && (abs(mPointerY+1-mCurrentY) <= 1 ) ){       
+      if(mBoard.at(mPointerX, mPointerY+1) == mCurrentPlayer->getColor()
+         || isNext(mPointerX, mPointerY+1, mSuccessors) ){
         mPointerY++;
       }
       return;
@@ -126,9 +131,9 @@ void Isola::handleMove(const char& c){
   
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if( mPointerX < width-1){
-      if ( (abs(mPointerX+1-mCurrentX) <= 1) 
-           && (abs(mPointerY-mCurrentY) <= 1 ) ){
+    if( mPointerX < width-1){      
+      if(mBoard.at(mPointerX+1, mPointerY) == mCurrentPlayer->getColor()
+         || isNext(mPointerX+1, mPointerY, mSuccessors) ){
         mPointerX++; 
       }
       return;
@@ -138,21 +143,20 @@ void Isola::handleMove(const char& c){
   BoardGame::handle(c);
 
   if(c == 'p' or c == MARK){
-    if( (mPointerX == mCurrentX && mPointerY == mCurrentY)
-       or mBoard.at(mPointerX, mPointerY) != -1 )
-      return;
-    mBoard.at( mPointerX, mPointerY) = mBoard.at(mCurrentX, mCurrentY);
-    mBoard.at(mCurrentX, mCurrentY) = -1;
-    if(*mCurrentPlayer == mPlayer1){
-      mP1x = mPointerX;
-      mP1y = mPointerY;
-    }else{
-      mP2x = mPointerX;
-      mP2y = mPointerY;
+    if(isNext(mPointerX, mPointerY, mSuccessors) ){
+      mBoard.at( mPointerX, mPointerY) = mBoard.at(mCurrentX, mCurrentY);
+      mBoard.at(mCurrentX, mCurrentY) = -1;
+      if(*mCurrentPlayer == mPlayer1){
+        mP1x = mPointerX;
+        mP1y = mPointerY;
+      }else{
+        mP2x = mPointerX;
+        mP2y = mPointerY;
+      }
+      mMoved = true;
+      mCurrentX = -1;
+      mCurrentY = -1;
     }
-    mMoved = true;
-    mCurrentX = -1;
-    mCurrentY = -1;
     return;
   }   
 
@@ -189,7 +193,17 @@ void Isola::update(){
     std::cin >> c;
     Game::getInstance()->getHandler().change(new MainMenuState() );
   }else{
-    BoardGame::computeNext(mBoard, *mCurrentPlayer);
+    mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
+    std::cerr<<mSuccessors.size()<<" coups possibles" <<std::endl;
+    if(mSuccessors.empty() ){
+      mIngame = false;
+      if(*mCurrentPlayer == mPlayer1){
+        mScore[1]++;
+      }else{
+        mScore[0]++;
+      }
+      return;
+    }
     std::cin >> c;
     handle(c);    
   }

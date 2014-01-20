@@ -27,6 +27,9 @@ public:
   virtual ~Isola();
 
 protected:
+  virtual bool isSucc(Board, 
+                      const unsigned short&, const unsigned short&,
+                      const Player&) const;
   virtual void handle(const char& c = ' ');
   virtual void handleMove(const char& c);
   virtual void handleDestroy(const char& c);
