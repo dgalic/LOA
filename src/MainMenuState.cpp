@@ -13,11 +13,11 @@
 #include "FiveOrMore_var.hpp"
 #include "Connect4.hpp"
 #include "Connect4_long.hpp"
-#include "Tic_Tac_toe.hpp"
+#include "Tic_tac_toe.hpp"
 
 MainMenuState::MainMenuState(){
   mEntry = 0;
-  mNbGames = 5;
+  mNbGames = 6;
   mGameDescs.push_back("Dans Othello, vous devez prendre en sandwich plusieurs \
 pions ennemis pour les retourner. Le gagnant est celui qui possède le plus de \
 pions de sa couleur à la fin de la partie.");
@@ -25,6 +25,7 @@ pions de sa couleur à la fin de la partie.");
   mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur. Chaque ligne vous rapporte 1 point et disparait ensuite.");
   mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 pions de même couleurs ou plus, en déplaçant un pion. Chaque pion vous rapporte des points avant de disparaitre. Faites vite avant que le plateau ne soit rempli !!");
   mGameDescs.push_back("Dans cette variante de Five or more, vous ne déplacez pas les pions, vous changez leur couleur.");
+  mGameDescs.push_back("Dans Morpion, il faut aligner 3 pion de la même couleur");
  
 }
 
@@ -104,6 +105,7 @@ void MainMenuState::render(){
   Console::getInstance()->draw(4, 6, "Puissance 4 - variante à points");
   Console::getInstance()->draw(4, 7, "5 or more");
   Console::getInstance()->draw(4, 8, "5 or more - variante couleurs");
+  Console::getInstance()->draw(4, 9, "Morpion");
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->drawString(mGameDescs.at(mEntry) );
