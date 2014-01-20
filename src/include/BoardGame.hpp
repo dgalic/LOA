@@ -21,7 +21,7 @@ protected:
   const Player mPlayer1;
   const Player mPlayer2;
   const Player * mCurrentPlayer;
-  unsigned short mPointerX, mPointerY; // case séléctionnée
+  Point mPointer; // case séléctionnée
   bool mIngame; //dit si le jeu est terminé ou pas
   Positions mSuccessors; //les coups possibles depuis le plateau courant
   std::function<bool(Board, 

@@ -3,6 +3,8 @@
 
 #include "BoardGame.hpp"
 
+#include "Point.hpp"
+
 /**
    Dans Isola, on met des cases à -2 : cela signifie "case détruite".
    -1 signifie toujours "case vide".
@@ -14,12 +16,9 @@ class Isola: virtual public BoardGame{
 
 protected:
   bool mMoved; //est-ce que le joueur courant a déplacé sa pièce ?
-  unsigned short mCurrentX;
-  unsigned short mCurrentY;
-  unsigned short mP1x;
-  unsigned short mP1y;
-  unsigned short mP2x;
-  unsigned short mP2y;
+  Point mCurrent; 
+  Point mP1;
+  Point mP2;
 
 public:
   Isola(const Color&, const Color&,

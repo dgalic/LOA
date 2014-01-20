@@ -18,7 +18,7 @@ Connect4::Connect4(const Color& p1,
 : BoardGame(7, 6, p1, p2), mVictory(v){
   mScore[0] = 0;
   mScore[1] = 0;
-  mPointerY --;
+  mPointer.snd() --;
   mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
 			 const unsigned short& x,
@@ -38,16 +38,16 @@ bool Connect4::checkMove(const char& c){
   ANSI::Arrow arr;
   arr = checkArrow(c);
   if (arr == ANSI::LEFT || c == 'q') {
-    if (mPointerX > 0) {
-      mPointerX--;
+    if (mPointer.fst() > 0) {
+      mPointer.fst()--;
     }
     return true;
   }
 
   // si le joueur veut déplacer son curseur vers la droite
   if ( arr == ANSI::RIGHT || c == 'd') {
-    if ( mPointerX < mBoard.getWidth()-1 ) {
-      mPointerX++;
+    if ( mPointer.fst() < mBoard.getWidth()-1 ) {
+      mPointer.fst()++;
     }
     return true;
   }
@@ -75,10 +75,10 @@ void Connect4::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext( mPointerX, 0, mSuccessors)) {
-      mBoard.at(mPointerX, 0) = mCurrentPlayer->getColor(); 
-      unsigned short y2 = drop(mPointerX, 0);
-      searchLines(mPointerX, y2);
+    if( isNext( mPointer.fst(), 0, mSuccessors)) {
+      mBoard.at(mPointer.fst(), 0) = mCurrentPlayer->getColor(); 
+      unsigned short y2 = drop(mPointer.fst(), 0);
+      searchLines(mPointer.fst(), y2);
       mCurrentPlayer = opponent();
     }
   }
@@ -195,5 +195,5 @@ void Connect4::render(){
 
   }
   mBoard.draw(boardX, boardY);
-  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd());
 }

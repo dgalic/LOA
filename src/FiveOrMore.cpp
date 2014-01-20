@@ -25,7 +25,7 @@ FiveOrMore::FiveOrMore(const unsigned short& dim,
                        const unsigned short& pieces)
   :BoardGame(dim, dim, Color::RED, Color::BLUE), 
    mSize(dim), mNbColors(colors), mAdds(pieces),
-   mSelectedX(-1), mSelectedY(-1), mPlaced(true)
+   mSelected(-1, -1), mPlaced(true)
 {
   mScore[0] = 0;
   mScore[1] = 0;
@@ -41,8 +41,8 @@ FiveOrMore::~FiveOrMore(){
 }
 
 void FiveOrMore::handle(const char& c){
-  //std::cerr<<"FIVE OR MORE : sélécted : "<<mSelectedX<<" "<<mSelectedY<<std::endl;
-  if(mSelectedX == -1 or mSelectedY == -1){
+  //std::cerr<<"FIVE OR MORE : sélécted : "<<mSelected.fst()<<" "<<mSelected.snd()<<std::endl;
+  if(mSelected.fst() == -1 or mSelected.snd() == -1){
     //std::cerr<<"FIVE OR MORE : mode séléction"<<std::endl;
     handleSelection(c);
   }else{
@@ -56,9 +56,9 @@ void FiveOrMore::handleSelection(const char& c){
   BoardGame::checkMove(c);
   if(c == 'p' || c == MARK){
     // séléction d'un pion, si la case n'est pas vide
-    if(mBoard.at(mPointerX, mPointerY) != -1 ){
-      mSelectedX = mPointerX;
-      mSelectedY = mPointerY;
+    if(mBoard.at(mPointer.fst(), mPointer.snd()) != -1 ){
+      mSelected.fst() = mPointer.fst();
+      mSelected.snd() = mPointer.snd();
     }
   }
    
@@ -71,45 +71,45 @@ void FiveOrMore::handleAction(const char& c){
      || c == 'z'){
     /* on peut bouger sur une case, soit si elle est vide, 
        soit si c'est la case d'origine */
-    if( mPointerY > 0 && 
-        ( (mPointerX == mSelectedX && mPointerY-1 == mSelectedY )
+    if( mPointer.snd() > 0 && 
+        ( (mPointer.fst() == mSelected.fst() && mPointer.snd()-1 == mSelected.snd() )
           || 
-          (mBoard.at(mPointerX, mPointerY-1) == -1 )  )
+          (mBoard.at(mPointer.fst(), mPointer.snd()-1) == -1 )  )
         )
-      mPointerY--;
+      mPointer.snd()--;
     return;
   }
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if( mPointerX > 0 && 
-        ( (mPointerX-1 == mSelectedX && mPointerX == mSelectedY )
+    if( mPointer.fst() > 0 && 
+        ( (mPointer.fst()-1 == mSelected.fst() && mPointer.fst() == mSelected.snd() )
           || 
-          (mBoard.at(mPointerX-1, mPointerY) == -1 )   )
+          (mBoard.at(mPointer.fst()-1, mPointer.snd()) == -1 )   )
         )
-      mPointerX--;
+      mPointer.fst()--;
     return;
   }
 
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if( mPointerY < mSize-1 && 
-        ( (mPointerX == mSelectedX && mPointerY+1 == mSelectedY )
+    if( mPointer.snd() < mSize-1 && 
+        ( (mPointer.fst() == mSelected.fst() && mPointer.snd()+1 == mSelected.snd() )
           || 
-          (mBoard.at(mPointerX, mPointerY+1) == -1 )  )
+          (mBoard.at(mPointer.fst(), mPointer.snd()+1) == -1 )  )
         )
-      mPointerY++;
+      mPointer.snd()++;
     return;
   }
 
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if( mPointerX < mSize-1 && 
-        ( (mPointerX+1 == mSelectedX && mPointerY == mSelectedY )
+    if( mPointer.fst() < mSize-1 && 
+        ( (mPointer.fst()+1 == mSelected.fst() && mPointer.snd() == mSelected.snd() )
           || 
-          (mBoard.at(mPointerX+1, mPointerY) == -1 )  )
+          (mBoard.at(mPointer.fst()+1, mPointer.snd()) == -1 )  )
         )
-      mPointerX++;
+      mPointer.fst()++;
     return;
   }
  
@@ -117,14 +117,14 @@ void FiveOrMore::handleAction(const char& c){
     /* fixage du pion, mais attention : si on n'a pas changé sa position,
        on doit pouvoir rejouer : d'où le mPlaced */
 
-    if(mPointerX != mSelectedX or mPointerY != mSelectedY){
-      mBoard.at( mPointerX, mPointerY) = mBoard.at(mSelectedX, mSelectedY);
-      mBoard.at(mSelectedX, mSelectedY) = -1;
-      searchLines(mPointerX, mPointerY);
+    if(mPointer.fst() != mSelected.fst() or mPointer.snd() != mSelected.snd()){
+      mBoard.at( mPointer.fst(), mPointer.snd()) = mBoard.at(mSelected.fst(), mSelected.snd());
+      mBoard.at(mSelected.fst(), mSelected.snd()) = -1;
+      searchLines(mPointer.fst(), mPointer.snd());
       mPlaced = true;
     }
-    mSelectedX = -1;
-    mSelectedY = -1;
+    mSelected.fst() = -1;
+    mSelected.snd() = -1;
   }
 }
 
@@ -165,14 +165,14 @@ void FiveOrMore::render(){
   } 
   mBoard.draw(boardX, boardY);
   // surlignage de la case séléctionnée
-  if(mSelectedX != -1 && mSelectedY != -1){
+  if(mSelected.fst() != -1 && mSelected.snd() != -1){
     Console::getInstance()->setBackground(Color::WHITE);
-    Console::getInstance()->setForeground((Color) mBoard.at(mSelectedX, mSelectedY) );
-    Console::getInstance()->draw(boardX+1+(mSelectedX*2), boardY+1+(mSelectedY), "ʘ");
+    Console::getInstance()->setForeground((Color) mBoard.at(mSelected.fst(), mSelected.snd()) );
+    Console::getInstance()->draw(boardX+1+(mSelected.fst()*2), boardY+1+(mSelected.snd()), "ʘ");
     Console::getInstance()->setBackground(Color::BLACK);
     Console::getInstance()->setForeground(Color::WHITE);   
   }
-  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd());
 }
 
 
