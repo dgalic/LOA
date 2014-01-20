@@ -38,13 +38,12 @@ Isola::~Isola(){
 bool Isola::isSucc(Board b,
                    const Point& pos,
                    const Player& pl) const{
-  bool res;
   Point test(mP1);
   int x = pos.fst(), y = pos.snd();
   if(pl == mPlayer2){
     test = mP2;
   }
-  if(x > mBoard.getWidth() && y > mBoard.getHeight() ){
+  if(x > (int)mBoard.getWidth() && y > (int)mBoard.getHeight() ){
     std::cerr<<x<<","<<y<<" hors du plateau" <<std::endl;
     return false; // coup hors du plateau
   }

@@ -83,7 +83,6 @@ Positions BoardGame::computeNext(Board b,
    * @param succ Fonction testant si une position est jouable pour le joueur 
    * donné, renvoyant vrai ou faux.
    **/
-  short k; //itérateur de "ligne/droite"
   Positions res;
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
