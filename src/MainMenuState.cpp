@@ -13,6 +13,7 @@
 #include "FiveOrMore_var.hpp"
 #include "Connect4.hpp"
 #include "Connect4_long.hpp"
+#include "Tic_Tac_toe.hpp"
 
 MainMenuState::MainMenuState(){
   mEntry = 0;
@@ -74,6 +75,9 @@ void MainMenuState::handle(const char& c){
       Game::getInstance()->getHandler().change(new FiveOrMore_var(10) );
       break;
 
+    case 5:
+      Game::getInstance()->getHandler().change(new Tic_tac_toe(Color::RED, Color::BLUE) );
+      break;
     default:
       break;
     }
