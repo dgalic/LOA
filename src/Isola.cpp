@@ -3,7 +3,6 @@
 #include "ANSI.hpp"
 #include "Console.hpp"
 #include "Game.hpp"
-#include "MainMenuState.hpp"
 
 Isola::Isola(const Color& p1, 
              const Color& p2,
@@ -44,12 +43,10 @@ bool Isola::isSucc(Board b,
     test = mP2;
   }
   if(x > (int)mBoard.getWidth() && y > (int)mBoard.getHeight() ){
-    std::cerr<<x<<","<<y<<" hors du plateau" <<std::endl;
     return false; // coup hors du plateau
   }
 
   if(mBoard.at(x, y) != -1 ){ // case non vide
-    std::cerr<<x<<","<<y<<" non vide" <<std::endl;
     return false;
   }
 
@@ -57,10 +54,8 @@ bool Isola::isSucc(Board b,
       or (abs(y-test.snd() ) > 1 )
       )
     {
-    std::cerr<<x<<","<<y<<" trop loin" <<std::endl;
     return false; // déplacement trop éloigné
     }
-  std::cerr<<x<<","<<y<<" est possible" <<std::endl;
   return true; 
   
 }
@@ -177,10 +172,9 @@ void Isola::update(){
   char c;
   if(not mIngame){
     std::cin >> c;
-    Game::getInstance()->getHandler().change(new MainMenuState() );
+    Game::getInstance()->mainMenu();
   }else{
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
-    std::cerr<<mSuccessors.size()<<" coups possibles" <<std::endl;
     if(mSuccessors.empty() ){
       mIngame = false;
       if(*mCurrentPlayer == mPlayer1){

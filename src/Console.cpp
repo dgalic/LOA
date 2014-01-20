@@ -21,7 +21,6 @@ Console::Console(){
   mFramerate = 40;
   mCurrentBG = Color::BLACK;
   mCurrentFG = Color::WHITE;
-  //  showCursor(false);
   setBlocking(false);
 }
 
@@ -94,13 +93,11 @@ Color Console::getForeground() const{
 
 void Console::setBackground(const Color& bc){
   this->mCurrentBG = bc;
-  //    std::cout<<CSI<<bc<<"m";
   std::cout<<CSI<<"48;5;"<<bc<<"m";
 }
 
 void Console::setForeground(const Color& fc){
   this->mCurrentFG = fc;
-  //    std::cout<<CSI<<fc<<"m";
   std::cout<<CSI<<"38;5;"<<fc<<"m";
 }
 

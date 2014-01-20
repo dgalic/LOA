@@ -76,7 +76,6 @@ void Connect4_long::searchLines(const unsigned short& x, const unsigned short& y
     if (y > 0 ) {
       drop(x, y-1);
     }
-    std::cerr<<"mise à jour du score ? "<<nb/4<<" -> "<<mScore[0]<<"-"<<mScore[1]<<std::endl;
     
     if(c == mPlayer1.getColor()) {
       mScore[0] += nb/4;
@@ -104,5 +103,4 @@ void Connect4_long::searchLines(const unsigned short& x, const unsigned short& y
     }
   }
 
-  std::cerr<<"SORTIE"<<std::endl;
 }
