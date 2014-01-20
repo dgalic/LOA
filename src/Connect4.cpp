@@ -142,14 +142,13 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
         ytest += iy;
       }
       if(count >= 4){
-        if(*mCurrentPlayer == mPlayer1)
-          mScore[0]++;
-        else
-          mScore[1]++;
-        mIngame = false;
-        mCurrentPlayer = opponent();
+          if(*mCurrentPlayer == mPlayer1) {
+            mScore[0]++;
+          } else {
+            mScore[1]++;
+          }
+          mCurrentPlayer = opponent();
       }
-
     }
   }
 }
