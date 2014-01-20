@@ -36,7 +36,7 @@ void Connect4_long::searchLines(const unsigned short& x, const unsigned short& y
       }
       count = 1;
       //on cherche les pions, dans la direction opposée, en comptant
-      while(xtest < width-1 &&            
+      while((ix == 0 || xtest < width-1) &&            
             (  iy == 0 
                || (iy > 0 && ytest < height-1 ) 
                || (iy < 0 && ytest > 0 ) )
