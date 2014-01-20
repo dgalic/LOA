@@ -58,14 +58,14 @@ bool BoardGame::checkMove(const char& c){
 
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if(mPointer.snd() < mBoard.getHeight()-1 )
+    if(mPointer.snd() < (int)mBoard.getHeight()-1 )
       mPointer.snd()++;
     return true;
   }
 
   if(arr == ANSI::RIGHT 
      || c == 'd'){
-    if(mPointer.fst() < mBoard.getWidth()-1 )
+    if(mPointer.fst() < (int)mBoard.getWidth()-1 )
       mPointer.fst()++;
     return true;
   }
