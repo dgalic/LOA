@@ -8,7 +8,7 @@
 #include "StateHandler.hpp"
 #include "Console.hpp"
 #include "ANSI.hpp"
-#include "OthelloConfig.hpp"
+#include "Othello.hpp"
 #include "FiveOrMore.hpp"
 #include "FiveOrMore_var.hpp"
 #include "FiveOrMoreConfig.hpp"
@@ -61,7 +61,7 @@ void MainMenuState::handle(const char& c){
   if(c == 'p' || c == MARK){
     switch(mEntry){
     case 0:
-      Game::getInstance()->getHandler().change(new OthelloConfig() );
+      Game::getInstance()->getHandler().change(new Othello::Config() );
       break;
      
     case 1:

@@ -2,7 +2,7 @@
 #define ISOLA_HPP
 
 #include "BoardGame.hpp"
-
+#include "Config.hpp"
 #include "Point.hpp"
 
 #include <list>
@@ -39,21 +39,12 @@ protected:
 
 
 public:
-  class Config : public State{
-
-  protected:
-    unsigned short mEntry;
-    unsigned short mWidth;
-    unsigned short mHeight;
-    std::list<Color>::iterator mColor1;
-    std::list<Color>::iterator mColor2;
-    std::list<Color> mPossibleColors; // couleurs séléctionnables
+  class Config : public ::Config{
 
   public:
     Config();
     virtual ~Config();
     virtual void handle(const char& c = ' ');
-    virtual void update();
     virtual void render();
 
   };
