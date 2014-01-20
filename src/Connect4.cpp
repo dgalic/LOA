@@ -45,7 +45,7 @@ bool Connect4::checkMove(const char& c){
 
   // si le joueur veut déplacer son curseur vers la droite
   if ( arr == ANSI::RIGHT || c == 'd') {
-    if ( mPointer.fst() < mBoard.getWidth()-1 ) {
+    if ( mPointer.fst() < (int)mBoard.getWidth()-1 ) {
       mPointer.fst()++;
     }
     return true;

@@ -125,7 +125,7 @@ bool Othello::isSucc(Board b,
    * @param p Joueur supposé jouer le coup.
    **/
   unsigned short x = po.fst(), y = po.snd();
-  if(x < 0 or y < 0 or x >= mBoard.getWidth() or y >= mBoard.getHeight() or 
+  if(x >= mBoard.getWidth() or y >= mBoard.getHeight() or 
      b.get(x, y) != -1) //seule une case vide et correcte est jouable
     return false;
   unsigned short k;
