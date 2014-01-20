@@ -118,5 +118,7 @@ void Chomp::render(){
 
   }
   mBoard.draw(boardX, boardY);
+  Console::getInstance()->setForeground(Color::WHITE);
+  Console::getInstance()->draw(boardX+1, boardY+mBoard.getHeight(), 'X');
   Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd());
 }

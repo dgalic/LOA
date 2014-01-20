@@ -17,7 +17,7 @@
 
 class OthelloConfig : public State{
 
-private:
+protected:
   unsigned short mEntry;
   unsigned short mType2; // 0 pour humain, entre 1 et ?? pour IA
   std::list<Color>::iterator mColor1;
