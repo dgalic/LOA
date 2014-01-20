@@ -29,7 +29,7 @@ public:
 
 protected:
   void handle(const char &c= ' ');  
-  void handleSelection(const char&);
+  virtual void handleSelection(const char&);
   virtual void handleAction(const char&);
   void searchLines(const unsigned short&,
                     const unsigned short&);

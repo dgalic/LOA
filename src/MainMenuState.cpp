@@ -10,6 +10,7 @@
 #include "ANSI.hpp"
 #include "OthelloConfig.hpp"
 #include "FiveOrMore.hpp"
+#include "FiveOrMore_var.hpp"
 #include "Connect4.hpp"
 #include "Connect4_long.hpp"
 
@@ -70,7 +71,7 @@ void MainMenuState::handle(const char& c){
       break;
       
     case 4:
-      Game::getInstance()->getHandler().change(new FiveOrMore(10) );
+      Game::getInstance()->getHandler().change(new FiveOrMore_var(10) );
       break;
 
     default:
