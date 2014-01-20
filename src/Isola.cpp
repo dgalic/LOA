@@ -11,14 +11,64 @@ Isola::Isola(const Color& p1,
              const unsigned short& h)
   :BoardGame(w, h, p1, p2)
 {
-  mBoard.at(w/2, 0) = p1;
-  mBoard.at(w/2, h-1) = p2;
+  mMoved = false;
+  mP1x = w/2;
+  mP1y = h-1;
+  mP2x = w/2;
+  mP2y = 0;
+  mBoard.at(mP1x, mP1y) = mPlayer1.getColor();
+  mBoard.at(mP2x, mP2y) = mPlayer2.getColor();
+  
+  mCurrentPlayer = &mPlayer1;
+  mCurrentX = mP1x;
+  mCurrentY = mP1y;
+  mPointerX = mCurrentX;
+  mPointerY = mCurrentY;
+
+  mSucc_function = [this](Board b, 
+                          const unsigned short& x,
+                          const unsigned short& y,
+                          const Player& p) 
+    -> bool{
+    return isSucc(b, x, y, p);
+  };
+
+
+  mIngame = true;
 
 }
 
 Isola::~Isola(){
 
 }
+
+bool Isola::isSucc(Board b,
+                   const unsigned short& x, const unsigned short& y,
+                   const Player& p) const{
+  bool res;
+  unsigned short testX, testY;
+  if(p == player1){
+    testX = mP1x;
+    testY = mP1y;
+  }else{
+    testX = mP2x;
+    testY = mP2y;
+  }
+  if(x > mBoard.getWidth() && y > mBoard.getHeight() )
+    return false; // coup hors du plateau
+
+  if( (abs(x-testX) > 1) 
+           or (abs(y-testY) > 1 )
+      )
+    return false; // déplacement trop éloigné
+
+  if(mBoard.at(x, y) != -1 ) // case non vide
+    return false;
+
+  return true; 
+  
+}
+
 
 void Isola::handle(const char& c){
   if(mMoved){
@@ -33,60 +83,64 @@ void Isola::handleMove(const char& c){
   static const unsigned short width = mBoard.getWidth(), 
     height = mBoard.getHeight();
   arr = checkArrow(c);
-  if(arr != ANSI::NOARROW){
-    if ( (abs(mPointerX-mCurrentX) <= 1) 
-         && (abs(mPointerY-mCurrentY) <= 1 ) )
-      return; // interdit de déplacer trop loin
-  }
-  if(arr == ANSI::UP 
+
+  
+    
+  if(arr == ANSI::UP
      || c == 'z'){
-    /* on peut bouger sur une case, soit si elle est vide, 
-       soit si c'est la case d'origine */
-    if( mPointerY > 0 && 
-        ( (mPointerX == mCurrentX && mPointerY-1 == mCurrentY )
-          || 
-          (mBoard.at(mPointerX, mPointerY-1) == -1 )
-          )
-        )
-      mPointerY--;
-    return;
+    if( mPointerY > 0){
+      
+      if ( (abs(mPointerX-mCurrentX) <= 1) 
+           && (abs(mPointerY-mCurrentY-1) <= 1 ) ){
+        mPointerY--; // interdit de déplacer trop loin
+      }
+      return;
+
+
+    }
   }
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if( mPointerX > 0 && 
-        ( (mPointerX-1 == mCurrentX && mPointerX == mCurrentY )
-          || 
-          (mBoard.at(mPointerX-1, mPointerY) == -1 )   )
-        )
-      mPointerX--;
-    return;
-  }
+    if( mPointerX > 0){
+      
+      if ( (abs(mPointerX-1-mCurrentX) <= 1) 
+           && (abs(mPointerY-mCurrentY) <= 1 ) ){
+        mPointerX--;
+      }
+      return;
 
+    }
+  }  
+  
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if( mPointerY < width-1 && 
-        ( (mPointerX == mCurrentX && mPointerY+1 == mCurrentY )
-          || 
-          (mBoard.at(mPointerX, mPointerY+1) == -1 )  )
-        )
-      mPointerY++;
-    return;
+    if( mPointerY < height-1  ){
+      if ( (abs(mPointerX-mCurrentX) <= 1) 
+           && (abs(mPointerY+1-mCurrentY) <= 1 ) ){       
+        mPointerY++;
+      }
+      return;
+    }
   }
-
+  
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if( mPointerX < height-1 && 
-        ( (mPointerX+1 == mCurrentX && mPointerY == mCurrentY )
-          || 
-          (mBoard.at(mPointerX+1, mPointerY) == -1 )  )
-        )
-      mPointerX++;
-    return;
+    if( mPointerX < width-1){
+      if ( (abs(mPointerX+1-mCurrentX) <= 1) 
+           && (abs(mPointerY-mCurrentY) <= 1 ) ){
+        mPointerX++; 
+      }
+      return;
+    }
   }
-
+  
   BoardGame::handle(c);
+
   if(c == 'p' or c == MARK){
+    if( (mPointerX == mCurrentX && mPointerY == mCurrentY)
+       or mBoard.at(mPointerX, mPointerY) != -1 )
+      return;
     mBoard.at( mPointerX, mPointerY) = mBoard.at(mCurrentX, mCurrentY);
     mBoard.at(mCurrentX, mCurrentY) = -1;
     if(*mCurrentPlayer == mPlayer1){
@@ -135,6 +189,7 @@ void Isola::update(){
     std::cin >> c;
     Game::getInstance()->getHandler().change(new MainMenuState() );
   }else{
+    BoardGame::computeNext(mBoard, *mCurrentPlayer);
     std::cin >> c;
     handle(c);    
   }
@@ -157,7 +212,7 @@ void Isola::render(){
   for(unsigned short i = 0; i < w; i++){
     for(unsigned short j = 0; j < h; j++){
       if(mBoard.at(i, j) == -2)
-        Console::getInstance()->draw(mPointerX+i, mPointerY+j, '@');
+        Console::getInstance()->draw(boardX+(2*i)+1, boardY+j+1, '@');
     }
   }
   Console::getInstance()->setForeground(Color::WHITE);
