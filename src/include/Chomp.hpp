@@ -1,29 +1,40 @@
-#ifndef Chomp_HPP
-#define Chomp_HPP
+#ifndef CHOMP_HPP
+#define CHOMP_HPP
 
 #include "BoardGame.hpp"
 #include "Player.hpp"
-#include "StateHandler.hpp"
-#include "ANSI.hpp"
 #include "Color.hpp"
+#include "Config.hpp"
 
-class Chomp: public BoardGame {
+class Chomp: virtual public BoardGame {
 
-    public:
-        // Ctor et  Dtor
-        Chomp();
-        virtual ~Chomp();
-        
-        // gére les touches des joueurs
+protected:
+  virtual void update();
+  
+  virtual void fillcolor(const unsigned short&, const unsigned short&);
+  
+public:
+  // Ctor et  Dtor
+  Chomp(const Color&, const Color&,
+        const unsigned short& = 10, const unsigned short& = 4);
+  virtual ~Chomp();
+  
+  // gére les touches des joueurs
         void handle(const char&);
+  
+  
+  //gére l'affichage
+  virtual void render();
+  
+  class Config: public ::Config{
 
-        // calcul la logique de jeux
-        virtual void update();
+  public:
+    Config();
+    virtual ~Config();
+    virtual void launchGame();
+    virtual void render();
 
-        virtual void fillcolor(const unsigned short&, const unsigned short&);
-
-        //gére l'affichage
-        virtual void render();
+  };
 
 };
 

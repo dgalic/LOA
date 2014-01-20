@@ -19,7 +19,8 @@ BoardGame::BoardGame(const unsigned int& w,
   : State(), mBoard(w, h),
     mPlayer1(p1), mPlayer2(p2), mCurrentPlayer(&mPlayer1),
     mPointer(0,0), mIngame(true){
-
+  mScore[0] = 0;
+  mScore[1] = 0;
 }
 
 BoardGame::~BoardGame(){

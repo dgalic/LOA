@@ -89,7 +89,7 @@ void MainMenuState::handle(const char& c){
       break;
 
     case 7:
-      Game::getInstance()->getHandler().change(new Chomp() );
+      Game::getInstance()->getHandler().change(new Chomp::Config() );
       break;
 
     default:
