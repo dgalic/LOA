@@ -87,17 +87,17 @@ Positions BoardGame::computeNext(Board b,
   Positions res;
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
-      if(mSucc_function(b, x, y, p) ){
-	res.insert(Point(x,y) );      
+      Point po(x,y);
+      if(mSucc_function(b, po, p) ){
+	res.insert(po);      
       }
     }
   }
   return res;
 }
 
-bool BoardGame::isNext(const unsigned short& x, 
-		       const unsigned short& y,
-		       const Positions& p) const{
+bool BoardGame::isNext(const Point& p,
+		       const Positions& e) const{
   /**
    * @brief Calcule si la position est jouable dans l'ensemble des positions.
    * @details Les positions devraient avoir été calculées avec @e compute_next.
@@ -105,10 +105,8 @@ bool BoardGame::isNext(const unsigned short& x,
    * @param y Ordonnée du coup à tester.
    * @param p 
    **/
-  Point pos(x, y);
-  std::cerr<<"check "<<x<<","<<y<<std::endl;
-  for(auto it = p.begin(); it != p.end(); ++it){
-    if( (*it) == pos) 
+  for(auto it = e.begin(); it != e.end(); ++it){
+    if( (*it) == p) 
       return true;
   }
   return false;

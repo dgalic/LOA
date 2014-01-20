@@ -17,11 +17,10 @@ Chomp::Chomp()
   mScore[1] = 0;
   mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
-			 const unsigned short& x,
-			 const unsigned short& y,
+			 const Point& pos,
 			 const Player& p) 
     -> bool {
-    return (b.get(x, y) == -1); //seule une case vide est jouable
+    return (b.get(pos.fst(), pos.snd() ) == -1); //seule une case vide est jouable
   };
 
 }
@@ -50,7 +49,7 @@ void Chomp::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+    if( isNext(mPointer, mSuccessors) ){
       mBoard.at(mPointer.fst(), mPointer.snd()) = mCurrentPlayer->getColor(); 
       fillcolor(mPointer.fst(), mPointer.snd());
       mCurrentPlayer = opponent();
@@ -75,7 +74,7 @@ void Chomp::fillcolor(const unsigned short& x, const unsigned short& y){
         mCurrentPlayer = opponent();
     }
 
-    // sinon on remplie les case
+    // sinon on remplie les cases
     unsigned short i;
     int j;
     for (i = x; i < mBoard.getWidth(); i++) {
@@ -83,18 +82,6 @@ void Chomp::fillcolor(const unsigned short& x, const unsigned short& y){
             mBoard.at(i, j) = color_player; 
         }
     }
-}
-
-const Player *Chomp::opponent() const{
-  /**
-   * @brief Retourne le joueur prochain joueur à jouer
-   * Cette fonction laisse la main au joueur suivant
-   */
-  if (*mCurrentPlayer == mPlayer1 ) {
-    return &mPlayer2;
-  } else {
-    return &mPlayer1;
-  }
 }
 
 

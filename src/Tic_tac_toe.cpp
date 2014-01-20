@@ -20,11 +20,10 @@ Tic_tac_toe::Tic_tac_toe(const Color& p1,
   mScore[1] = 0;
   mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
-			 const unsigned short& x,
-			 const unsigned short& y,
-			 const Player& p) 
+                          const Point& po,
+			 const Player& pl) 
     -> bool {
-    return (b.get(x, y) == -1); //seule une case vide est jouable
+    return (b.get(po.fst(), po.snd() ) == -1); //seule une case vide est jouable
   };
 
 }
@@ -53,7 +52,7 @@ void Tic_tac_toe::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+    if( isNext(mPointer, mSuccessors) ){
       mBoard.at(mPointer.fst(), mPointer.snd()) = mCurrentPlayer->getColor(); 
       searchLines(mPointer.fst(), mPointer.snd());
       mCurrentPlayer = opponent();
@@ -110,19 +109,6 @@ void Tic_tac_toe::searchLines(const unsigned short& x, const unsigned short& y){
           mCurrentPlayer = opponent();
     }
 }
-
-const Player *Tic_tac_toe::opponent() const{
-  /**
-   * @brief Retourne le joueur prochain joueur à jouer
-   * Cette fonction laisse la main au joueur suivant
-   */
-  if (*mCurrentPlayer == mPlayer1 ) {
-    return &mPlayer2;
-  } else {
-    return &mPlayer1;
-  }
-}
-
 
 void Tic_tac_toe::update(){
   /**

@@ -27,7 +27,7 @@ public:
 
 protected:
   virtual bool isSucc(Board, 
-                      const unsigned short&, const unsigned short&,
+                      const Point&,
                       const Player&) const;
   virtual void handle(const char& c = ' ');
   virtual void handleMove(const char& c);
