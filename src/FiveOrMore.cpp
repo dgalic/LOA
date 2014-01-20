@@ -8,16 +8,16 @@
 #include <sstream>
 
 const std::array<Color, 10> FiveOrMore::sColorList = { 
-  ANSI::RED, 
-  ANSI::LIGHTGREEN, 
-  ANSI::BLUE, 
-  ANSI::YELLOW, 
-  ANSI::PINK, 
-  ANSI::GRAY, 
-  ANSI::BROWN, 
-  ANSI::PURPLE, 
-  ANSI::LIGHTCYAN, 
-  ANSI::GREEN
+  Color::RED, 
+  Color::LIGHTGREEN, 
+  Color::BLUE, 
+  Color::YELLOW, 
+  Color::PINK, 
+  Color::GRAY, 
+  Color::BROWN, 
+  Color::PURPLE, 
+  Color::LIGHTCYAN, 
+  Color::GREEN
 };
 
 FiveOrMore::FiveOrMore(const unsigned short& dim,
