@@ -12,21 +12,22 @@
 
 OthelloConfig::OthelloConfig()
   :mEntry(0), mType2(0){
-  mPossibleColors.push_front(Color::BROWN);
+  
   mPossibleColors.push_front(Color::YELLOW);
-  mPossibleColors.push_front(Color::GREEN);
-  mPossibleColors.push_front(Color::LIGHTCYAN);
+  mPossibleColors.push_front(Color::BROWN);
   mPossibleColors.push_front(Color::BLUE);
   mPossibleColors.push_front(Color::PURPLE);
-  mPossibleColors.push_front(Color::PINK);
+  mPossibleColors.push_front(Color::GREEN);
   mPossibleColors.push_front(Color::RED);
+  mPossibleColors.push_front(Color::PINK);
+  mPossibleColors.push_front(Color::LIGHTCYAN);
   mColor1 = (mPossibleColors.begin() )++;
   mColor2 = mColor1;
   mColor2++;
 }
 
 OthelloConfig::~OthelloConfig(){
-
+  mPossibleColors.clear();
 }
 
 void OthelloConfig::handle(const char& c){

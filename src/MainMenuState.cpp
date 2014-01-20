@@ -81,7 +81,7 @@ void MainMenuState::handle(const char& c){
       break;
 
     case 5:
-      Game::getInstance()->getHandler().change(new Isola(Color::RED, Color::BLUE, 7, 6) );
+      Game::getInstance()->getHandler().change(new Isola::Config() );
       break;
 
     case 6:
