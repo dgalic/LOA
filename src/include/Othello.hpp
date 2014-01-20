@@ -31,7 +31,7 @@ public:
   public:
     Config();
     virtual ~Config();
-    virtual void handle(const char& = ' ');
+    virtual void launchGame();
     virtual void render();
     
   };

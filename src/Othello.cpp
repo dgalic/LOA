@@ -217,84 +217,8 @@ Othello::Config::~Config(){
   mPossibleColors.clear();
 }
 
-void Othello::Config::handle(const char& c){
-  ANSI::Arrow arr = checkArrow(c);
- 
- if(c == 'z' || arr == ANSI::UP){
-    mEntry = (mEntry == 0)? mEntry = 2:mEntry-1;
-    return;
-  }
-
-  if(c == 's' || arr == ANSI::DOWN){
-    mEntry = (mEntry >= 2)? 0 : mEntry+1;
-    return;
-  }
-
-  if(c == 'q' || arr == ANSI::LEFT){
-    if(mEntry == 0){
-      if( mColor1 == mPossibleColors.begin() ){
-	mColor1 = (mPossibleColors.end() );
-      }
-      mColor1--;
-      if(*mColor1 == *mColor2){
-	mColor1--;
-      }
-      return;
-    }
-    if(mEntry == 1){
-      if( mColor2 == mPossibleColors.begin() ){
-	mColor2 = (mPossibleColors.end() );
-      }
-      mColor2--;      
-      if(*mColor2 == *mColor1){
-	mColor2--;
-      }
-      return;
-    }
-
-  }
-
-  if(c == 'd' || arr == ANSI::RIGHT){
-    if(mEntry == 0){
-      mColor1++;
-      if(*mColor2 == *mColor1){
-	mColor1++;
-      }
-      if( mColor1 == mPossibleColors.end() ){
-	mColor1 = (mPossibleColors.begin() )++;
-      }
-      return;
-    }
-    if(mEntry == 1){
-      mColor2++;
-      if(*mColor2 == *mColor1){
-	mColor2++;
-      }
-      if( mColor2 == mPossibleColors.end() ){
-	mColor2 = (mPossibleColors.begin() )++;
-      }
-      return;
-    }
-
-  }
-
-  if(c == 'p' || c == MARK){
-    if(mColor1 != mColor2){
-      Game::getInstance()->getHandler().change(new Othello(*mColor1, *mColor2) );
-    }else{
-      Console::getInstance()->setForeground(Color::WHITE);
-      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas avoir la même couleur ! ");
-      Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
-    }
-    return;
-  }
-  
-  if(c == 'x'){
-    Game::getInstance()->mainMenu();
-    return;
-  }
-
-
+void Othello::Config::launchGame(){
+  Game::getInstance()->getHandler().change(new Othello(*mColor1, *mColor2) );
 }
 
 void Othello::Config::render(){
