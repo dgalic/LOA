@@ -1,18 +1,16 @@
-#include "OthelloConfig.hpp"
-#include "Othello.hpp"
+#include "Config.hpp"
 
-#include "Game.hpp"
-#include "ANSI.hpp"
-#include "Color.hpp"
 #include "Console.hpp"
-#include "StateHandler.hpp"
+#include "Game.hpp"
 
-#include <list>
 #include <sstream>
 
-OthelloConfig::OthelloConfig()
-  :mEntry(0), mType2(0){
-  
+//TODO delete
+#include <iostream>
+
+Config::Config(const unsigned short& nb)
+  : State(), mEntry(0), mNbEntries(nb), mWidth(8), mHeight(8)
+{
   mPossibleColors.push_front(Color::YELLOW);
   mPossibleColors.push_front(Color::BROWN);
   mPossibleColors.push_front(Color::BLUE);
@@ -24,18 +22,25 @@ OthelloConfig::OthelloConfig()
   mColor1 = (mPossibleColors.begin() )++;
   mColor2 = mColor1;
   mColor2++;
+
 }
 
-OthelloConfig::~OthelloConfig(){
-  mPossibleColors.clear();
+Config::~Config(){
+
 }
 
-void OthelloConfig::handle(const char& c){
+void Config::handle(const char & c){
   ANSI::Arrow arr = checkArrow(c);
-  if(c == 'z' || arr == ANSI::UP){
-    mEntry = (mEntry == 0)? mEntry = 2:mEntry-1;
+    if(c == 'z' || arr == ANSI::UP){
+    mEntry = (mEntry == 0)? mNbEntries-1:mEntry-1;
     return;
   }
+  
+  if(c == 's' || arr == ANSI::DOWN){
+    mEntry = (mEntry >= mNbEntries-1)? 0 : mEntry+1;
+    return;
+  }
+  
   if(c == 'q' || arr == ANSI::LEFT){
     if(mEntry == 0){
       if( mColor1 == mPossibleColors.begin() ){
@@ -58,15 +63,17 @@ void OthelloConfig::handle(const char& c){
       return;
     }
     if(mEntry == 2){
-      mType2 = (mType2 == 0)? 5:mType2-1;
+      mWidth = (mWidth == 4)? 16:mWidth-1;
+      return;
     }
-    return;
+    if(mEntry == 3){
+      mHeight = (mHeight == 4)? 15:mHeight-1;
+    }
+    return;    
   }
-  if(c == 's' || arr == ANSI::DOWN){
-    mEntry = (mEntry >= 2)? 0 : mEntry+1;
-    return;
-  }
+  
   if(c == 'd' || arr == ANSI::RIGHT){
+
     if(mEntry == 0){
       mColor1++;
       if(*mColor2 == *mColor1){
@@ -88,40 +95,31 @@ void OthelloConfig::handle(const char& c){
       return;
     }
     if(mEntry == 2){
-      mType2 = (mType2 == 5)? 0:mType2+1;
+      mWidth = (mWidth == 16)? 4:mWidth+1;
+      return;
+    }
+    if(mEntry == 3){
+      mHeight = (mHeight == 15)? 4:mHeight+1;
     }
     return;
   }
-
-  if(c == 'p' || c == MARK){
-    if(mColor1 != mColor2){
-      Game::getInstance()->getHandler().change(new Othello(*mColor1, *mColor2) );
-    }else{
-      Console::getInstance()->setForeground(Color::WHITE);
-      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas avoir la même couleur ! ");
-      Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
-    }
-    return;
-  }
-  
+    
   if(c == 'x'){
     Game::getInstance()->mainMenu();
     return;
   }
 
-
 }
 
-void OthelloConfig::update(){
+
+
+void Config::update(){
   char c = Console::getInstance()->getInput();
   handle(c);
 }
 
-void OthelloConfig::render(){
+void Config::render(){
   Console::getInstance()->clear();
-  Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("Othello  -  z:up  s:down  !/p:select  x:quit");
   Console::getInstance()->setForeground(Color::GRAY);
   Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
   Console::getInstance()->setForeground(*mColor1);
@@ -129,17 +127,20 @@ void OthelloConfig::render(){
   Console::getInstance()->setForeground(*mColor2);
   Console::getInstance()->draw(4, 5, "Couleur joueur 2");
   Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->draw(4, 6, "Type adversaire : "); 
-  if(mType2 == 0){
-    Console::getInstance()->draw(30, 6, "Humain");
-  }else{
-    std::ostringstream oss(std::ostringstream::ate);
-    oss.str("IA niveau ");
-    oss << mType2;
-    Console::getInstance()->draw(30, 6, oss.str() );
-    oss.clear();
-  }
+  std::ostringstream oss(std::ostringstream::ate);
+  oss.str("Longueur du plateau : ");
+  oss << mWidth;
+  Console::getInstance()->draw(4, 6, oss.str() );
+  oss.clear();
+  oss.str("Largeur du plateau  : ");
+  oss << mHeight;
+  Console::getInstance()->draw(4, 7, oss.str() );
+  oss.clear();
   Console::getInstance()->draw(2, 4+mEntry, '~');
-  
+
+
+  Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
+
+
 }
