@@ -131,7 +131,7 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
         ytest -= iy;
       }
       count = 1;
-      while(xtest < mBoard.getWidth()-1 &&            
+      while((ix == 0 || xtest < mBoard.getWidth()-1) &&            
             (  iy == 0 
                || (iy > 0 && ytest < mBoard.getHeight()-1 ) 
                || (iy < 0 && ytest > 0 ) )
