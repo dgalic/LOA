@@ -6,13 +6,13 @@
 
 #include "ANSI.hpp"
 #include "Player.hpp"
+#include "Point.hpp"
 
 #include <set>
-#include <utility> // pour std::pair
 #include <functional>
 #include <string>
-
-typedef std::set< std::pair< unsigned short, unsigned short> > Positions;
+ 
+typedef std::set< Point > Positions;
 
 class BoardGame : public State{
 
