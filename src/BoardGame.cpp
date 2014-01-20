@@ -113,6 +113,15 @@ bool BoardGame::isNext(const unsigned short& x,
   return false;
 }
 
+const Player * BoardGame::opponent() const{
+    /**
+   * @brief Retourne l'opposant au joueur courant
+   */
+  if(*mCurrentPlayer == mPlayer1 )
+    return &mPlayer2;
+  else 
+    return &mPlayer1;
+}
 
 void BoardGame::displayScore(){
    std::ostringstream oss(std::ostringstream::ate);

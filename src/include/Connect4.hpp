@@ -22,9 +22,6 @@ protected:
 
   bool checkMove(const char&);
 
-        // change de joueur
-        const Player * opponent() const;
-       
         // calcul la logique de jeux
         virtual void update();
 

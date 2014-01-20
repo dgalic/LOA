@@ -21,9 +21,7 @@ protected:
   bool isSucc(Board,
 	      const unsigned short&,
 	      const unsigned short&,
-	      const Player&) const;
-  const Player * opponent() const;
-  
+	      const Player&) const;  
 };
 
 #endif

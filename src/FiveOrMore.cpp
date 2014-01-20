@@ -53,7 +53,7 @@ void FiveOrMore::handle(const char& c){
 }
 
 void FiveOrMore::handleSelection(const char& c){
-  checkMove(c);
+  BoardGame::checkMove(c);
   if(c == 'p' || c == MARK){
     // séléction d'un pion, si la case n'est pas vide
     if(mBoard.at(mPointerX, mPointerY) != -1 ){

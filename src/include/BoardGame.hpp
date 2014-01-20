@@ -45,7 +45,8 @@ protected:
                         const Player& p); //joueur dont on cherche les coups
   bool isNext(const unsigned short& x, 
               const unsigned short& y,
-              const Positions& p) const;
+              const Positions& p) const;  
+  const Player * opponent() const;
   void displayScore();
   void displayCurrentPlayer();
   void displayResult(const unsigned short&, const unsigned short&);

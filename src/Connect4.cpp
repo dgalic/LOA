@@ -154,18 +154,6 @@ void Connect4::searchLines(const unsigned short& x, const unsigned short& y){
   }
 }
 
-const Player *Connect4::opponent() const{
-  /**
-   * @brief Retourne le joueur prochain joueur à jouer
-   * Cette fonction laisse la main au joueur suivant
-   */
-  if (*mCurrentPlayer == mPlayer1 ) {
-    return &mPlayer2;
-  } else {
-    return &mPlayer1;
-  }
-}
-
 
 void Connect4::update(){
   /**
