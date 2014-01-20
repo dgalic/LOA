@@ -7,7 +7,7 @@
 #include "ANSI.hpp"
 #include "Color.hpp"
 
-class Connect4: public BoardGame {
+class Connect4: virtual public BoardGame {
 
 protected:
     const unsigned short mVictory; //nb de points pour la victoire
