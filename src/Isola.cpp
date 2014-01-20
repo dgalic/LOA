@@ -244,22 +244,9 @@ Isola::Config::~Config(){
   
 }
 
-void Isola::Config::handle(const char& c){
-  ::Config::handle(c);
- if(c == 'p' || c == MARK){
-     if(mColor1 != mColor2 ){
-       Game::getInstance()->getHandler().change(new Isola(
-                                                          *mColor1, *mColor2, 
-                                                          mWidth, mHeight) );
-    }else{
-      Console::getInstance()->setForeground(Color::WHITE);
-      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas \
-avoir la même couleur ! ");
-      Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
-    }
-    return;
-  }
-
+void Isola::Config::launchGame(){
+  Game::getInstance()->getHandler().change(new Isola(*mColor1, *mColor2,
+                                                   mWidth, mHeight) );
 }
 
 void Isola::Config::render(){

@@ -5,6 +5,8 @@
 
 #include "Color.hpp"
 
+#include "Config.hpp"
+
 #include <array>
 
 class FiveOrMore : virtual public BoardGame{
@@ -31,11 +33,27 @@ protected:
   virtual void handleSelection(const char&);
   virtual void handleAction(const char&);
   void searchLines(const unsigned short&,
-                    const unsigned short&);
+                   const unsigned short&);
   bool addRandom();
   bool end();
   virtual void displayScore();
   virtual void displayResult(const unsigned short&, const unsigned short&);
+
+
+public:
+  class Config: public ::Config{
+  protected:
+    unsigned short mPieces;
+    unsigned short mColors;
+    
+  public:
+    Config();
+    virtual ~Config();
+    virtual void handle(const char& = ' ');
+    virtual void launchGame();
+    virtual void render();
+
+  };
 
 };
 

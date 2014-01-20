@@ -109,8 +109,20 @@ void Config::handle(const char & c){
     return;
   }
 
-}
+  
+ if(c == 'p' || c == MARK){
+     if(mColor1 != mColor2 ){
+       launchGame();
+    }else{
+      Console::getInstance()->setForeground(Color::WHITE);
+      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas \
+avoir la même couleur ! ");
+      Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
+    }
+    return;
+ }
 
+}
 
 
 void Config::update(){

@@ -292,3 +292,93 @@ bool FiveOrMore::end(){
 }
 
 
+
+
+FiveOrMore::Config::Config()
+  : ::Config(4), mPieces(3), mColors(5)
+{
+  mWidth = 10;
+}
+
+FiveOrMore::Config::~Config()
+{
+}
+
+void FiveOrMore::Config::handle(const char& c){
+  ANSI::Arrow arr = checkArrow(c);
+  
+  if(c == 'z' || arr == ANSI::UP){
+    mEntry = (mEntry == 0)? mNbEntries-1:mEntry-1;
+    return;
+  }
+
+  if(c == 's' || arr == ANSI::DOWN){
+    mEntry = (mEntry == mNbEntries-1)? 0 : mEntry+1;
+    return;
+  }
+
+  if(c == 'q' || arr == ANSI::LEFT){
+    if(mEntry == 0){
+      mWidth = (mWidth == 8)? 15:mWidth-1;
+    } else if(mEntry == 1){
+      mPieces = (mPieces == 2)? 6:mPieces-1;
+    } else if(mEntry == 2){
+      mColors = (mColors == 2)? 10:mColors-1;
+    } 
+    return;
+  }
+  
+
+  if(c == 'd' || arr == ANSI::RIGHT){
+    if(mEntry == 0){
+      mWidth = (mWidth == 15)? 8:mWidth+1;
+    } else if(mEntry == 1){
+      mPieces = (mPieces == 6)? 2:mPieces+1;
+    } else if(mEntry == 2){
+      mColors = (mColors == 10)? 2:mColors+1;
+    }
+    return;
+  }
+
+  if(c == 'x'){
+    Game::getInstance()->mainMenu();;
+    return;
+  }
+
+  if(c == 'p' || c == MARK){
+    launchGame();        
+    return;
+  }
+  
+
+}
+
+void FiveOrMore::Config::launchGame(){
+  Game::getInstance()->getHandler().change(new FiveOrMore(mWidth,mColors,mPieces) );
+}
+
+void FiveOrMore::Config::render(){
+  Console::getInstance()->clear();
+  Console::getInstance()->setForeground(Color::WHITE);
+  Console::getInstance()->setCursor(1, 1);
+  Console::getInstance()->draw("FiveOrMore  -  z:up  s:down  !/p:select  x:quit");
+  Console::getInstance()->setForeground(Color::GRAY);
+  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
+  Console::getInstance()->setForeground(Color::WHITE);
+    std::ostringstream oss(std::ostringstream::ate);
+    oss.str("Taille du plateau : ");
+    oss << mWidth;
+    Console::getInstance()->draw(4, 4, oss.str() );
+    oss.clear();
+    oss.str("Nombre de pièces par tour : ");
+    oss << mPieces;
+    Console::getInstance()->draw(4, 5, oss.str() );
+    oss.clear();
+    oss.str("Nombre de couleurs : ");
+    oss << mColors;
+    Console::getInstance()->draw(4, 6, oss.str() );
+    oss.clear();
+    Console::getInstance()->draw(2, 4+mEntry, '~');
+  
+  Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
+}

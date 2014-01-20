@@ -29,6 +29,7 @@ public:
   Config(const unsigned short& = 0);
   virtual ~Config();
   virtual void handle(const char& = ' ');
+  virtual void launchGame() = 0;
   virtual void update();
   virtual void render();
 

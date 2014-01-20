@@ -1,6 +1,7 @@
 #include "FiveOrMore_var.hpp"
 #include "FiveOrMore.hpp"
 
+#include "Game.hpp"
 #include "Console.hpp"
 
 FiveOrMore_var::FiveOrMore_var(const unsigned short& dim,
@@ -83,4 +84,29 @@ int FiveOrMore_var::findIndex(const int& v){
       return i;
   }
   return -1;
+}
+
+
+
+
+
+
+
+
+
+
+FiveOrMore_var::Config::Config()
+  : FiveOrMore::Config() {
+  mWidth = 10;
+}
+
+
+FiveOrMore_var::Config::~Config(){
+
+}
+
+
+void FiveOrMore_var::Config::launchGame(){
+  Game::getInstance()->getHandler().change( \
+             new FiveOrMore_var(mWidth,mColors,mPieces) );
 }

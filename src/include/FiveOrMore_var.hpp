@@ -3,6 +3,8 @@
 
 #include "FiveOrMore.hpp"
 
+#include "Config.hpp"
+
 class FiveOrMore_var : virtual public FiveOrMore{
 
 protected:
@@ -19,6 +21,15 @@ protected:
   virtual void handleSelection(const char&);
   virtual void handleAction(const char&);
   virtual int findIndex(const int& c);
+
+public:
+  class Config: public FiveOrMore::Config{
+
+  public:
+    Config();
+    virtual ~Config();
+    virtual void launchGame();
+  };
 
 };
 
