@@ -13,6 +13,7 @@ Isola::Isola(const Color& p1,
              const unsigned short& h)
   :BoardGame(w, h, p1, p2), mP1(w/2, h-1), mP2(w/2, 0)
 {
+  std::cerr<<"ISOLA : "<<w<<"*"<<h<<" - "<<p1<<" vs "<<p2<<std::endl;
   mMoved = false;
   mBoard.at( mP1.fst(), mP1.snd() ) = mPlayer1.getColor();
   mBoard.at( mP2.fst(), mP2.snd() ) = mPlayer2.getColor();
@@ -234,19 +235,9 @@ void Isola::render(){
 
 
 Isola::Config::Config()
-  : mEntry(0), mWidth(8), mHeight(6)
+  : ::Config(4)
 {
-  mPossibleColors.push_front(Color::YELLOW);
-  mPossibleColors.push_front(Color::BROWN);
-  mPossibleColors.push_front(Color::BLUE);
-  mPossibleColors.push_front(Color::PURPLE);
-  mPossibleColors.push_front(Color::GREEN);
-  mPossibleColors.push_front(Color::RED);
-  mPossibleColors.push_front(Color::PINK);
-  mPossibleColors.push_front(Color::LIGHTCYAN);
-  mColor1 = (mPossibleColors.begin() )++;
-  mColor2 = mColor1;
-  mColor2++;
+
 }
 
 Isola::Config::~Config(){ 
@@ -254,122 +245,26 @@ Isola::Config::~Config(){
 }
 
 void Isola::Config::handle(const char& c){
-  ANSI::Arrow arr = checkArrow(c);
-  if(c == 'z' || arr == ANSI::UP){
-    mEntry = (mEntry == 0)? mEntry = 3:mEntry-1;
-    return;
-  }
-  if(c == 'q' || arr == ANSI::LEFT){
-    if(mEntry == 0){
-      if( mColor1 == mPossibleColors.begin() ){
-	mColor1 = (mPossibleColors.end() );
-      }
-      mColor1--;
-      if(*mColor1 == *mColor2){
-	mColor1--;
-      }
-      return;
-    }
-    if(mEntry == 1){
-      if( mColor2 == mPossibleColors.begin() ){
-	mColor2 = (mPossibleColors.end() );
-      }
-      mColor2--;      
-      if(*mColor2 == *mColor1){
-	mColor2--;
-      }
-      return;
-    }
-    if(mEntry == 2){
-      mWidth = (mWidth == 4)? 16:mWidth-1;
-      return;
-    }
-    if(mEntry == 3){
-      mHeight = (mHeight == 4)? 15:mHeight-1;
-    }
-    return;    
-  }
-  if(c == 's' || arr == ANSI::DOWN){
-    mEntry = (mEntry >= 3)? 0 : mEntry+1;
-    return;
-  }
-  if(c == 'd' || arr == ANSI::RIGHT){
-    if(mEntry == 0){
-      mColor1++;
-      if(*mColor2 == *mColor1){
-	mColor1++;
-      }
-      if( mColor1 == mPossibleColors.end() ){
-	mColor1 = (mPossibleColors.begin() )++;
-      }
-      return;
-    }
-    if(mEntry == 1){
-      mColor2++;
-      if(*mColor2 == *mColor1){
-	mColor2++;
-      }
-      if( mColor2 == mPossibleColors.end() ){
-	mColor2 = (mPossibleColors.begin() )++;
-      }
-      return;
-    }
-    if(mEntry == 2){
-      mWidth = (mWidth == 16)? 4:mWidth+1;
-      return;
-    }
-    if(mEntry == 3){
-      mHeight = (mHeight == 15)? 4:mHeight+1;
-    }
-    return;
-  }
-
-  if(c == 'p' || c == MARK){
-    if(mColor1 != mColor2){
-            Game::getInstance()->getHandler().change(new Isola(*mColor1, *mColor2, mWidth, mHeight) );
+  ::Config::handle(c);
+ if(c == 'p' || c == MARK){
+     if(mColor1 != mColor2 ){
+       Game::getInstance()->getHandler().change(new Isola(
+                                                          *mColor1, *mColor2, 
+                                                          mWidth, mHeight) );
     }else{
       Console::getInstance()->setForeground(Color::WHITE);
-      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas avoir la même couleur ! ");
+      Console::getInstance()->draw(1, 20, "Les deux joueurs ne peuvent pas \
+avoir la même couleur ! ");
       Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
     }
     return;
   }
-  
-  if(c == 'x'){
-    Game::getInstance()->mainMenu();
-    return;
-  }
 
-}
-
-
-void Isola::Config::update(){
-  char c = Console::getInstance()->getInput();
-  handle(c);
 }
 
 void Isola::Config::render(){
- Console::getInstance()->clear();
+  ::Config::render();
+  Console::getInstance()->draw(1, 1, "Isola  -  !/p:select  x:quit");
   Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("Othello  -  z:up  s:down  !/p:select  x:quit");
-  Console::getInstance()->setForeground(Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->setForeground(*mColor1);
-  Console::getInstance()->draw(4, 4, "Couleur joueur 1");
-  Console::getInstance()->setForeground(*mColor2);
-  Console::getInstance()->draw(4, 5, "Couleur joueur 2");
-  Console::getInstance()->setForeground(Color::WHITE);
-  std::ostringstream oss(std::ostringstream::ate);
-  oss.str("Longueur du plateau : ");
-  oss << mWidth;
-  Console::getInstance()->draw(4, 6, oss.str() );
-  oss.clear();
-  oss.str("Largeur du plateau  : ");
-  oss << mHeight;
-  Console::getInstance()->draw(4, 7, oss.str() );
-  oss.clear();
-
-  Console::getInstance()->draw(2, 4+mEntry, '~');
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
