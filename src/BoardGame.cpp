@@ -7,7 +7,7 @@
 #include "Console.hpp"
 #include "Game.hpp"
 #include "MainMenuState.hpp"
-
+ 
 #include <functional>
 #include <string>
 #include <sstream>
@@ -87,8 +87,11 @@ Positions BoardGame::computeNext(Board b,
   Positions res;
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
+      
+      std::cerr<<"tentative "<<x<<","<<y<<std::endl;
       if(mSucc_function(b, x, y, p) ){
-	res.insert(std::make_pair(x,y) );
+	res.insert(Point(x,y) );
+        std::cerr<<"insertion "<<x<<","<<y<<std::endl;
       }
     }
   }
@@ -105,7 +108,8 @@ bool BoardGame::isNext(const unsigned short& x,
    * @param y Ordonnée du coup à tester.
    * @param p 
    **/
-  std::pair<unsigned short, unsigned short> pos = std::make_pair(x, y);
+  Point pos(x, y);
+  std::cerr<<"check "<<x<<","<<y<<std::endl;
   for(auto it = p.begin(); it != p.end(); ++it){
     if( (*it) == pos) 
       return true;
