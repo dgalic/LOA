@@ -20,6 +20,7 @@ public:
   Matrix(const unsigned int&, const unsigned int&);
   virtual ~Matrix();
   virtual T& at(const unsigned int&, const unsigned int&);
+  virtual T at(const unsigned int&, const unsigned int&) const;
   virtual T get(const unsigned int&, const unsigned int&) const;
   virtual unsigned int getHeight() const;
   virtual unsigned int getWidth() const;
@@ -52,6 +53,21 @@ T& Matrix<T>::at(const unsigned int& x,
   /**
    * Retourne un référence à l'élément à la position (@a x, @a y), qui est donc
    * utilisable comme L-value.
+   * @param x abscisse de l'élément à récupérer
+   * @param y abscisse de l'élément à récupérer
+   * @return renvoie l'élément (x,y) ou lance une exception (vraiment ?)
+   * @TODO vérifier les dépassements : est-ce que @e at renvoie une exception ?
+   */
+  return mData.at(y*mWidth+x);
+}
+
+
+template <class T>
+T Matrix<T>::at(const unsigned int& x, 
+                 const unsigned int& y) const
+{
+  /**
+   * Retourne un référence à l'élément à la position (@a x, @a y), mais constant
    * @param x abscisse de l'élément à récupérer
    * @param y abscisse de l'élément à récupérer
    * @return renvoie l'élément (x,y) ou lance une exception (vraiment ?)
