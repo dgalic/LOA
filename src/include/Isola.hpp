@@ -5,12 +5,14 @@
 
 #include "Point.hpp"
 
+#include <list>
+
 /**
    Dans Isola, on met des cases à -2 : cela signifie "case détruite".
    -1 signifie toujours "case vide".
    Il y a deux phases de jeu dans un tour : 
    le déplacement du pion, puis la destruction d'un case.
- */
+*/
 
 class Isola: virtual public BoardGame{
 
@@ -34,6 +36,33 @@ protected:
   virtual void handleDestroy(const char& c);
   virtual void update();
   virtual void render();
+
+
+public:
+  class Config : public State{
+
+  protected:
+    unsigned short mEntry;
+    unsigned short mWidth;
+    unsigned short mHeight;
+    std::list<Color>::iterator mColor1;
+    std::list<Color>::iterator mColor2;
+    std::list<Color> mPossibleColors; // couleurs séléctionnables
+
+  public:
+    Config();
+    virtual ~Config();
+    virtual void handle(const char& c = ' ');
+    virtual void update();
+    virtual void render();
+
+  };
+
 };
+
+
+
+
+
 
 #endif
