@@ -11,6 +11,7 @@
 #include "OthelloConfig.hpp"
 #include "FiveOrMore.hpp"
 #include "FiveOrMore_var.hpp"
+#include "FiveOrMoreConfig.hpp"
 #include "Connect4.hpp"
 #include "Connect4_long.hpp"
 #include "Tic_tac_toe.hpp"
@@ -25,7 +26,6 @@ pions de sa couleur à la fin de la partie.");
   mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur.");
   mGameDescs.push_back("Dans Puissance 4, vous devez faire une ligne de 4 pions de même couleur. Chaque ligne vous rapporte 1 point et disparait ensuite.");
   mGameDescs.push_back("Dans 5 or more, il faut faire des lignes de 5 pions de même couleurs ou plus, en déplaçant un pion. Chaque pion vous rapporte des points avant de disparaitre. Faites vite avant que le plateau ne soit rempli !!");
-  mGameDescs.push_back("Dans cette variante de Five or more, vous ne déplacez pas les pions, vous changez leur couleur.");
   mGameDescs.push_back("Dans Morpion, il faut aligner 3 pion de la même couleur");  
   mGameDescs.push_back("Dans Isola, il faut empêcher l'ennemi de bouger en detruisant des cases. Un pion peut bouger dans les 8 directions. ");
   mGameDescs.push_back("Dans Chomp, celui qui remplie tout le plateaux à perdue");  
@@ -73,22 +73,18 @@ void MainMenuState::handle(const char& c){
       break;
 
     case 3:
-      Game::getInstance()->getHandler().change(new FiveOrMore(10) );
+      Game::getInstance()->getHandler().change(new FiveOrMoreConfig());
       break;
       
     case 4:
-      Game::getInstance()->getHandler().change(new FiveOrMore_var(10) );
-      break;
-
-    case 5:
       Game::getInstance()->getHandler().change(new Tic_tac_toe(Color::RED, Color::BLUE) );
       break;
 
-    case 6:
+    case 5:
       Game::getInstance()->getHandler().change(new Isola(Color::RED, Color::BLUE, 7, 6) );
       break;
 
-    case 7:
+    case 6:
       Game::getInstance()->getHandler().change(new Chomp() );
       break;
 
@@ -117,10 +113,9 @@ void MainMenuState::render(){
   Console::getInstance()->draw(4, 5, "Puissance 4");
   Console::getInstance()->draw(4, 6, "Puissance 4 - variante à points");
   Console::getInstance()->draw(4, 7, "5 or more");
-  Console::getInstance()->draw(4, 8, "5 or more - variante couleurs");
-  Console::getInstance()->draw(4, 9, "Morpion");
-  Console::getInstance()->draw(4, 10, "Isola");
-  Console::getInstance()->draw(4, 11, "Chomp");
+  Console::getInstance()->draw(4, 8, "Morpion");
+  Console::getInstance()->draw(4, 9, "Isola");
+  Console::getInstance()->draw(4, 10, "Chomp");
   Console::getInstance()->setCursor(1, 14);
   Console::getInstance()->setForeground(Color::WHITE);
   Console::getInstance()->drawString(2, 18, mGameDescs.at(mEntry) );
