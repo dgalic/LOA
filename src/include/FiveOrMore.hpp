@@ -37,6 +37,7 @@ protected:
   bool end();
   virtual void displayScore();
   virtual void displayResult(const unsigned short&, const unsigned short&);
+
 };
 
 #endif
