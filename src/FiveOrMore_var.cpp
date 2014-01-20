@@ -44,7 +44,7 @@ void FiveOrMore_var::handleAction(const char& c){
 
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if(mColorIndex < 10 && mColorIndex < mNbColors){
+    if(mColorIndex < 10 && mColorIndex < mNbColors-1){
       mColorIndex++;
     }else{
       mColorIndex = 0;
