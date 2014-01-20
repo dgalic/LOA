@@ -17,7 +17,7 @@ BoardGame::BoardGame(const unsigned int& w,
 		     const unsigned int& h,
                      const Color& p1, const Color& p2)
   : State(), mBoard(w, h),
-    mPlayer1(p1), mPlayer2(p2),
+    mPlayer1(p1), mPlayer2(p2), mCurrentPlayer(&mPlayer1),
     mPointerX(0), mPointerY(0), mIngame(true){
 
 }
