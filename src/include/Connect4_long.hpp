@@ -3,7 +3,7 @@
 
 #include "Connect4.hpp"
 
-class Connect4_long : public Connect4{
+class Connect4_long : virtual public Connect4{
 
 public:
   Connect4_long(const Color&, const Color&, const unsigned short& = 42);

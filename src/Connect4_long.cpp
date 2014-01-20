@@ -3,7 +3,7 @@
 Connect4_long::Connect4_long(const Color& p1, 
                              const Color& p2,
                              const unsigned short& v)
-:Connect4(p1, p2, v){
+:BoardGame(7, 6, p1, p2), Connect4(p1, p2, v){
 
 }
 
