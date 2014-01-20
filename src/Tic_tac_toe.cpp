@@ -53,9 +53,9 @@ void Tic_tac_toe::handle(const char& c){
   if (c == 'p' || c == MARK) {
     /* vérifie si b est en position gagnante 
      * avec le coup jouer */
-    if( isNext(mPointerX, mPointerY, mSuccessors) ){
-      mBoard.at(mPointerX, mPointerY) = mCurrentPlayer->getColor(); 
-      searchLines(mPointerX, mPointerY);
+    if( isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+      mBoard.at(mPointer.fst(), mPointer.snd()) = mCurrentPlayer->getColor(); 
+      searchLines(mPointer.fst(), mPointer.snd());
       mCurrentPlayer = opponent();
     }
   }
@@ -163,5 +163,5 @@ void Tic_tac_toe::render(){
 
   }
   mBoard.draw(boardX, boardY);
-  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd());
 }

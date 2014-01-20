@@ -15,8 +15,7 @@ protected:
   unsigned short mFreePlaces; //nombre de cases libres restants -> pour la fin
   unsigned short mNbColors; // nombre de couleurs du jeu
   const unsigned short mAdds; //nombre de pions ajoutés par tour
-  short mSelectedX;
-  short mSelectedY;
+  Point mSelected;
   bool mPlaced;
 
 public:

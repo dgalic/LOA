@@ -18,7 +18,7 @@ BoardGame::BoardGame(const unsigned int& w,
                      const Color& p1, const Color& p2)
   : State(), mBoard(w, h),
     mPlayer1(p1), mPlayer2(p2), mCurrentPlayer(&mPlayer1),
-    mPointerX(0), mPointerY(0), mIngame(true){
+    mPointer(0,0), mIngame(true){
 
 }
 
@@ -44,29 +44,29 @@ bool BoardGame::checkMove(const char& c){
   arr = checkArrow(c);
   if(arr == ANSI::UP 
      || c == 'z'){
-    if(mPointerY > 0)
-      mPointerY--;
+    if(mPointer.snd() > 0)
+      mPointer.snd()--;
     return true;
   }
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if(mPointerX > 0)
-      mPointerX--;
+    if(mPointer.fst() > 0)
+      mPointer.fst()--;
     return true;
   }
 
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if(mPointerY < mBoard.getHeight()-1 )
-      mPointerY++;
+    if(mPointer.snd() < mBoard.getHeight()-1 )
+      mPointer.snd()++;
     return true;
   }
 
   if(arr == ANSI::RIGHT 
      || c == 'd'){
-    if(mPointerX < mBoard.getWidth()-1 )
-      mPointerX++;
+    if(mPointer.fst() < mBoard.getWidth()-1 )
+      mPointer.fst()++;
     return true;
   }
   return false;
@@ -87,11 +87,8 @@ Positions BoardGame::computeNext(Board b,
   Positions res;
   for(unsigned short x = 0; x < b.getWidth(); x++){
     for(unsigned short y = 0; y < b.getHeight(); y++){
-      
-      std::cerr<<"tentative "<<x<<","<<y<<std::endl;
       if(mSucc_function(b, x, y, p) ){
-	res.insert(Point(x,y) );
-        std::cerr<<"insertion "<<x<<","<<y<<std::endl;
+	res.insert(Point(x,y) );      
       }
     }
   }

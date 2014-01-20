@@ -9,22 +9,15 @@ Isola::Isola(const Color& p1,
              const Color& p2,
              const unsigned short& w,
              const unsigned short& h)
-  :BoardGame(w, h, p1, p2)
+  :BoardGame(w, h, p1, p2), mP1(w/2, h-1), mP2(w/2, 0)
 {
   mMoved = false;
-  mP1x = w/2;
-  mP1y = h-1;
-  mP2x = w/2;
-  mP2y = 0;
-  mBoard.at(mP1x, mP1y) = mPlayer1.getColor();
-  mBoard.at(mP2x, mP2y) = mPlayer2.getColor();
+  mBoard.at( mP1.fst(), mP1.snd() ) = mPlayer1.getColor();
+  mBoard.at( mP2.fst(), mP2.snd() ) = mPlayer2.getColor();
   
   mCurrentPlayer = &mPlayer1;
-  mCurrentX = mP1x;
-  mCurrentY = mP1y;
-  mPointerX = mCurrentX;
-  mPointerY = mCurrentY;
-
+  mCurrent = mP1;
+  mPointer = mCurrent;
   mSucc_function = [this](Board b, 
                           const unsigned short& x,
                           const unsigned short& y,
@@ -48,11 +41,11 @@ bool Isola::isSucc(Board b,
   bool res;
   unsigned short testX, testY;
   if(p == mPlayer1){
-    testX = mP1x;
-    testY = mP1y;
+    testX = mP1.fst();
+    testY = mP1.snd();
   }else{
-    testX = mP2x;
-    testY = mP2y;
+    testX = mP2.fst();
+    testY = mP2.snd();
   }
   if(x > mBoard.getWidth() && y > mBoard.getHeight() ){
     std::cerr<<x<<","<<y<<" hors du plateau" <<std::endl;
@@ -93,11 +86,11 @@ void Isola::handleMove(const char& c){
     
   if(arr == ANSI::UP
      || c == 'z'){
-    if( mPointerY > 0){
+    if( mPointer.snd() > 0){
       
-      if(mBoard.at(mPointerX, mPointerY-1) == mCurrentPlayer->getColor()
-         || isNext(mPointerX, mPointerY-1, mSuccessors) ){
-        mPointerY--; // interdit de déplacer trop loin
+      if(mBoard.at(mPointer.fst(), mPointer.snd()-1) == mCurrentPlayer->getColor()
+         || isNext(mPointer.fst(), mPointer.snd()-1, mSuccessors) ){
+        mPointer.snd()--; // interdit de déplacer trop loin
       }
       return;
 
@@ -107,11 +100,11 @@ void Isola::handleMove(const char& c){
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if( mPointerX > 0){
+    if( mPointer.fst() > 0){
       
-      if(mBoard.at(mPointerX-1, mPointerY) == mCurrentPlayer->getColor()
-         || isNext(mPointerX-1, mPointerY, mSuccessors) ){
-        mPointerX--;
+      if(mBoard.at(mPointer.fst()-1, mPointer.snd()) == mCurrentPlayer->getColor()
+         || isNext(mPointer.fst()-1, mPointer.snd(), mSuccessors) ){
+        mPointer.fst()--;
       }
       return;
 
@@ -120,10 +113,10 @@ void Isola::handleMove(const char& c){
   
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if( mPointerY < height-1  ){
-      if(mBoard.at(mPointerX, mPointerY+1) == mCurrentPlayer->getColor()
-         || isNext(mPointerX, mPointerY+1, mSuccessors) ){
-        mPointerY++;
+    if( mPointer.snd() < height-1  ){
+      if(mBoard.at(mPointer.fst(), mPointer.snd()+1) == mCurrentPlayer->getColor()
+         || isNext(mPointer.fst(), mPointer.snd()+1, mSuccessors) ){
+        mPointer.snd()++;
       }
       return;
     }
@@ -131,10 +124,10 @@ void Isola::handleMove(const char& c){
   
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if( mPointerX < width-1){      
-      if(mBoard.at(mPointerX+1, mPointerY) == mCurrentPlayer->getColor()
-         || isNext(mPointerX+1, mPointerY, mSuccessors) ){
-        mPointerX++; 
+    if( mPointer.fst() < width-1){      
+      if(mBoard.at(mPointer.fst()+1, mPointer.snd()) == mCurrentPlayer->getColor()
+         || isNext(mPointer.fst()+1, mPointer.snd(), mSuccessors) ){
+        mPointer.fst()++; 
       }
       return;
     }
@@ -143,19 +136,17 @@ void Isola::handleMove(const char& c){
   BoardGame::handle(c);
 
   if(c == 'p' or c == MARK){
-    if(isNext(mPointerX, mPointerY, mSuccessors) ){
-      mBoard.at( mPointerX, mPointerY) = mBoard.at(mCurrentX, mCurrentY);
-      mBoard.at(mCurrentX, mCurrentY) = -1;
+    if(isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+      mBoard.at( mPointer.fst(), mPointer.snd()) = mBoard.at(mCurrent.fst(), mCurrent.snd());
+      mBoard.at(mCurrent.fst(), mCurrent.snd() ) = -1;
       if(*mCurrentPlayer == mPlayer1){
-        mP1x = mPointerX;
-        mP1y = mPointerY;
+        mP1 = mPointer;
       }else{
-        mP2x = mPointerX;
-        mP2y = mPointerY;
+        mP2 = mPointer;
       }
       mMoved = true;
-      mCurrentX = -1;
-      mCurrentY = -1;
+      mCurrent.fst() = -1;
+      mCurrent.snd() = -1;
     }
     return;
   }   
@@ -168,19 +159,16 @@ void Isola::handleDestroy(const char& c){
     return;
   BoardGame::handle(c);
   if(c == 'p' or c == MARK){
-    if(mBoard.at(mPointerX, mPointerY) == -1 ){
-      mBoard.at(mPointerX, mPointerY) = -2;
+    if(mBoard.at(mPointer.fst(), mPointer.snd()) == -1 ){
+      mBoard.at(mPointer.fst(), mPointer.snd()) = -2;
       mMoved = false;
       mCurrentPlayer = opponent();
       if(*mCurrentPlayer == mPlayer1){
-        mCurrentX = mP1x;
-        mCurrentY = mP1y;        
+        mCurrent = mP1;
       }else{
-        mCurrentX = mP2x;
-        mCurrentY = mP2y;
+        mCurrent = mP2;
       }
-      mPointerX = mCurrentX;
-      mPointerY = mCurrentY;
+      mPointer = mCurrent;
       return;
     }    
   }
@@ -230,6 +218,6 @@ void Isola::render(){
     }
   }
   Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd() );
 
 }

@@ -41,14 +41,14 @@ void Othello::handle(const char& c){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
-    if( isNext(mPointerX, mPointerY, mSuccessors) ){
-      mBoard.at(mPointerX, mPointerY ) = mCurrentPlayer->getColor();
+    if( isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+      mBoard.at(mPointer.fst(), mPointer.snd() ) = mCurrentPlayer->getColor();
       if( mCurrentPlayer == &mPlayer1){
 	mScore[0] ++;
       }else{
 	mScore[1] ++;
       }
-      shuffle(mPointerX, mPointerY);      
+      shuffle(mPointer.fst(), mPointer.snd());      
       mCurrentPlayer = opponent();
     }
   }
@@ -199,5 +199,5 @@ void Othello::render(){
     BoardGame::displayResult(boardX+25, boardY+4);
   }
   mBoard.draw(boardX, boardY);
-  Console::getInstance()->setCursor(boardX+1+(mPointerX*2), boardY+1+mPointerY);
+  Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd() );
 }
