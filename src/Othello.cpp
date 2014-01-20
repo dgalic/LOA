@@ -209,19 +209,8 @@ void Othello::render(){
 
 
 Othello::Config::Config()
-  :mEntry(0), mType2(0){
+  : ::Config(2){
   
-  mPossibleColors.push_front(Color::YELLOW);
-  mPossibleColors.push_front(Color::BROWN);
-  mPossibleColors.push_front(Color::BLUE);
-  mPossibleColors.push_front(Color::PURPLE);
-  mPossibleColors.push_front(Color::GREEN);
-  mPossibleColors.push_front(Color::RED);
-  mPossibleColors.push_front(Color::PINK);
-  mPossibleColors.push_front(Color::LIGHTCYAN);
-  mColor1 = (mPossibleColors.begin() )++;
-  mColor2 = mColor1;
-  mColor2++;
 }
 
 Othello::Config::~Config(){
@@ -230,10 +219,17 @@ Othello::Config::~Config(){
 
 void Othello::Config::handle(const char& c){
   ANSI::Arrow arr = checkArrow(c);
-  if(c == 'z' || arr == ANSI::UP){
+ 
+ if(c == 'z' || arr == ANSI::UP){
     mEntry = (mEntry == 0)? mEntry = 2:mEntry-1;
     return;
   }
+
+  if(c == 's' || arr == ANSI::DOWN){
+    mEntry = (mEntry >= 2)? 0 : mEntry+1;
+    return;
+  }
+
   if(c == 'q' || arr == ANSI::LEFT){
     if(mEntry == 0){
       if( mColor1 == mPossibleColors.begin() ){
@@ -255,15 +251,9 @@ void Othello::Config::handle(const char& c){
       }
       return;
     }
-    if(mEntry == 2){
-      mType2 = (mType2 == 0)? 5:mType2-1;
-    }
-    return;
+
   }
-  if(c == 's' || arr == ANSI::DOWN){
-    mEntry = (mEntry >= 2)? 0 : mEntry+1;
-    return;
-  }
+
   if(c == 'd' || arr == ANSI::RIGHT){
     if(mEntry == 0){
       mColor1++;
@@ -285,10 +275,7 @@ void Othello::Config::handle(const char& c){
       }
       return;
     }
-    if(mEntry == 2){
-      mType2 = (mType2 == 5)? 0:mType2+1;
-    }
-    return;
+
   }
 
   if(c == 'p' || c == MARK){
@@ -310,34 +297,11 @@ void Othello::Config::handle(const char& c){
 
 }
 
-void Othello::Config::update(){
-  char c = Console::getInstance()->getInput();
-  handle(c);
-}
-
 void Othello::Config::render(){
-  Console::getInstance()->clear();
+  ::Config::render();
   Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->setCursor(1, 1);
-  Console::getInstance()->draw("Othello  -  z:up  s:down  !/p:select  x:quit");
-  Console::getInstance()->setForeground(Color::GRAY);
-  Console::getInstance()->drawRectangle(1, 2, Console::getInstance()->getWidth(), 1, '#');
-  Console::getInstance()->setForeground(*mColor1);
-  Console::getInstance()->draw(4, 4, "Couleur joueur 1");
-  Console::getInstance()->setForeground(*mColor2);
-  Console::getInstance()->draw(4, 5, "Couleur joueur 2");
-  Console::getInstance()->setForeground(Color::WHITE);
-  Console::getInstance()->draw(4, 6, "Type adversaire : "); 
-  if(mType2 == 0){
-    Console::getInstance()->draw(30, 6, "Humain");
-  }else{
-    std::ostringstream oss(std::ostringstream::ate);
-    oss.str("IA niveau ");
-    oss << mType2;
-    Console::getInstance()->draw(30, 6, oss.str() );
-    oss.clear();
-  }
-  Console::getInstance()->draw(2, 4+mEntry, '~');
-  
+  Console::getInstance()->draw(1,1, "Othello  -  z:up  s:down  !/p:select  x:quit");  
+  Console::getInstance()->setBackground(Color::BLACK);
+  Console::getInstance()->drawRectangle(1,6,40,4,' ');
   Console::getInstance()->setCursor(Console::getInstance()->getWidth(), 0);
 }
