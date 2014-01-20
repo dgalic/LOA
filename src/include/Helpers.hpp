@@ -25,4 +25,16 @@ T min(const T& a, const T& b){
     return (a>b)?b:a;
 }
 
+template <class T>
+T abs(const T& a){
+  /**
+   * @brief Calcule la valeur absolue d'un élément.
+   * @details Aucune vérification sur la présence de l'opérateur > 0 n'est faite.
+   * @param a élément à tester
+   * @return @a a si @e a>0, @a -a sinon
+   */
+  return (a>0)?a:-a;
+}
+
+
 #endif

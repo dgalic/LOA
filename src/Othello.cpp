@@ -13,7 +13,6 @@
 Othello::Othello(const Color& p1,
 		 const Color& p2)
   : BoardGame(8, 8, p1, p2) {
-  mCurrentPlayer = &mPlayer1;
   mSucc_function = [this](Board b, 
 			 const unsigned short& x,
 			 const unsigned short& y,
@@ -127,7 +126,8 @@ bool Othello::isSucc(Board b,
    * @param y Ordonnée du coup à tester.
    * @param p Joueur supposé jouer le coup.
    **/
-  if(b.get(x, y) != -1) //seule une case vide est jouable
+  if(x < 0 or y < 0 or x >= mBoard.getWidth() or y >= mBoard.getHeight() or 
+     b.get(x, y) != -1) //seule une case vide et correcte est jouable
     return false;
   unsigned short k;
   for(short i = -1; i <= 1; i++){
@@ -158,13 +158,6 @@ bool Othello::isSucc(Board b,
     } }
   return false;
   
-}
-
-const Player * Othello::opponent() const{
-  if(*mCurrentPlayer == mPlayer1 )
-    return &mPlayer2;
-  else 
-    return &mPlayer1;
 }
 
 
