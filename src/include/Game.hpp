@@ -16,6 +16,7 @@ public:
   void stop();
   void resume();
   StateHandler& getHandler();
+  void mainMenu();
 
 private:
   bool mRunning;

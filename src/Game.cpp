@@ -14,7 +14,7 @@ void Game::init(){
    * @details L'état de commencement est @e StartState. Le membre @e mRunning est 
    * mis à true, permettant de lancer la boucle de jeu par la suite.
   */
-  mHandler.push(new MainMenuState() );
+  mainMenu();
   mRunning = true;
   std::cerr<<"Game initialized"<<std::endl;
 }
@@ -61,6 +61,14 @@ StateHandler& Game::getHandler(){
   return mHandler;
 }
 
+
+
+void Game::mainMenu(){
+  mHandler.change(new MainMenuState() );
+}
+
+
+
 int main(){
   Game::getInstance()->init();
   Random::init();
@@ -68,3 +76,5 @@ int main(){
   Game::getInstance()->exit();
   Game::getInstance()->destroy();
 }
+
+
