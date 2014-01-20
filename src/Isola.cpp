@@ -14,16 +14,16 @@ Isola::Isola(const Color& p1,
   mMoved = false;
   mBoard.at( mP1.fst(), mP1.snd() ) = mPlayer1.getColor();
   mBoard.at( mP2.fst(), mP2.snd() ) = mPlayer2.getColor();
-  
+  mScore[0] = 0;
+  mScore[1] = 0;
   mCurrentPlayer = &mPlayer1;
   mCurrent = mP1;
   mPointer = mCurrent;
   mSucc_function = [this](Board b, 
-                          const unsigned short& x,
-                          const unsigned short& y,
-                          const Player& p) 
+                          const Point& pos,
+                          const Player& pl) 
     -> bool{
-    return isSucc(b, x, y, p);
+    return isSucc(b, pos, pl);
   };
 
 
@@ -36,16 +36,13 @@ Isola::~Isola(){
 }
 
 bool Isola::isSucc(Board b,
-                   const unsigned short& x, const unsigned short& y,
-                   const Player& p) const{
+                   const Point& pos,
+                   const Player& pl) const{
   bool res;
-  unsigned short testX, testY;
-  if(p == mPlayer1){
-    testX = mP1.fst();
-    testY = mP1.snd();
-  }else{
-    testX = mP2.fst();
-    testY = mP2.snd();
+  Point test(mP1);
+  int x = pos.fst(), y = pos.snd();
+  if(pl == mPlayer2){
+    test = mP2;
   }
   if(x > mBoard.getWidth() && y > mBoard.getHeight() ){
     std::cerr<<x<<","<<y<<" hors du plateau" <<std::endl;
@@ -57,8 +54,8 @@ bool Isola::isSucc(Board b,
     return false;
   }
 
-  if( (abs(x-testX) > 1) 
-      or (abs(y-testY) > 1 )
+  if( (abs(x-test.fst() ) > 1) 
+      or (abs(y-test.snd() ) > 1 )
       )
     {
     std::cerr<<x<<","<<y<<" trop loin" <<std::endl;
@@ -82,15 +79,17 @@ void Isola::handleMove(const char& c){
   ANSI::Arrow arr;
   static const unsigned short width = mBoard.getWidth(), 
     height = mBoard.getHeight();
+  int& x = mPointer.fst(), & y = mPointer.snd();
+
   arr = checkArrow(c);
     
   if(arr == ANSI::UP
      || c == 'z'){
-    if( mPointer.snd() > 0){
+    if( y > 0){
       
-      if(mBoard.at(mPointer.fst(), mPointer.snd()-1) == mCurrentPlayer->getColor()
-         || isNext(mPointer.fst(), mPointer.snd()-1, mSuccessors) ){
-        mPointer.snd()--; // interdit de déplacer trop loin
+      if(mBoard.at(x, y-1) == mCurrentPlayer->getColor()
+         || isNext(Point(x, y-1), mSuccessors) ){
+        y--; // interdit de déplacer trop loin
       }
       return;
 
@@ -100,11 +99,11 @@ void Isola::handleMove(const char& c){
     
   if(arr == ANSI::LEFT 
      || c == 'q'){
-    if( mPointer.fst() > 0){
+    if( x > 0){
       
-      if(mBoard.at(mPointer.fst()-1, mPointer.snd()) == mCurrentPlayer->getColor()
-         || isNext(mPointer.fst()-1, mPointer.snd(), mSuccessors) ){
-        mPointer.fst()--;
+      if(mBoard.at(x-1, y) == mCurrentPlayer->getColor()
+         || isNext(Point(x-1, y), mSuccessors) ){
+        x--;
       }
       return;
 
@@ -113,10 +112,10 @@ void Isola::handleMove(const char& c){
   
   if(arr == ANSI::DOWN 
      || c == 's'){
-    if( mPointer.snd() < height-1  ){
-      if(mBoard.at(mPointer.fst(), mPointer.snd()+1) == mCurrentPlayer->getColor()
-         || isNext(mPointer.fst(), mPointer.snd()+1, mSuccessors) ){
-        mPointer.snd()++;
+    if( y < height-1  ){
+      if(mBoard.at(x, y+1) == mCurrentPlayer->getColor()
+         || isNext(Point(x, y+1), mSuccessors) ){
+        y++;
       }
       return;
     }
@@ -124,10 +123,10 @@ void Isola::handleMove(const char& c){
   
   if(arr == ANSI::RIGHT 
      || c == 'd'){  
-    if( mPointer.fst() < width-1){      
-      if(mBoard.at(mPointer.fst()+1, mPointer.snd()) == mCurrentPlayer->getColor()
-         || isNext(mPointer.fst()+1, mPointer.snd(), mSuccessors) ){
-        mPointer.fst()++; 
+    if( x < width-1){      
+      if(mBoard.at(x+1, y) == mCurrentPlayer->getColor()
+         || isNext(Point(x+1, y), mSuccessors) ){
+        x++; 
       }
       return;
     }
@@ -136,8 +135,8 @@ void Isola::handleMove(const char& c){
   BoardGame::handle(c);
 
   if(c == 'p' or c == MARK){
-    if(isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
-      mBoard.at( mPointer.fst(), mPointer.snd()) = mBoard.at(mCurrent.fst(), mCurrent.snd());
+    if(isNext(Point(x, y), mSuccessors) ){
+      mBoard.at( x, y) = mBoard.at(mCurrent.fst(), mCurrent.snd());
       mBoard.at(mCurrent.fst(), mCurrent.snd() ) = -1;
       if(*mCurrentPlayer == mPlayer1){
         mP1 = mPointer;

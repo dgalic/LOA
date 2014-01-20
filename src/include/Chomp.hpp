@@ -17,9 +17,6 @@ class Chomp: public BoardGame {
         // gére les touches des joueurs
         void handle(const char&);
 
-        // change de joueur
-        const Player * opponent() const;
-       
         // calcul la logique de jeux
         virtual void update();
 

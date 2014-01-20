@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "StateHandler.hpp"
 #include "Color.hpp"
+#include "Point.hpp"
 
 class Othello : public BoardGame{
 
@@ -17,10 +18,9 @@ public:
 
 protected:
   void handle(const char&);
-  void shuffle(const unsigned short&, const unsigned short&);
+  void shuffle(const Point&);
   bool isSucc(Board,
-	      const unsigned short&,
-	      const unsigned short&,
+	      const Point&,
 	      const Player&) const;  
 };
 

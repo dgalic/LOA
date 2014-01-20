@@ -14,11 +14,10 @@ Othello::Othello(const Color& p1,
 		 const Color& p2)
   : BoardGame(8, 8, p1, p2) {
   mSucc_function = [this](Board b, 
-			 const unsigned short& x,
-			 const unsigned short& y,
-			 const Player& p) 
+                          const Point& po,
+			 const Player& pl) 
     -> bool{
-    return isSucc(b, x, y, p);
+    return isSucc(b, po, pl);
   };
   mScore[0] = 2;
   mScore[1] = 2;
@@ -41,21 +40,20 @@ void Othello::handle(const char& c){
     /* optimisation : lister tous les coups possibles, et regarder si le coup
        est dedans. On doit tout calculer 1 fois, mais pas de doublons, et 
        surtout, possibilité de faire passer le joueur qui ne peut pas jouer */
-    if( isNext(mPointer.fst(), mPointer.snd(), mSuccessors) ){
+    if( isNext(mPointer, mSuccessors) ){
       mBoard.at(mPointer.fst(), mPointer.snd() ) = mCurrentPlayer->getColor();
       if( mCurrentPlayer == &mPlayer1){
 	mScore[0] ++;
       }else{
 	mScore[1] ++;
       }
-      shuffle(mPointer.fst(), mPointer.snd());      
+      shuffle(mPointer);      
       mCurrentPlayer = opponent();
     }
   }
 }
 
-void Othello::shuffle(const unsigned short& x,
-		      const unsigned short& y){
+void Othello::shuffle(const Point& p){
   /**
    * @brief Retourne les pions retournables depuis une position.
    * @details A utiliser après un coup joué (donc supposé correct. On cherche 
@@ -64,7 +62,8 @@ void Othello::shuffle(const unsigned short& x,
    * @param x Abscisse du coup joué.
    * @param y Ordonnée du coup joué.
    */
-  Color pcolor = (Color)mBoard.get(x, y);
+  unsigned short x = p.fst(), y =p.snd();
+  Color pcolor = (Color)mBoard.get(x, y );
   unsigned short right = mBoard.getWidth(), bottom = mBoard.getHeight();
   for(short i = -1; i <= 1 ; i++){
     for(short j = -1; j <= 1; j++){
@@ -115,9 +114,8 @@ void Othello::shuffle(const unsigned short& x,
       
 
 bool Othello::isSucc(Board b,
-		     const unsigned short& x,
-		     const unsigned short& y,
-		     const Player& p) const{
+		     const Point& po,
+		     const Player& pl) const{
   /**
    * @brief Teste si le coup amène à une position successeur.
    * @details C'est la fonction de succession à passer à @e compute_next.
@@ -126,6 +124,7 @@ bool Othello::isSucc(Board b,
    * @param y Ordonnée du coup à tester.
    * @param p Joueur supposé jouer le coup.
    **/
+  unsigned short x = po.fst(), y = po.snd();
   if(x < 0 or y < 0 or x >= mBoard.getWidth() or y >= mBoard.getHeight() or 
      b.get(x, y) != -1) //seule une case vide et correcte est jouable
     return false;
@@ -143,9 +142,9 @@ bool Othello::isSucc(Board b,
 	short element = b.get(x+k*i, y+k*j);
 	if(element == -1) //case vide
 	  break;
-	else if(element != p.getColor() )
+	else if(element != pl.getColor() )
 	  k++;
-	else if(element == p.getColor() ){
+	else if(element == pl.getColor() ){
 	  if(k > 1){ // la pièce amie a été rencontrée après des ennemies
 	    return true;
 	  }
