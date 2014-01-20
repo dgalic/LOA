@@ -13,11 +13,11 @@ const std::array<Color, 10> FiveOrMore::sColorList = {
   Color::BLUE, 
   Color::YELLOW, 
   Color::PINK, 
-  Color::GRAY, 
+  Color::GREEN,
   Color::BROWN, 
-  Color::PURPLE, 
   Color::LIGHTCYAN, 
-  Color::GREEN
+  Color::PURPLE, 
+  Color::GRAY
 };
 
 FiveOrMore::FiveOrMore(const unsigned short& dim,
@@ -271,7 +271,7 @@ bool FiveOrMore::addRandom(){
    */
   unsigned short x, y;
   Color c;
-  unsigned short r = Random::get(0, mNbColors);
+  unsigned short r = Random::get(0, mNbColors-1);
   c = sColorList.at(r);
   do{  
     x = Random::get(0, mSize);
@@ -279,14 +279,7 @@ bool FiveOrMore::addRandom(){
   }while( mBoard.at(x, y) != -1 );
   mBoard.at(x, y) = c;
   mFreePlaces--;
-  std::cerr<<"avant"<<std::endl;
   searchLines(x, y);
-  int theory = 0;
-  for(unsigned int i = 0; i < mSize; i++)    
-    for(unsigned int j = 0; j < mSize; j++)
-    if(mBoard.at(i, j) == -1)
-      theory++;
-  std::cerr<<"après : "<<mFreePlaces<<"/"<<theory<<std::endl;
   return end();
 }
 
