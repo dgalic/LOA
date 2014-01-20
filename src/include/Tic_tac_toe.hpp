@@ -23,7 +23,7 @@ protected:
         // calcul la logique de jeux
         virtual void update();
 
-        virtual void searchLines(const unsigned short&, const unsigned short&);
+        virtual void searchLines();
 
         //gére l'affichage
         virtual void render();

@@ -54,13 +54,13 @@ void Tic_tac_toe::handle(const char& c){
      * avec le coup jouer */
     if( isNext(mPointer, mSuccessors) ){
       mBoard.at(mPointer.fst(), mPointer.snd()) = mCurrentPlayer->getColor(); 
-      searchLines(mPointer.fst(), mPointer.snd());
+      searchLines();
       mCurrentPlayer = opponent();
     }
   }
 }
 
-void Tic_tac_toe::searchLines(const unsigned short& x, const unsigned short& y){
+void Tic_tac_toe::searchLines(){
   /**
    * @brief A partir du pion (@x, @y), vérifie si il y a un alignement de 3.
    * Si oui, alors met fin à la partie.
@@ -82,21 +82,21 @@ void Tic_tac_toe::searchLines(const unsigned short& x, const unsigned short& y){
     bool ligne_is_align = false;
     //test ligne
     if ( ((h_g == h_m) && (h_g == h_d) && (h_g != -1))
-        || ((m_g == m_m) && (m_g == h_d) && (m_g != -1))
-        || ((b_g == b_m) && (b_g == b_d)) && (b_g != -1)){
+        || ((m_g == m_m) && (m_g == m_d) && (m_g != -1))
+        || ((b_g == b_m) && (b_g == b_d) && (b_g != -1))){
         ligne_is_align = true;
     }
 
     //test colonne
     if ( ((h_g == m_g) && (h_g == b_g) && (h_g != -1))
         || ((h_m == m_m) && (h_m == b_m) && (h_m != -1))
-        || ((h_d == m_d) && (h_d == b_d)) && (h_d != -1)){
+        || ((h_d == m_d) && (h_d == b_d) && (h_d != -1))){
         ligne_is_align = true;
     }
 
     //test diagonale \ et /
     if ( ((h_g == m_m) && (h_g == b_d) && (h_g != -1))
-        || ((b_g == m_m) && (b_g == h_d)) && (b_g != -1)){
+        || ((b_g == m_m) && (b_g == h_d) && (b_g != -1))){
         ligne_is_align = true;
     }
 
