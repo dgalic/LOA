@@ -179,7 +179,7 @@ void Isola::handleDestroy(const char& c){
 void Isola::update(){
   char c;
   if(not mIngame){
-    std::cin >> c;
+    c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   }else{
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
@@ -192,7 +192,7 @@ void Isola::update(){
       }
       return;
     }
-    std::cin >> c;
+    c = Console::getInstance()->getInput();
     handle(c);    
   }
 }
