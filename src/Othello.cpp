@@ -156,8 +156,7 @@ bool Othello::isSucc(Board b,
 void Othello::update(){
   if(not mIngame){
     //partie terminée 
-    char c;
-    std::cin>>c;
+    char c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   }else{
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
@@ -172,8 +171,7 @@ void Othello::update(){
 	mCurrentPlayer = other;
       }
     }else{
-      char c;
-      std::cin>>c;
+      char c = Console::getInstance()->getInput();
       handle(c);
     }
   }
@@ -192,6 +190,7 @@ void Othello::render(){
   }
   mBoard.draw(boardX, boardY);
   Console::getInstance()->setCursor(boardX+1+(mPointer.fst()*2), boardY+1+mPointer.snd() );
+
 }
 
 
