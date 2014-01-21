@@ -8,8 +8,8 @@
 
 
 TicTacToe::TicTacToe(const Color& p1,
-                         const Color& p2,
-                         const unsigned short& v)
+                     const Color& p2,
+                     const unsigned short& v)
   : BoardGame(3, 3, p1, p2), mVictory(v){
   mScore[0] = 0;
   mScore[1] = 0;
@@ -105,16 +105,14 @@ void TicTacToe::update(){
    */
   if (not mIngame) {
     //partie terminée 
-    char c;
-    std::cin>>c;
+    char c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     if (mSuccessors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
       mIngame = false;
     } else{
-      char c;
-      std::cin>>c;
+      char c = Console::getInstance()->getInput();
       handle(c);
     }
   }

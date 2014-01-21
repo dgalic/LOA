@@ -85,16 +85,14 @@ void Chomp::update(){
    */
   if (not mIngame) {
     //partie terminée 
-    char c;
-    std::cin>>c;
+    char c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     if (mSuccessors.empty()) {
       mIngame = false;
     } else{
-      char c;
-      std::cin>>c;
+      char c = Console::getInstance()->getInput();
       handle(c);
     }
   }

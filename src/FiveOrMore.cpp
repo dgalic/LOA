@@ -75,7 +75,7 @@ void FiveOrMore::handleAction(const char& c){
   if(arr == ANSI::LEFT 
      || c == 'q'){
     if( mPointer.fst() > 0 && 
-        ( (mPointer.fst()-1 == mSelected.fst() && mPointer.fst() == mSelected.snd() )
+        ( (mPointer.fst()-1 == mSelected.fst() && mPointer.snd() == mSelected.snd() )
           || 
           (mBoard.at(mPointer.fst()-1, mPointer.snd()) == -1 )   )
         )
@@ -122,13 +122,11 @@ void FiveOrMore::handleAction(const char& c){
 
 void FiveOrMore::update(){
   if(not mIngame){
-    char c;
-    std::cin>>c;
+    char c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   }else{
     //le joueur joue
-    char c;
-    std::cin >> c;
+    char c = Console::getInstance()->getInput();
     handle(c);
     //ajout de n pions randoms si on a déplacé un pion
     if(mPlaced){

@@ -161,16 +161,14 @@ void Connect4::update(){
    */
   if (not mIngame) {
     //partie terminée 
-    char c;
-    std::cin>>c;
+    char c = Console::getInstance()->getInput();
     Game::getInstance()->mainMenu();
   } else {
     mSuccessors = BoardGame::computeNext(mBoard, *mCurrentPlayer);
     if (mSuccessors.empty() || mScore[0] >= mVictory || mScore[1] >= mVictory) {
       mIngame = false;
     } else{
-      char c;
-      std::cin>>c;
+      char c = Console::getInstance()->getInput();
       handle(c);
     }
   }
