@@ -18,7 +18,7 @@ public:
   virtual void render();
 
 protected:
-  void handle(const char&);
+  virtual void handle(const char&);
   void shuffle(const Point&);
   bool isSucc(Board,
 	      const Point&,

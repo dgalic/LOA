@@ -27,7 +27,7 @@ protected:
   std::function<bool(Board, 
 		     const Point&,
 		     const Player&) > mSucc_function;
-unsigned short mScore[2];
+  unsigned short mScore[2];
 
 public:
 BoardGame(const unsigned int&, const unsigned int&,
